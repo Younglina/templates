@@ -15,19 +15,27 @@ function addNewKey() {
     .then(({ value }) => {
       ElMessage({
         type: 'success',
-        message: `Your email is:${value}`,
+        message: `Your key is:${value}`,
       })
+      // useHttp.post(`/addKey`, { key: value }).then((res) => {
+      //   console.log(res)
+      // }).catch(e => {
+      //   ElMessage({
+      //     type: 'error',
+      //     message: '新增失败',
+      //   })
+      // })
     })
     .catch(() => {
-      ElMessage({
-        type: 'info',
-        message: 'Input canceled',
-      })
     })
 }
 
 function handleDelete(key) {
-  console.log(key)
+  useHttp.delete(`/deleteKey?key=${key}`).then((res) => {
+    console.log(res)
+  }).catch(e => {
+    console.log(e, 'eqweqwe')
+  })
 }
 </script>
 <template>
@@ -44,6 +52,6 @@ function handleDelete(key) {
       </template>
     </el-table-column>
   </the-table>
-  <el-button class="mt-20px" type="primary">创建新的key</el-button>
+  <el-button class="mt-20px" type="primary" @click="addNewKey">创建新的key</el-button>
 </template>
 <style scoped lang='scss'></style>

@@ -1,3 +1,8 @@
+/*
+ * @Author: younglina younglina0409@gmail.com
+ * @Date: 2024-01-07 09:35:02
+ * @Description: 
+ */
 import axios from 'axios'
 
 const _axios = axios.create({
@@ -14,7 +19,7 @@ _axios.interceptors.request.use(
     return config
   },
   (error) => {
-    return Promise.reject(error)
+    return Promise.reject(error.message)
   },
 )
 
@@ -22,19 +27,12 @@ _axios.interceptors.request.use(
 _axios.interceptors.response.use(
   (response) => {
     if (response.data.code !== 200)
-      throw response.data
+      return Promise.reject({ code: response.data.code })
     else
       return response.data
   },
   (error) => {
-    if (error.response && error.response.data) {
-      const code = error.response.status
-      const msg = error.response.data.message
-      throw `Code: ${code}, Message: ${msg}`
-    }
-    else {
-      return Promise.reject(error)
-    }
+    return Promise.reject({ code: 500, message: error.message })
   },
 )
 
@@ -46,11 +44,13 @@ export default class Http {
       data: method === 'GET' ? null : data,
       params: method === 'GET' ? data : null,
     }
-
-    const res = await _axios(param)
-    if (res.code === 200)
-      return res
-    throw res
+    try {
+      const res = await _axios(param)
+      if (res.code === 200)
+        return res
+    } catch (error) {
+      throw error
+    }
   }
 
   static get(url, data) {
@@ -59,5 +59,8 @@ export default class Http {
 
   static post(url, data) {
     return this.request('POST', url, data)
+  }
+  static delete(url, data) {
+    return this.request('DELETE', url, data)
   }
 }

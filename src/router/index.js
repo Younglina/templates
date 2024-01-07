@@ -6,59 +6,84 @@ import draw from '@/assets/icon/draw.svg'
 import power from '@/assets/icon/power.svg'
 import gift from '@/assets/icon/gift.svg'
 import mic from '@/assets/icon/mic.svg'
+
 export const routes = [
   {
-    path: '/', name: 'Home', component: () => import('@/views/home.vue'), meta: {
+    path: '/',
+    name: 'Home',
+    component: () => import('@/views/home.vue'),
+    meta: {
       title: '首页',
-    }
+    },
   },
   {
-    path: '/person', name: 'person', component: () => import('@/views/web/person.vue'), meta: {
+    path: '/person',
+    name: 'person',
+    component: () => import('@/views/web/person.vue'),
+    meta: {
       title: '个人中心',
-      icon: person
-    }
+      icon: person,
+    },
   },
   {
-    path: '/api', name: 'Api', component: () => import('@/views/web/api.vue'), meta: {
+    path: '/api',
+    name: 'Api',
+    component: () => import('@/views/web/api.vue'),
+    meta: {
       title: 'api对接',
-      icon: plug
-    }
+      icon: plug,
+    },
   },
   {
-    path: '/drawdalle', name: 'drawdalle', component: () => import('@/views/web/drawdalle.vue'), meta: {
+    path: '/drawdalle',
+    name: 'drawdalle',
+    component: () => import('@/views/web/drawdalle.vue'),
+    meta: {
       title: 'AI绘画',
-      icon: draw
-    }
+      icon: draw,
+    },
   },
   {
-    path: '/joinVIP', name: 'joinVIP', component: () => import('@/views/web/joinVIP.vue'), meta: {
+    path: '/joinVIP',
+    name: 'joinVIP',
+    component: () => import('@/views/web/joinVIP.vue'),
+    meta: {
       title: '开通会员',
-      icon: vip
-    }
+      icon: vip,
+    },
   },
   {
-    path: '/customeService', name: 'customeService', component: () => import('@/views/web/api.vue'), meta: {
+    path: '/customeService',
+    name: 'customeService',
+    component: () => import('@/views/web/api.vue'),
+    meta: {
       title: '联系客服',
-      icon: mic
-    }
+      icon: mic,
+    },
   },
   {
-    path: '/api', name: 'Api', component: () => import('@/views/web/api.vue'), meta: {
+    path: '/api',
+    name: 'Api',
+    component: () => import('@/views/web/api.vue'),
+    meta: {
       title: '邀请返现',
-      icon: gift
-    }
+      icon: gift,
+    },
   },
   {
-    path: '/api', name: 'Api', component: () => import('@/views/web/api.vue'), meta: {
+    path: '/api',
+    name: 'Api',
+    component: () => import('@/views/web/api.vue'),
+    meta: {
       title: '退出登陆',
-      icon: power
-    }
+      icon: power,
+    },
   },
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes
+  routes,
 })
 
 export default router

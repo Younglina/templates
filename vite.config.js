@@ -6,6 +6,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import UnoCSS from 'unocss/vite'
 import VueMacros from 'unplugin-vue-macros/vite'
+
 export default defineConfig({
   resolve: {
     alias: {

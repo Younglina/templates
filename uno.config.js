@@ -2,13 +2,14 @@
 import {
   defineConfig,
   presetAttributify,
+  presetIcons,
   presetTypography,
   presetUno,
-  presetIcons,
   presetWebFonts,
   transformerDirectives,
-  transformerVariantGroup
+  transformerVariantGroup,
 } from 'unocss'
+
 export default defineConfig({
   shortcuts: [
   ],
@@ -24,5 +25,5 @@ export default defineConfig({
   transformers: [
     transformerDirectives(),
     transformerVariantGroup(),
-  ]
+  ],
 })

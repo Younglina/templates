@@ -1,32 +1,38 @@
 <script setup>
 import { useStore } from '@/store'
 import { routes } from '@/router'
+
 const store = useStore()
 const menus = computed(() => {
-  return routes.filter(item=>item.meta.icon)
+  return routes.filter(item => item.meta.icon)
 })
 
-const showMessageBox = (v) => {
-  if(['/person', 'customService'].includes(v)){
+function showMessageBox(v) {
+  if (['/person', 'customService'].includes(v))
     altMsgBox(v.slice(1))
-  }
 }
 </script>
+
 <template>
   <el-aside class="menu-aside flex flex-col justify-between">
     <div :style="{ opacity: store.isCollapse ? '0' : '1' }">
-      <div class="new-btn">+ New Chat</div>
+      <div class="new-btn">
+        + New Chat
+      </div>
     </div>
-    <el-menu :collapse="store.isCollapse" class="aside-menu" border-r-unset :collapse-transition="false" router @select="showMessageBox">
+    <el-menu :collapse="store.isCollapse" class="aside-menu" :collapse-transition="false" router border-r-unset @select="showMessageBox">
       <el-menu-item v-for="item in menus" :key="item.name" :index="item.path" class="c-white">
         <el-icon>
           <img :src="item.meta.icon" alt="">
         </el-icon>
-        <template #title>{{ item.meta.title }}</template>
+        <template #title>
+          {{ item.meta.title }}
+        </template>
       </el-menu-item>
     </el-menu>
   </el-aside>
 </template>
+
 <style scoped lang='scss'>
 .menu-aside {
   background-color: #202022;

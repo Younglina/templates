@@ -1,9 +1,11 @@
 <script setup>
 
 </script>
+
 <template>
-home
+  home
 </template>
+
 <style scoped lang='scss'>
 
 </style>

@@ -1,3 +1,8 @@
+<!--
+ * @Author: younglina younglina0409@gmail.com
+ * @Date: 2024-01-07 09:35:02
+ * @Description: 开通会员
+-->
 <script setup>
 import { VIP_CHOOSES } from '@/constants/vip.js'
 
@@ -70,7 +75,8 @@ function toByCode(type = 8732) {
     font-weight: 500;
     box-sizing: border-box;
   }
-  .b-bottom{
+
+  .b-bottom {
     border-bottom: 1px solid #d1d5db
   }
 }

@@ -17,6 +17,9 @@ html.dark {
 .el-message-box{
   vertical-align: unset;
 }
+h1{
+  font-size: 2em;
+}
 :root{
   --el-menu-hover-bg-color: rgb(141 141 160 / 10%);
   --el-menu-active-bg-color: transparent;
@@ -26,7 +29,10 @@ html.dark {
   --el-color-primary: #6366f1;
   --el-color-primary-light-3: #818cf8;
   --el-color-primary-dark-2: #a5b4fc;
-  --text-font: system-ui,-apple-system,BlinkMacSystemFont,Roboto,Oxygen,Ubuntu,Cantarell,sans-serif
+  --el-color-primary-dark-1: #e0e7ff;
+  --text-font: system-ui,-apple-system,BlinkMacSystemFont,Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;
+
+  --el-menu-item-height: 40px;
 }
 /* .el-menu-item{
   margin-bottom: 6px;

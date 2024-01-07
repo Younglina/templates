@@ -1,3 +1,16 @@
+/*
+ * @Author: younglina younglina0409@gmail.com
+ * @Date: 2024-01-07 09:35:02
+ * @Description: vip弹窗文字部分
+ * @Params: title - 标题
+ *          price - 价格
+ *          originalPrice - 原价
+ *          dayPrice - 每天价格
+ *          gpt4 - 是否支持GPT4
+ *          features - 功能项
+ *          highLight - 是否高亮
+ *          text - 功能
+ */
 export const VIP_CHOOSES = [
   {
     title: '给程序员小哥买杯咖啡',

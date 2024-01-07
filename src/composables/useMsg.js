@@ -1,3 +1,8 @@
+/*
+ * @Author: younglina younglina0409@gmail.com
+ * @Date: 2024-01-07 09:35:02
+ * @Description: message弹窗
+ */
 import qrCode from '@/assets/icon/qrCode.svg'
 
 function personMsg(v = {}) {
@@ -29,7 +34,7 @@ function personMsg(v = {}) {
   `
 }
 
-function customeServiceMsg(v = {}) {
+function customServiceMsg(v = {}) {
   return `
     客服QQ：${v.email || '1231231231'}<br>
     防走丢请加QQ群：${v.email || '1231231231'}<br>
@@ -39,7 +44,7 @@ function customeServiceMsg(v = {}) {
 
 const msgByTime = {
   person: { fnc: personMsg, title: '个人中心' },
-  customeService: { fnc: customeServiceMsg, title: '联系客服' },
+  customService: { fnc: customServiceMsg, title: '联系客服' },
 }
 export function altMsgBox(type) {
   ElMessageBox.alert(msgByTime[type].fnc(), msgByTime[type].title, {
@@ -49,4 +54,7 @@ export function altMsgBox(type) {
     closeOnClickModal: true,
     customClass: 'custom-msg-box',
   })
+    .catch(() => {
+
+    })
 }

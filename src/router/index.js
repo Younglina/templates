@@ -1,3 +1,8 @@
+/*
+ * @Author: younglina younglina0409@gmail.com
+ * @Date: 2024-01-07 09:35:02
+ * @Description: 路由
+ */
 import { createRouter, createWebHashHistory } from 'vue-router'
 import person from '@/assets/icon/person.svg'
 import plug from '@/assets/icon/plug.svg'
@@ -10,7 +15,7 @@ import mic from '@/assets/icon/mic.svg'
 export const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'home',
     component: () => import('@/views/home.vue'),
     meta: {
       title: '首页',
@@ -19,20 +24,32 @@ export const routes = [
   {
     path: '/person',
     name: 'person',
-    component: () => import('@/views/web/person.vue'),
+    children: [],
     meta: {
       title: '个人中心',
       icon: person,
+      notRoute: true,
     },
   },
   {
     path: '/api',
-    name: 'Api',
-    component: () => import('@/views/web/api.vue'),
+    name: 'buttApi',
+    component: () => import('@/views/web/buttApi/index.vue'),
     meta: {
-      title: 'api对接',
       icon: plug,
+      title: 'API对接',
     },
+    redirect: { name: 'dalle' },
+    children: [
+      {
+        path: '',
+        name: 'api',
+        component: () => import('@/views/web/buttApi/api.vue'),
+        meta: {
+          title: 'API对接',
+        },
+      }
+    ],
   },
   {
     path: '/drawdalle',
@@ -53,12 +70,13 @@ export const routes = [
     },
   },
   {
-    path: '/customeService',
-    name: 'customeService',
-    component: () => import('@/views/web/api.vue'),
+    path: '/customService',
+    name: 'customService',
+    children: [],
     meta: {
       title: '联系客服',
       icon: mic,
+      notRoute: true,
     },
   },
   {

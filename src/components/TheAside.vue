@@ -1,15 +1,22 @@
+<!--
+ * @Author: younglina younglina0409@gmail.com
+ * @Date: 2024-01-07 09:35:02
+ * @Description: 首页侧边栏
+-->
 <script setup>
 import { useStore } from '@/store'
 import { routes } from '@/router'
-
+const router = useRouter()
 const store = useStore()
 const menus = computed(() => {
   return routes.filter(item => item.meta.icon)
 })
 
 function showMessageBox(v) {
-  if (['/person', 'customService'].includes(v))
+  if (['/person', '/customService'].includes(v))
     altMsgBox(v.slice(1))
+  else
+    router.push(v)
 }
 </script>
 
@@ -20,7 +27,8 @@ function showMessageBox(v) {
         + New Chat
       </div>
     </div>
-    <el-menu :collapse="store.isCollapse" class="aside-menu" :collapse-transition="false" router border-r-unset @select="showMessageBox">
+    <el-menu :collapse="store.isCollapse" class="aside-menu" :collapse-transition="false" border-r-unset
+      @select="showMessageBox">
       <el-menu-item v-for="item in menus" :key="item.name" :index="item.path" class="c-white">
         <el-icon>
           <img :src="item.meta.icon" alt="">
@@ -39,19 +47,22 @@ function showMessageBox(v) {
   width: 245px;
   padding: 8px;
 }
-.aside-menu{
+
+.aside-menu {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
 }
-.new-btn{
+
+.new-btn {
   border: 1px solid hsl(0deg 0% 100%/20%);
   border-radius: 5px;
   padding: 10px;
   text-align: left;
   font-size: 16px;
   color: #fff;
-  &:hover{
+
+  &:hover {
     transform: scale(1.05);
     cursor: pointer;
     background-color: rgb(141 141 160 / 10%);

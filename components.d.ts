@@ -41,6 +41,7 @@ declare module 'vue' {
     NotLogin: typeof import('./src/components/NotLogin.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Star: typeof import('./src/components/star.vue')['default']
     TheAside: typeof import('./src/components/TheAside.vue')['default']
     TheCounter: typeof import('./src/components/TheCounter.vue')['default']
     TheFooter: typeof import('./src/components/TheFooter.vue')['default']

@@ -4,7 +4,9 @@ body,
   height     : 100%;
   margin     : 0;
   padding    : 0;
+  font-size: 14px;
   font-family: var(--text-font);
+  color: var(--el-menu-text-color);
 }
 
 html.dark {
@@ -19,7 +21,9 @@ html.dark {
 .el-message-box {
   vertical-align: unset;
 }
-
+.el-popper{
+  font-size: 14px;
+}
 .el-empty__image {
   display        : flex;
   align-items    : center;

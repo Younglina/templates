@@ -11,7 +11,7 @@
       <el-main>
         <RouterView />
       </el-main>
-      <TheFooter />
+      <!-- <TheFooter /> -->
     </el-container>
   </el-container>
 </template>

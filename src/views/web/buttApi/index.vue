@@ -7,7 +7,7 @@
 const routes = [
   { path: '/', text: 'AI聊天' },
   { path: '/api', text: 'API对接' },
-  { path: '/midjourney', text: 'MidJourney' },
+  { path: '/drawmj', text: 'MidJourney' },
   { path: '/draw', text: '普通绘画' },
   { path: '/drawSquare', text: '绘画广场' },
   { path: '/myDraw', text: '我的作品' },
@@ -20,7 +20,8 @@ function handleSelect() {
 </script>
 <template>
   <div class="flex flex-col h-full">
-    <el-menu :default-active="activeIndex" mode="horizontal" active-text-color="#6366f1" @select="handleSelect" router>
+    <el-menu style="box-shadow: 0 2px 5px rgba(0,0,0,.15);" :default-active="activeIndex" mode="horizontal"
+      active-text-color="#6366f1" @select="handleSelect" router>
       <el-menu-item v-for="item in routes" :key="item.text" :index="item.path">{{ item.text }}</el-menu-item>
     </el-menu>
     <RouterView class="flex-1"></RouterView>

@@ -7,3 +7,4 @@ export * from './dark'
 export * from './useMsg'
 import Http from '../utils/http.js'
 export const useHttp = Http
+export const toByCode = (id = 8732) => { window.open(`${import.meta.env.VITE_BYCODEURL}?id=${id}`) }

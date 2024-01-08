@@ -48,6 +48,14 @@ export const routes = [
         meta: {
           title: 'API对接',
         },
+      },
+      {
+        path: '/drawmj',
+        name: 'drawmj',
+        component: () => import('@/views/web/buttApi/drawmj.vue'),
+        meta: {
+          title: 'MidJourney',
+        },
       }
     ],
   },

@@ -1,38 +1,86 @@
 html,
 body,
 #app {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+  height     : 100%;
+  margin     : 0;
+  padding    : 0;
   font-family: var(--text-font);
 }
 
 html.dark {
   background: #121212;
 }
-.table-img{
-  width: 80px;
+
+.table-img {
+  width : 80px;
   height: 80px;
 }
-.el-message-box{
+
+.el-message-box {
   vertical-align: unset;
 }
-h1{
-  font-size: 2em;
-}
-:root{
-  --el-menu-hover-bg-color: rgb(141 141 160 / 10%);
-  --el-menu-active-bg-color: transparent;
-  --el-menu-active-color: #ececf1;
-  --el-menu-bg-color: transparent;
 
-  --el-color-primary: #6366f1;
+.el-empty__image {
+  display        : flex;
+  align-items    : center;
+  justify-content: center;
+}
+
+.el-empty__description {
+  margin-top: 0px;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  color: rgba(0,0,0,.85);
+  font-weight: 500;
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+h2 {
+  font-size: 1.5em;
+}
+
+p{
+  margin: 0;
+  margin-bottom: 1em;
+}
+
+:root {
+  --el-menu-hover-bg-color : rgb(141 141 160 / 10%);
+  --el-menu-active-bg-color: transparent;
+  --el-menu-active-color   : #ececf1;
+  --el-menu-bg-color       : transparent;
+
+  --el-color-primary        : #6366f1;
   --el-color-primary-light-3: #818cf8;
-  --el-color-primary-dark-2: #a5b4fc;
-  --el-color-primary-dark-1: #e0e7ff;
-  --text-font: system-ui,-apple-system,BlinkMacSystemFont,Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;
+  --el-color-primary-dark-2 : #a5b4fc;
+  --el-color-primary-dark-1 : #e0e7ff;
+  --text-font               : system-ui, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 
   --el-menu-item-height: 40px;
+  --el-empty-description-margin-top: 6px;
+
+  --el-loading-spinner-size: 30px;
+
+}
+#app .el-table .el-table__header th.el-table__cell{
+  background-color: var(--el-bg-color-page);
+  color: var(--el-color-black)
+}
+#app .el-table .cell{
+  word-break: break-word;
+}
+#app .el-tag{
+  height: 22px;
+}
+
+#app .el-tag.el-tag--info {
+  --el-tag-text-color: var(--el-color-black);
 }
 /* .el-menu-item{
   margin-bottom: 6px;

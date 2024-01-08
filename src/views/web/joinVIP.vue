@@ -12,7 +12,6 @@ function redeem(t) {
   ElMessage.info('请登录后再兑换会员！')
 }
 function toByCode(type = 8732) {
-  console.log()
   window.open(`${import.meta.env.VITE_BYCODEURL}?id=${type}`)
 }
 </script>
@@ -23,7 +22,7 @@ function toByCode(type = 8732) {
       <div class="text-center c-indigo-500">
         {{ item.title }}
       </div>
-      <div class="mb-10px mt-10px">
+      <div class="my-10px">
         <span class="mr-20px font-size-40px">¥ {{ item.price }}</span>
         <span class="font-size-16px font-400 color-#6b7280 line-through">原价：¥{{ item.originalPrice }}</span>
       </div>

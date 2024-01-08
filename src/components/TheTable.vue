@@ -1,9 +1,9 @@
 <script setup>
-defineProps(['tableInfo'])
+defineProps(['tableInfo', 'loading'])
 </script>
 
 <template>
-  <el-table :data="tableInfo.data" style="width: 100%" :border="true">
+  <el-table :data="tableInfo.data" v-loading="loading" style="width: 100%" :border="true">
     <el-table-column v-for="item in tableInfo.columns" :key="item.prop" :prop="item.prop" :label="item.label"
       :width="item.width || ''" />
     <slot />

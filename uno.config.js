@@ -13,6 +13,9 @@ import {
 export default defineConfig({
   shortcuts: [
   ],
+  rules: [
+    ['flex-0.5', { flex: '0 0 50%' }],
+  ],
   theme: {
   },
   presets: [

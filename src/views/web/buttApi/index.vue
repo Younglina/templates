@@ -8,9 +8,9 @@ const router = useRouter()
 const route = useRoute()
 const routes = [
   { path: '/', text: 'AI聊天' },
-  { path: '/api', text: 'API对接' },
-  { path: '/drawmj', text: 'MidJourney' },
-  { path: '/drawdalle', text: '普通绘画' },
+  { path: '/api', text: 'API对接', badge: '限时折扣' },
+  { path: '/drawmj', text: 'MidJourney', badge: '最强模型' },
+  { path: '/drawdalle', text: '普通绘画', badge: '免费体验' },
   { path: '/mypic', text: '我的作品' },
   { path: '/mjshowcase', text: '绘画广场' },
 ]
@@ -32,7 +32,13 @@ function handleSelect() {
   <div class="flex flex-col h-full">
     <el-menu style="box-shadow: 0 2px 5px rgba(0,0,0,.15);min-height: 60px;" :default-active="activeIndex"
       mode="horizontal" active-text-color="#6366f1" @select="handleSelect" router>
-      <el-menu-item v-for="item in routes" :key="item.text" :index="item.path">{{ item.text }}</el-menu-item>
+      <el-menu-item v-for="item in routes" :key="item.text" :index="item.path">
+        <div class="min-w-110px flex justify-center">
+          <el-badge :value="item.badge" class="item">
+            {{ item.text }}
+          </el-badge>
+        </div>
+      </el-menu-item>
     </el-menu>
     <RouterView class="flex-1"></RouterView>
   </div>

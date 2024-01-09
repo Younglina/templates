@@ -5,9 +5,7 @@
 -->
 <template>
   <el-container h-full>
-    <TheAside v-if="['home'].includes($route.name)" />
     <el-container direction="vertical">
-      <!-- <TheHeader /> -->
       <el-main>
         <RouterView />
       </el-main>

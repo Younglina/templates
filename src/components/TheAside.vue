@@ -4,8 +4,12 @@
  * @Description: 首页侧边栏
 -->
 <script setup>
+import { useWindowSize } from '@vueuse/core'
 import { useStore } from '@/store'
 import { routes } from '@/router'
+
+const props = defineProps(['isShow'])
+const isShow = useVModel(props, 'isShow')
 const router = useRouter()
 const store = useStore()
 const menus = computed(() => {
@@ -23,17 +27,21 @@ function showMessageBox(v) {
 </script>
 
 <template>
-  <el-aside class="menu-aside flex flex-col justify-between">
+  <el-aside class="menu-aside flex flex-col justify-between"
+    :style="{ transform: `translateX(${isShow ? '0' : '-260px'})` }">
     <div :style="{ opacity: store.isCollapse ? '0' : '1' }">
       <div class="new-btn">
         + New Chat
       </div>
     </div>
-    <el-menu :collapse="store.isCollapse" class="aside-menu" :collapse-transition="false" border-r-unset
-      @select="showMessageBox">
+    <div v-if="isShow"
+      class="i-material-symbols-cancel-outline close-icon absolute top-10px right--30px c-black font-size-24px cursor-pointer"
+      @click="isShow = false">
+    </div>
+    <el-menu :collapse="store.isCollapse" class="aside-menu" :collapse-transition="false" @select="showMessageBox">
       <el-menu-item v-for="item in menus" :key="item.name" :index="item.path" class="c-white">
         <el-icon>
-          <img :src="item.meta.icon" alt="">
+          <img class="w-20px" :src="item.meta.icon" alt="">
         </el-icon>
         <template #title>
           {{ item.meta.title }}
@@ -44,9 +52,19 @@ function showMessageBox(v) {
 </template>
 
 <style scoped lang='scss'>
+@media(min-width: 1024px) {
+  .close-icon {
+    display: none;
+  }
+}
+
 .menu-aside {
-  background-color: #202022;
+  position: fixed;
+  z-index: 1;
+  overflow: visible;
   width: 245px;
+  height: 100%;
+  background-color: #202022;
   padding: 8px;
 }
 
@@ -54,6 +72,11 @@ function showMessageBox(v) {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  border-right: unset;
+
+  :deep(.el-menu-item) {
+    color: var(--el-color-white);
+  }
 }
 
 .new-btn {

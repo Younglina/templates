@@ -19,7 +19,10 @@ html.dark {
 }
 
 .el-message-box {
-  vertical-align: unset;
+  padding: 20px 24px;
+}
+.el-message-box__header {
+  border-bottom: 1px solid var(--el-border-color);
 }
 .el-popper{
   font-size: 14px;
@@ -37,7 +40,7 @@ html.dark {
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 0.5em;
-  color: rgba(0,0,0,.85);
+  color: var(--el-menu-text-color);
   font-weight: 500;
 }
 
@@ -55,7 +58,7 @@ p{
   margin-bottom: 1em;
 }
 
-:root {
+#app {
   --el-menu-hover-bg-color : rgb(141 141 160 / 10%);
   --el-menu-active-bg-color: transparent;
   --el-menu-active-color   : #ececf1;
@@ -65,6 +68,7 @@ p{
   --el-color-primary-light-3: #818cf8;
   --el-color-primary-dark-2 : #a5b4fc;
   --el-color-primary-dark-1 : #e0e7ff;
+  --el-text-color-primary-1: var(--el-menu-text-color);
   --text-font               : system-ui, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 
   --el-menu-item-height: 40px;
@@ -72,10 +76,15 @@ p{
 
   --el-loading-spinner-size: 30px;
 
+
 }
+#app .el-header{
+  --el-header-height: 50px;
+}
+
 #app .el-table .el-table__header th.el-table__cell{
   background-color: var(--el-bg-color-page);
-  color: var(--el-color-black)
+  color: var(--el-text-color-primary)
 }
 #app .el-table .cell{
   word-break: break-word;
@@ -85,11 +94,11 @@ p{
 }
 
 #app .el-tag.el-tag--info {
-  --el-tag-text-color: var(--el-color-black);
+  --el-tag-text-color: var(--el-text-color-primary);
 }
-/* .el-menu-item{
-  margin-bottom: 6px;
+
+.custom-msgbox-info{
+  line-height: 2em;
+  font-size: 18px;
+  color: var(--el-text-color-primary-1);
 }
-.el-menu-item.is-active{
-  background-image: linear-gradient(90deg,#F4F4F4 0%,#EFEFEF 100%);
-} */

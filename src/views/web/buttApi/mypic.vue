@@ -9,10 +9,11 @@ const params = reactive({
   pageNum: 1,
   pageSize: 16
 })
-const imgData = ref([])
 const showViewer = ref(false)
 const urlList = ref([])
 const imgTotal = ref(0)
+const imgData = ref([])
+const imgLoading = ref(false)
 watch(route, (v) => {
   getPageData(v.name)
 })
@@ -21,6 +22,7 @@ onMounted(() => {
 })
 
 function getPageData(name) {
+  imgLoading.value = true
   let url = '/v1/image/his'
   if (name === 'mjshowcase') {
     url = '/v1/image/square'
@@ -28,6 +30,10 @@ function getPageData(name) {
   useHttp.get(url, params).then(res => {
     imgData.value = res.data
     imgTotal.value = res.total
+    imgLoading.value = false
+  }).catch((err) => {
+    ElMessage.error(err.message || '操作失败')
+    imgLoading.value = false
   })
 }
 
@@ -39,7 +45,7 @@ function handleShow(item) {
 <template>
   <div class="my-draw flex flex-col justify-start items-center pb-20px">
     <div class="flex w-100% my-16px">
-      <div class="imgs-box">
+      <div class="imgs-box" v-loading="imgLoading">
         <div v-for="(item, idx) in imgData" class="imgs-box-item" :key="idx">
           <el-image style="width: 260px" :src="item.urls.smallImg[0]" lazy :preview-src-list="item.urls.bigImg"
             fit="cover" />

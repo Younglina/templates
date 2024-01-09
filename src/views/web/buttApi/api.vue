@@ -42,7 +42,7 @@ function handleClick(item) {
           }}</el-menu-item>
       </el-menu-item-group>
     </el-menu>
-    <div class="pt-60px pl-40px right">
+    <div class="right">
       <h1>{{ currentMenu.title }}</h1>
       <component :is="currentMenu.path==='/balance'?'h2':'p'">{{ currentMenu.subtitle }}</component>
       <component v-if="isLogin" :is="components[currentMenu.path]" :query="currentMenu.query"></component>
@@ -67,8 +67,9 @@ function handleClick(item) {
 }
 
 .right {
-  height: calc(100vh - 180px);
+  height: calc(100vh - 200px);
   overflow-y: auto;
   flex: 1;
+  padding: 60px 40px;
 }
 </style>

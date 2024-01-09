@@ -35,7 +35,7 @@ function handlePay() {
 </script>
 <template>
   <div class="balance">
-    <div v-loading="data.loading" class="flex h-60px my-20px">
+    <div v-loading="data.loading" class="flex h-60px my-20px max-w-520px">
       <div class="flex flex-col justify-between flex-0.5">
         <span class="c-gray-400 font-size-14px">总充值金额</span>
         <span class=" font-size-24px">{{ data.totalPay }}</span>
@@ -50,7 +50,7 @@ function handlePay() {
     <p>请先购买卡密: <el-button type="primary" @click="toByCode()">购买卡密</el-button> (不要翻墙，翻墙会打不开)</p>
     <p>从发卡网购买卡密之后，输入到以下输入框中点击充值即可</p>
     <div class="flex">
-      <el-input v-model="cardCode" placeholder="请输入购买的卡密"></el-input>
+      <el-input v-model="cardCode" class="max-w-440px" placeholder="请输入购买的卡密"></el-input>
       <el-button type="primary" v-loading="payLoading" @click="handlePay()">充值</el-button>
     </div>
   </div>

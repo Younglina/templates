@@ -7,7 +7,7 @@
 const tableInfo = reactive({
   columns: [
     { prop: 'name', label: 'NAME' },
-    { prop: 'key', label: 'KEY', width: '400px' },
+    { prop: 'key', label: 'KEY', minWidth: '400px' },
     { prop: 'time', label: 'CREATED' },
   ],
   data: [{ name: 'name', key: 'key', time: 'time' }],
@@ -52,9 +52,9 @@ function handleDelete(key, idx) {
 <template>
   <div class="api-keys">
     <the-table :tableInfo="tableInfo">
-      <el-table-column label="OPERATE">
+      <el-table-column label="OPERATE" width="100px">
         <template #default="scope">
-          <el-popconfirm title="Are you sure to delete this?" @confirm="handleDelete(scope.row.KEY, scope.$index)">
+          <el-popconfirm title="确定要删除这个key吗?" @confirm="handleDelete(scope.row.KEY, scope.$index)">
             <template #reference>
               <el-button text type="primary">Delete</el-button>
             </template>

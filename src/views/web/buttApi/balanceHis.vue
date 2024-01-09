@@ -7,10 +7,10 @@
 const loading = ref(true)
 const tableInfo = reactive({
   columns: [
-    { prop: 'time', label: '兑换时间', width: '100px' },
-    { prop: 'amount', label: '充值金额', width: '100px' },
+    { prop: 'time', label: '兑换时间', minWidth: '100px' },
+    { prop: 'amount', label: '充值金额', minWidth: '100px' },
     { prop: 'code', label: '兑换码' },
-    { prop: 'codeAmount', label: '兑换码价格', width: '100px' },
+    { prop: 'codeAmount', label: '兑换码价格', minWidth: '100px' },
   ],
   data: [{ amount: 'amount', codeAmount: 'codeAmount', code: 'code', time: 'time' }],
 })

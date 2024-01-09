@@ -113,7 +113,7 @@ export const routes = [
   {
     path: '/api',
     name: 'Api',
-    component: () => import('@/views/web/api.vue'),
+    children: [],
     meta: {
       title: '邀请返现',
       icon: gift,
@@ -122,7 +122,7 @@ export const routes = [
   {
     path: '/api',
     name: 'Api',
-    component: () => import('@/views/web/api.vue'),
+    children: [],
     meta: {
       title: '退出登陆',
       icon: power,

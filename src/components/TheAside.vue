@@ -15,6 +15,8 @@ const menus = computed(() => {
 function showMessageBox(v) {
   if (['/person', '/customService'].includes(v))
     altMsgBox(v.slice(1))
+  else if (v === '/outDrawdalle')
+    router.push('/api?path=drawdalle')
   else
     router.push(v)
 }

@@ -8,3 +8,4 @@ export * from './useMsg'
 import Http from '../utils/http.js'
 export const useHttp = Http
 export const toByCode = (id = 8732) => { window.open(`${import.meta.env.VITE_BYCODEURL}?id=${id}`) }
+export const sleep = (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms))

@@ -6,7 +6,7 @@
 import axios from 'axios'
 
 const _axios = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: 'https://www.fastmock.site/mock/a5d2dc0dbd7769560aab14a030fb0312/api',
   timeout: 20000, // 请求超时 20s
   withCredentials: true,
 })

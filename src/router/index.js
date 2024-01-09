@@ -39,7 +39,6 @@ export const routes = [
       icon: plug,
       title: 'API对接',
     },
-    redirect: { name: 'dalle' },
     children: [
       {
         path: '',
@@ -56,13 +55,37 @@ export const routes = [
         meta: {
           title: 'MidJourney',
         },
+      },
+      {
+        path: '/drawdalle',
+        name: 'drawdalle',
+        component: () => import('@/views/web/buttApi/drawdalle.vue'),
+        meta: {
+          title: '普通绘画',
+        },
+      },
+      {
+        path: '/mypic',
+        name: 'mypic',
+        component: () => import('@/views/web/buttApi/mypic.vue'),
+        meta: {
+          title: '我的作品',
+        },
+      },
+      {
+        path: '/mjshowcase',
+        name: 'mjshowcase',
+        component: () => import('@/views/web/buttApi/mypic.vue'),
+        meta: {
+          title: '绘画广场',
+        },
       }
     ],
   },
   {
-    path: '/drawdalle',
-    name: 'drawdalle',
-    component: () => import('@/views/web/drawdalle.vue'),
+    path: '/outDrawdalle',
+    name: 'outDrawdalle',
+    children: [],
     meta: {
       title: 'AI绘画',
       icon: draw,

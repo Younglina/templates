@@ -23,6 +23,7 @@ html.dark {
 }
 .el-popper{
   font-size: 14px;
+  max-width: 220px;
 }
 .el-empty__image {
   display        : flex;

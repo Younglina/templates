@@ -6,12 +6,25 @@
 <script setup>
 import defaultImg from '@/assets/images/mjbg.jpeg'
 const imgSrc = ref('')
-function handleStart() {
+const imgLoading = ref(false)
+const imgStyles = reactive({ style: 'vivid', quality: 'standard', size: '1024x1024', prompt: '' })
+async function handleStart() {
+  ElMessage({
+    type: 'info',
+    message: '图片生成中'
+  })
+  imgLoading.value = true
+  if (!imgStyles.prompt) {
+    imgStyles.prompt = 'sunflowers, by Van Gogh'
+  }
+  console.log(imgStyles)
   // useHttp.get('/drawmj').then((res) => {
+  await sleep()
   ElMessage({
     type: 'success',
     message: '生成成功'
   })
+  imgLoading.value = false
   // imgSrc.value = res.data
   // })
 }
@@ -29,7 +42,7 @@ function handleStart() {
         <div>
           <div class="flex items-center">
             <span class="subtitle">原图绘制</span>
-            <el-tooltip placement="right-start">
+            <el-tooltip placement="right">
               <template #content>选取你喜欢的图片进行单张高清绘制</template>
               <div class="i-material-symbols-help-outline"></div>
             </el-tooltip>
@@ -41,7 +54,7 @@ function handleStart() {
         <div>
           <div class="flex items-center">
             <span class="subtitle">创意发散</span>
-            <el-tooltip placement="right-start">
+            <el-tooltip placement="right">
               <template #content> 选取你喜欢的图片，再绘制四张类似风格的图片，创意发散每组图只能使用一次 </template>
               <div class="i-material-symbols-help-outline"></div>
             </el-tooltip>
@@ -72,7 +85,7 @@ function handleStart() {
             <star />消耗1次（共0次）
           </div>
           <div>
-            <el-tooltip placement="top" popper-class="w-200px">
+            <el-tooltip placement="top">
               <template
                 #content>本站服务处于前沿探索阶段，您应当合法合规使用本服务，并承担由此产生的所有责任。本服务生成的作品仅供个人学习交流使用，不可用于商业用途，本站对您的使用不做保证且不承担任何责任。</template>
               <div class="flex items-center">
@@ -86,8 +99,9 @@ function handleStart() {
       </div>
     </div>
     <div class="show-box">
-      <div class="res-box">
-        <img class="img-box" :src="imgSrc ? imgSrc : defaultImg" alt="">
+      <div class="res-box" v-loading="imgLoading"
+        :style="{ 'background-color': imgSrc ? 'white' : '#f5f5f8', 'border-width': imgSrc ? '0' : '2' }">
+        <img class="img-box" :src="imgSrc ? imgSrc : defaultImg" element-loading-text="图片生成中">
         <div class="font-size-20px">AI绘画🎨</div>
         <div class="color-#6b7280">在左侧输入图片描述，创造你的绘画作品</div>
       </div>

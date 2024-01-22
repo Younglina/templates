@@ -1,3 +1,8 @@
+/*
+ * @Author: younglina younglina0409@gmail.com
+ * @Date: 2024-01-07 09:35:02
+ * @Description: 
+ */
 import path from 'node:path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
@@ -8,7 +13,7 @@ import UnoCSS from 'unocss/vite'
 import VueMacros from 'unplugin-vue-macros/vite'
 
 export default defineConfig({
-  base: '/gpt/',
+  base: '/',
   resolve: {
     alias: {
       '@/': `${path.resolve(__dirname, 'src')}/`,

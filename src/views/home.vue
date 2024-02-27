@@ -1,24 +1,18 @@
-<!--
- * @Author: younglina younglina0409@gmail.com
- * @Date: 2024-01-07 09:35:02
- * @Description: AI聊天
--->
 <script setup>
+import { getRecommendPlayList } from '@/utils/playList';
+
+const show = ref(false)
+const recommendPlaylist = ref({})
+getRecommendPlayList(10, false).then(items => {
+  recommendPlaylist.value.items = items;
+  // NProgress.done();
+  show.value = true;
+});
 </script>
-≤
 <template>
-  <div class="home-page">
-    <div class="home-content relative">
-      <the-header />
-      home
-    </div>
+  <div v-show="show" class="home-page">
+    <CoverRow :items="recommendPlaylist.items"></CoverRow>
   </div>
 </template>
 
-<style scoped lang='scss'>
-@media(min-width: 1024px) {
-  .chat-content {
-    padding-left: 245px;
-  }
-}
-</style>
+<style scoped lang='scss'></style>

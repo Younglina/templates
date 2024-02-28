@@ -1,8 +1,3 @@
-<!--
- * @Author: younglina younglina0409@gmail.com
- * @Date: 2024-02-27 16:17:15
- * @Description: 
--->
 <script setup>
 const props = defineProps({
   id: { type: Number, required: true },

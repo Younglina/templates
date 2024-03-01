@@ -11,6 +11,23 @@ export default defineStore('mainStore', {
     userInfo: null,
     isCollapse: false,
     currentEditArea: null,
+    loginMode: '', // 登录模式
+    dailyTracks: [], // 日推歌单
+    player: {
+      replacePlaylist: (
+        trackIDs,
+        playlistSourceID,
+        playlistSourceType,
+        autoPlayTrackID = 'first'
+      ) => {
+        console.log(
+          trackIDs,
+          playlistSourceID,
+          playlistSourceType,
+          autoPlayTrackID = 'first'
+        )
+      }
+    }
   }),
   getters: {
     getUserInfo(state) {
@@ -21,5 +38,8 @@ export default defineStore('mainStore', {
     toggleAsideBar() {
       this.isCollapse = !this.isCollapse
     },
+    updateDailyTracks(data) {
+      this.dailyTracks = data
+    }
   },
 })

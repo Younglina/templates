@@ -79,29 +79,6 @@ img {
   }
 }
 
-.play-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  backdrop-filter: blur(8px);
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  height: 22%;
-  width: 22%;
-  border-radius: 50%;
-  cursor: default;
-  transition: 0.2s;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.28);
-  }
-
-  &:active {
-    transform: scale(0.94);
-  }
-}
-
 .shadow {
   position: absolute;
   top: 12px;

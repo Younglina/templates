@@ -70,9 +70,10 @@ function getImageUrl(item) {
         :play-button-size="type === 'artist' ? 26 : playButtonSize" />
       <div class="text">
         <div v-if="showPlayCount" class="info">
-          <span class="play-count"><svg-icon icon-class="play" />{{
-            item.playCount | formatPlayCount
-          }}
+          <span class="play-count">
+            <div class="i-material-symbols-play-arrow-rounded inline-block" />{{
+              item.playCount | formatPlayCount
+            }}
           </span>
         </div>
         <div class="title" :style="{ fontSize: subTextFontSize }">
@@ -81,7 +82,7 @@ function getImageUrl(item) {
             explicit-symbol
           </span>
           <span v-if="isPrivacy(item)" class="lock-icon">
-            <div icon-class="i-material-symbols-lock-outline" />
+            <div class="i-material-symbols-lock-outline" />
           </span>
           <router-link :to="getTitleLink(item)">{{ item.name }}</router-link>
         </div>

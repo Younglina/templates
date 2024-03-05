@@ -7,6 +7,8 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    ArtistsInLine: typeof import('./src/components/ArtistsInLine.vue')['default']
+    ButtonIcon: typeof import('./src/components/ButtonIcon.vue')['default']
     Cover: typeof import('./src/components/Cover.vue')['default']
     CoverRow: typeof import('./src/components/CoverRow.vue')['default']
     DailyTracksCard: typeof import('./src/components/DailyTracksCard.vue')['default']
@@ -34,6 +36,7 @@ declare module 'vue' {
     ElTag: typeof import('element-plus/es')['ElTag']
     ElTooltip: typeof import('element-plus/es')['ElTooltip']
     NotLogin: typeof import('./src/components/NotLogin.vue')['default']
+    RandomSong: typeof import('./src/components/RandomSong.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Star: typeof import('./src/components/star.vue')['default']

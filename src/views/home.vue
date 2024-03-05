@@ -1,8 +1,3 @@
-<!--
- * @Author: younglina younglina0409@gmail.com
- * @Date: 2024-01-07 09:35:02
- * @Description: 
--->
 <script setup>
 import { getRecommendPlayList } from '@/utils/playList';
 import { toplistOfArtists } from '@/api/artist';
@@ -72,8 +67,7 @@ onMounted(() => {
       <div class="wy-title"> For You </div>
       <div class="for-you-row">
         <DailyTracksCard ref="DailyTracksCard" />
-        <!-- <FMCard /> -->
-        <div>fm</div>
+        <RandomSong />
       </div>
     </div>
     <div v-for="item in rows" :key="item.key" class="mt-54px">

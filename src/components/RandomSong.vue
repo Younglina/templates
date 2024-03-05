@@ -3,36 +3,36 @@
  * @Date: 2024-03-05 13:57:15
  * @Description: 随机音乐 从热榜前50随机读取
 -->
+
 <script setup>
 import { getPlaylistDetail } from '@/api/playlist'
 import { randomNum } from '@/utils/common'
 import * as Vibrant from 'node-vibrant/dist/vibrant.worker.min.js';
 import Color from 'color';
-
 import useStore from '@/store'
 
-const player = useStore.player
-const randomList = ref([])
-const idx = ref(0)
-const track = ref({ ar: [] })
-const background = ref('')
-const nextTrackCover = ref('')
-const isPlaying = ref(false)
+const store = useStore()
+const pageData = reactive({
+  player: store.player,
+  randomList: [],
+  idx: 0,
+  track: {ar:[]},
+  background: '',
+  nextTrackCover: '',
+  isPlaying: false
+})
 getPlaylistDetail(19723756).then(res => {
   const ts = res.playlist.tracks.slice(0, 50)
   for (let i = ts.length - 1; i >= 0; i--) {
     const random = randomNum(0, i);
     [ts[i], ts[random]] = [ts[random], ts[i]]
   }
-  randomList.value = ts
-  track.value = ts[0]
-  getColor()
+  pageData.randomList = ts
+  next()
 })
 function getColor() {
-  const cover = `${track.value.al.picUrl.replace(
-    'http://',
-    'https://'
-  )}?param=512y512`;
+  const cover = resetImg(pageData.track.al.picUrl);
+  console.log(cover)
   Vibrant.from(cover, { colorCount: 1 })
     .getPalette()
     .then(palette => {
@@ -45,7 +45,7 @@ function getColor() {
         .rotate(-30)
         .rgb()
         .string();
-      background.value = `linear-gradient(to top left, ${color}, ${color2})`;
+      pageData.background = `linear-gradient(to top left, ${color}, ${color2})`;
     });
 }
 
@@ -54,31 +54,37 @@ function play() {
 }
 
 function next() {
-  console.log(idx.value, ++idx.value)
-  track.value = randomList.value[++idx.value]
-  nextTrackCover.value = `${track.value?.al?.picUrl.replace(
+  pageData.track = pageData.randomList[pageData.idx++]
+  pageData.track.al.picUrl = resetImg(pageData.track.al.picUrl);
+  pageData.nextTrackCover = resetImg(pageData.randomList[pageData.idx]?.al?.picUrl);
+  getColor()
+}
+
+function resetImg(url) {
+  if(!url) return ''
+  return url.endsWith('512y512')?url:`${url.replace(
     'http://',
     'https://'
-  )}?param=512y512`;
-  console.log(randomList.value)
+  )}?param=512y512`
 }
 </script>
+
 <template>
-  <div class="fm" :style="{ background }" data-theme="dark">
-    <img :src="nextTrackCover" style="display: none" loading="lazy" />
-    <img class="cover" :src="track.al && track.al.picUrl" loading="lazy" />
+  <div class="fm" :style="{ background: pageData.background }" data-theme="dark">
+    <img :src="pageData.nextTrackCover" style="display: none" loading="lazy" />
+    <img class="cover" :src="pageData.track.al && pageData.track.al.picUrl" loading="lazy" />
     <div class="right-part">
       <div class="info">
-        <div class="title">{{ track.name }}</div>
+        <div class="title">{{ pageData.track.name }}</div>
         <div class="artist">
-          <ArtistsInLine :artists="track.ar" />
+          <ArtistsInLine :artists="pageData.track.ar" />
         </div>
       </div>
       <div class="controls">
         <div class="buttons">
-          <button-icon :title="isPlaying ? '暂停' : '播放'" class="play" @click.native="play">
+          <button-icon :title="pageData.isPlaying ? '暂停' : '播放'" class="play" @click.native="play">
             <div
-              :class="isPlaying ? 'i-material-symbols-pause-outline-rounded' : 'i-material-symbols-play-arrow-rounded'" />
+              :class="pageData.isPlaying ? 'i-material-symbols-pause-outline-rounded' : 'i-material-symbols-play-arrow-rounded'" />
           </button-icon>
           <button-icon title="下一首" @click.native="next">
             <div class="i-material-symbols-skip-next-outline-rounded" />
@@ -91,6 +97,7 @@ function next() {
     </div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .fm {
   padding: 1rem;
@@ -158,7 +165,6 @@ function next() {
 
     .card-name {
       font-size: 1rem;
-      opacity: 0.18;
       display: flex;
       align-items: center;
       font-weight: 600;

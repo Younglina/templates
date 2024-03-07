@@ -1,8 +1,11 @@
+/*
+ * @Author: younglina younglina0409@gmail.com
+ * @Date: 2024-02-27 13:32:19
+ * @Description: 
+ */
 import Cookies from 'js-cookie';
 import { logout } from '@/api/auth';
 import useStore from '@/store';
-
-const store = useStore();
 
 export function setCookies(string) {
   const cookies = string.split(';;');
@@ -29,6 +32,7 @@ export function isLoggedIn() {
 
 // 账号登录
 export function isAccountLoggedIn() {
+  const store = useStore();
   return (
     getCookie('MUSIC_U') !== undefined &&
     store.data.loginMode === 'account'
@@ -37,6 +41,7 @@ export function isAccountLoggedIn() {
 
 // 用户名搜索（用户数据为只读）
 export function isUsernameLoggedIn() {
+  const store = useStore();
   return store.data.loginMode === 'username';
 }
 
@@ -46,6 +51,7 @@ export function isLooseLoggedIn() {
 }
 
 export function doLogout() {
+  const store = useStore();
   logout();
   removeCookie('MUSIC_U');
   removeCookie('__csrf');

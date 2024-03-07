@@ -13,9 +13,12 @@ import {
 export default defineConfig({
   shortcuts: {
     'wy-title': 'flex justify-between items-end text-28px font-700 color-black mb-20px',
+    'flex-center': 'flex items-center justify-center'
+
   },
   rules: [
     ['flex-0.5', { flex: '0 0 50%' }],
+    ['color-text', { color: 'var(--color-text)' }],
   ],
   theme: {
   },

@@ -34,9 +34,11 @@ function playDailyTracks() {
     store.dailyTracks[0].id
   );
 }
+
 </script>
+
 <template>
-  <div class="daily-recommend-card" @click="goToDailyTracks">
+  <div class="daily-recommend-card" @click="$router.push('/daily/songs')">
     <img :src="coverUrl" loading="lazy" />
     <div class="container">
       <div class="title-box">
@@ -53,6 +55,7 @@ function playDailyTracks() {
     </button>
   </div>
 </template>
+
 <style scoped lang='scss'>
 .daily-recommend-card {
   border-radius: 1rem;

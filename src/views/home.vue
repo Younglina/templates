@@ -27,10 +27,10 @@ const rows = [
   { key: 'topList', title: '排行榜', type: 'playlist', link: '/explore?category=排行榜', subText: 'updateFrequency', imgSize: '1024' },
 ]
 
+setTimeout(() => {
+  if (!pageData.show) NProgress.start();
+}, 1000);
 onMounted(() => {
-  setTimeout(() => {
-    if (!pageData.show) NProgress.start();
-  }, 1000);
   getRecommendPlayList(10, false).then(items => {
     pageData.recommendPlaylist.items = items;
     NProgress.done();
@@ -61,6 +61,7 @@ onMounted(() => {
   });
 })
 </script>
+
 <template>
   <div v-show="pageData.show" class="home-page">
     <div class="index-row">

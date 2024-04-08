@@ -1,4 +1,5 @@
 <script setup>
+useHttp.get('/api/')
 </script>
 
 <template>

@@ -1,14 +1,9 @@
-<!--
- * @Author: younglina younglina0409@gmail.com
- * @Date: 2024-01-07 09:35:02
- * @Description: AI聊天
--->
 <script setup>
 </script>
-≤
+
 <template>
   <div class="home-page">
-    <div class="home-content relative">
+    <div class="home-content">
       <the-header />
       home
     </div>

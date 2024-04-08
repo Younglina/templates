@@ -96,9 +96,3 @@ p{
 #app .el-tag.el-tag--info {
   --el-tag-text-color: var(--el-text-color-primary);
 }
-
-.custom-msgbox-info{
-  line-height: 2em;
-  font-size: 18px;
-  color: var(--el-text-color-primary-1);
-}

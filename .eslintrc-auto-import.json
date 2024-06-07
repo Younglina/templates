@@ -301,6 +301,7 @@
     "setActivePinia": true,
     "setMapStoreSuffix": true,
     "storeToRefs": true,
-    "useMainStore": true
+    "useMainStore": true,
+    "useAxios": true
   }
 }

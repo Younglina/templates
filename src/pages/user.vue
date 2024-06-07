@@ -54,7 +54,9 @@ const searchModel = ref({
   userRole: '',
   phoneNumber: '',
 })
-
+useAxios.get('/api/user').then((res) => {
+  console.log(res, 'res')
+})
 function handleCommand(c, row) {
   console.log(c, row)
 }

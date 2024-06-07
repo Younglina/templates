@@ -29,11 +29,11 @@ _axios.interceptors.request.use(
 _axios.interceptors.response.use(
   (response) => {
     if (response.data.code !== 200)
-      return Promise.reject(new CustomError({ code: response.data.code }))
+      return Promise.reject(new CustomError(response.data.code))
     else return response.data
   },
   (error) => {
-    return Promise.reject(new CustomError({ code: 500, message: error.message }))
+    return new CustomError(error.response.status, error.message)
   },
 )
 
@@ -49,10 +49,11 @@ export default class Http {
       const res = await _axios(param)
       if (res.code === 200)
         return res
+      else return { code: res.code, message: res.message }
     }
     catch (error) {
-      console.error('请求发生错误:', error)
-      throw error
+      console.log(error)
+      return error
     }
   }
 

@@ -24,7 +24,8 @@ export default defineConfig({
         'vue-router',
         '@vueuse/core',
         {
-          './src/store/': ['useMainStore'],
+          '@/store/index.js': ['useMainStore'],
+          '@/utils/http.js': [['default', 'useAxios']],
         },
       ],
       resolvers: [ElementPlusResolver()],

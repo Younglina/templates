@@ -1,10 +1,10 @@
 <script setup>
 const store = useMainStore()
+const router = useRouter()
 function handleClick(bc) {
   store.setBreadcrumbs(bc)
-  navigateTo(bc.path)
+  router.push(bc.path)
 }
-function handleClose(bc) {}
 </script>
 
 <template>
@@ -34,7 +34,7 @@ function handleClose(bc) {}
     align-items: center;
     background-color: var(--wy-bg-color);
     border-color: var(--el-border-color);
-    border-radius: 4;
+    border-radius: 2px;
     border-style: solid;
     border-width: 1px;
     box-sizing: border-box;

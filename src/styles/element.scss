@@ -1,0 +1,67 @@
+@use "element-plus/theme-chalk/dark/css-vars.css" as eledark;
+@use "element-plus/theme-chalk/src/common/var.scss" as elecommon;
+
+.dark {
+  #app {
+    --wy-bg-color: #282c34;
+    --el-color-primary: #382eff;
+    --el-color-primary-light-3: #0906ffa9;
+    --el-color-primary-light-5: #0004d9;
+    --el-color-primary-light-7: #0009b3;
+    --el-color-primary-light-8: #000c8c;
+    --el-color-primary-light-9: #000c66;
+    --el-color-primary-light-10: #eae6ff;
+    --el-menu-base-level-padding: 12px;
+
+    // menu
+    --el-menu-item-height: 36px;
+    --el-menu-sub-item-height: 36px;
+    --el-menu-active-color: #0906ffa9;
+    --el-menu-hover-bg-color: var(--el-color-primary-light-10);
+
+    // tag
+    --wy-tag-bg-color: #18222c;
+
+    //table
+    .el-table {
+      --el-table-header-bg-color: var(--el-color-primary-light-10);
+      --el-table-header-text-color: var(--el-text-color-regular);
+    }
+  }
+  .el-dropdown__popper {
+    --el-dropdown-menuItem-hover-fill: #eff6ff !important;
+    --el-dropdown-menuItem-hover-color: #0906ffa9 !important;
+  }
+}
+
+#app {
+  --wy-bg-color: #ecf0f3;
+  // color
+  --el-color-primary: #0906ffa9;
+  --el-color-primary-light-3: #382eff;
+  --el-color-primary-light-5: #6557ff;
+  --el-color-primary-light-7: #8e80ff;
+  --el-color-primary-light-8: #b5a8ff;
+  --el-color-primary-light-9: #eff6ff;
+  --el-menu-base-level-padding: 12px;
+
+  // menu
+  --el-menu-item-height: 36px;
+  --el-menu-sub-item-height: 36px;
+  --el-menu-active-color: #0906ffa9;
+  --el-menu-hover-bg-color: var(--el-color-primary-light-9);
+
+  // tag
+  --wy-tag-bg-color: var(--el-color-primary-light-9);
+
+  //table
+  .el-table {
+    --el-table-header-bg-color: var(--el-color-primary-light-9);
+    --el-table-header-text-color: var(--el-text-color-regular);
+  }
+}
+
+.el-dropdown__popper {
+  --el-dropdown-menuItem-hover-fill: #eff6ff !important;
+  --el-dropdown-menuItem-hover-color: #0906ffa9 !important;
+}

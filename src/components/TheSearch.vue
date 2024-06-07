@@ -2,19 +2,20 @@
 defineProps({
   searchModel: {
     type: Object,
-    default: () => ({})
-  }
+    default: () => ({}),
+  },
 })
-const emit = defineEmits(["search", "reset"])
+const emit = defineEmits(['search', 'reset'])
 const searchModelRef = ref()
 function handleReset(formEl) {
   formEl.resetFields()
-  emit("reset")
+  emit('reset')
 }
 </script>
+
 <template>
-  <el-form :inline="true" ref="searchModelRef" :model="searchModel">
-    <slot></slot>
+  <el-form ref="searchModelRef" :inline="true" :model="searchModel">
+    <slot />
     <el-form-item>
       <el-button type="primary" @click="$emit('search')">
         <template #icon>
@@ -31,4 +32,5 @@ function handleReset(formEl) {
     </el-form-item>
   </el-form>
 </template>
+
 <style scoped lang="scss"></style>

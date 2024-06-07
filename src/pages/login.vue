@@ -1,31 +1,37 @@
 <script setup>
 const router = useRouter()
 function handleLogin() {
-  router.push("/")
+  router.push('/')
 }
 </script>
+
 <template>
   <main class="login-warp">
     <section class="left">
-      <img src="@/assets/images/login_2.svg" />
+      <img src="@/assets/images/login_2.svg">
     </section>
     <section class="right">
       <h1>欢迎回来</h1>
       <div class="login-input">
         <i class="i-ms-account-circle-outline" />
-        <input placeholder="用户名" />
+        <input placeholder="用户名">
       </div>
       <div class="login-input">
         <i class="i-ms-lock-outline" />
-        <input placeholder="密码" type="password" />
+        <input placeholder="密码" type="password">
       </div>
-      <p class="forgot">忘记密码</p>
+      <p class="forgot">
+        忘记密码
+      </p>
       <div>
-        <el-button type="primary" @click="handleLogin">登录</el-button>
+        <el-button type="primary" @click="handleLogin">
+          登录
+        </el-button>
       </div>
     </section>
   </main>
 </template>
+
 <style scoped lang="scss">
 @media (max-width: 800px) {
   .login-warp {

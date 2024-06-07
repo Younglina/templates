@@ -2,12 +2,13 @@
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 </script>
+
 <template>
   <div class="common-layout">
     <el-container>
       <el-aside width="200px">
         <el-scrollbar>
-          <TheMenu></TheMenu>
+          <TheMenu />
         </el-scrollbar>
       </el-aside>
       <el-container>
@@ -26,6 +27,7 @@ const toggleDark = useToggle(isDark)
     </el-container>
   </div>
 </template>
+
 <style lang="scss" scoped>
 .common-layout {
   display: flex;

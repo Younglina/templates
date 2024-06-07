@@ -3,7 +3,7 @@ const menus = ref([
   {
     label: '首页',
     iconClass: 'i-ms-house-outline',
-    path: '/'
+    path: '/',
   },
   {
     label: '系统管理',
@@ -13,19 +13,19 @@ const menus = ref([
       {
         label: '用户管理',
         iconClass: 'i-ms-person-outline',
-        path: '/user'
+        path: '/user',
       },
       {
         label: '角色管理',
         iconClass: 'i-ms-user-attributes-outline',
-        path: '/role'
+        path: '/role',
       },
       {
         label: '部门管理',
         iconClass: 'i-ms-lan-outline',
-        path: '/user1'
+        path: '/user1',
       },
-    ]
+    ],
   },
 ])
 const store = useMainStore()
@@ -33,9 +33,11 @@ function handleMenuSelect(path, _, { route }) {
   store.setBreadcrumbs({ path, label: route.label })
 }
 </script>
+
 <template>
-  <el-menu :default-openeds="['/system']" router @select="handleMenuSelect" :default-active="$route.path">
-    <submenu :menus="menus"></submenu>
+  <el-menu :default-openeds="['/system']" router :default-active="$route.path" @select="handleMenuSelect">
+    <submenu :menus="menus" />
   </el-menu>
 </template>
+
 <style scoped lang='scss'></style>

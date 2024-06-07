@@ -1,11 +1,12 @@
 <script setup>
-const props = defineProps({
+defineProps({
   menus: {
     type: Array,
-    default: () => []
-  }
+    default: () => [],
+  },
 })
 </script>
+
 <template>
   <div>
     <template v-for="item in menus">
@@ -16,11 +17,12 @@ const props = defineProps({
         </template>
         <submenu :menus="item.children" />
       </el-sub-menu>
-      <el-menu-item v-else :index="item.path" :route="{ label: item.label, path: item.path }">
+      <el-menu-item v-else :key="item.label" :index="item.path" :route="{ label: item.label, path: item.path }">
         <i :class="item.iconClass" />
         <span>{{ item.label }}</span>
       </el-menu-item>
     </template>
   </div>
 </template>
+
 <style scoped lang='scss'></style>

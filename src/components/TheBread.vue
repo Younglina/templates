@@ -6,15 +6,16 @@ function handleClick(bc) {
 }
 function handleClose(bc) {}
 </script>
+
 <template>
   <div class="breadcrumb bt-1">
     <span
       v-for="bc in store.breadcrumbs"
-      @click="handleClick(bc)"
+      :key="bc.path"
       class="bread-tag is-closable"
       :class="{ current: bc.path === $route.path }"
-      :key="bc.path"
       closable
+      @click="handleClick(bc)"
     >
       <i class="current-icon" />
       <span class="bread-content">{{ bc.label }}</span>
@@ -22,6 +23,7 @@ function handleClose(bc) {}
     </span>
   </div>
 </template>
+
 <style scoped lang="scss">
 .breadcrumb {
   background-color: var(--el-bg-color);

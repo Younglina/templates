@@ -31,3 +31,18 @@ body,
     }
   }
 }
+
+.el-dialog {
+  padding: 0 !important;
+  .el-dialog__header {
+    box-shadow: 0 0.5px 0 0 var(--el-border-color-light);
+    padding: 12px 16px;
+    margin-bottom: 12px;
+  }
+  .el-dialog__body {
+    padding: 4px 16px;
+  }
+  .el-dialog__footer {
+    padding: 12px 16px;
+  }
+}

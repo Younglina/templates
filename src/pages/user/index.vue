@@ -1,4 +1,6 @@
 <script setup>
+import CreateUser from './createUser.vue'
+
 const tableData = {
   data: [
     {
@@ -59,7 +61,19 @@ useAxios.get('/api/user').then((res) => {
 })
 function handleCommand(c, row) {
   console.log(c, row)
+  switch (c) {
+    case 'add':
+      useAxios.post('/api/user', row).then((res) => {
+        console.log(res, 'res')
+      })
+      break
+    case 'edit':
+      break
+    case 'delete':
+      break
+  }
 }
+const isShowCreateUser = ref(false)
 </script>
 
 <template>
@@ -80,7 +94,7 @@ function handleCommand(c, row) {
         </el-form-item>
       </template>
     </TheSearch>
-    <TheTable :table-data="tableData">
+    <TheTable :table-data="tableData" @handle-add="isShowCreateUser = true">
       <template #userStatus>
         <el-table-column label="状态" width="200" fixed="right">
           <template #default="{ row }">
@@ -89,9 +103,9 @@ function handleCommand(c, row) {
               width="60"
               inline-prompt
               active-text="启用"
-              active-value="启用"
+              active-value="1"
               inactive-text="禁用"
-              inactive-value="禁用"
+              inactive-value="0"
             />
           </template>
         </el-table-column>
@@ -129,6 +143,7 @@ function handleCommand(c, row) {
         </el-table-column>
       </template>
     </TheTable>
+    <CreateUser v-model:isShow="isShowCreateUser" @submit="d => handleCommand('add', d)" />
   </div>
 </template>
 

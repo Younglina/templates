@@ -1,14 +1,28 @@
 <script setup>
 import CryptoJS from 'crypto-js'
+import { computed, nextTick, onMounted } from 'vue'
 
 const props = defineProps({
   isShow: {
     type: Boolean,
     default: false,
   },
+  propsForm: {
+    type: Object,
+    default: null,
+  },
 })
 const emits = defineEmits(['submit', 'update:isShow'])
 const isShow = useVModel(props, 'isShow')
+
+const roles = ref([])
+async function getAllRoles() {
+  useAxios.get('/api/role').then((res) => {
+    roles.value = res.data
+  })
+}
+
+const dataFormRef = ref(null)
 const dataForm = ref({
   accountName: '',
   userName: '',
@@ -18,7 +32,6 @@ const dataForm = ref({
   gender: '',
   userStatus: '1',
 })
-const dataFormRef = ref(null)
 const rules = reactive({
   accountName: [
     { required: true, message: '请输入账号名称', trigger: 'change' },
@@ -48,10 +61,25 @@ function handleSubmit() {
     }
   })
 }
+
+const dialogTitle = computed(() => props.propsForm ? '编辑用户' : '新增用户')
+watch(() => props.isShow, async (val) => {
+  console.log(val, props.propsForm, 'isSHow')
+  await nextTick()
+  if (val && props.propsForm) {
+    dataForm.value = { ...props.propsForm, password: '******' }
+  }
+  else {
+    dataFormRef.value.resetFields()
+  }
+})
+onMounted(() => {
+  getAllRoles()
+})
 </script>
 
 <template>
-  <el-dialog v-model="isShow" title="新增用户" width="600">
+  <el-dialog v-model="isShow" :title="dialogTitle" width="600">
     <el-form ref="dataFormRef" :model="dataForm" :rules="rules" label-width="90px" :inline="true" class="user-form" label-suffix=":">
       <el-form-item label="账号名称" prop="accountName">
         <el-input v-model="dataForm.accountName" autocomplete="off" />
@@ -60,18 +88,17 @@ function handleSubmit() {
         <el-input v-model="dataForm.userName" autocomplete="off" />
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input v-model="dataForm.password" type="password" show-password autocomplete="off" />
+        <el-input v-model="dataForm.password" :disabled="props.propsForm !== null" type="password" show-password autocomplete="off" />
       </el-form-item>
-      <el-form-item label="所属角色">
+      <el-form-item label="所属角色" prop="userRole">
         <el-select v-model="dataForm.userRole" multiple>
-          <el-option :value="1" label="系统管理员" />
-          <el-option :value="2" label="用户管理员" />
+          <el-option v-for="item in roles" :key="item.id" :value="item.id" :label="item.name" />
         </el-select>
       </el-form-item>
-      <el-form-item label="手机号">
+      <el-form-item label="手机号" prop="phoneNumber">
         <el-input v-model="dataForm.phoneNumber" />
       </el-form-item>
-      <el-form-item label="用户性别">
+      <el-form-item label="用户性别" prop="gender">
         <el-select v-model="dataForm.gender">
           <el-option :value="1">
             男
@@ -81,7 +108,7 @@ function handleSubmit() {
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="用户状态">
+      <el-form-item label="用户状态" prop="userStatus">
         <el-switch
           v-model="dataForm.userStatus"
           width="60"
@@ -93,7 +120,7 @@ function handleSubmit() {
         />
       </el-form-item>
       <div>
-        <el-form-item label="备注">
+        <el-form-item label="备注" prop="remark">
           <el-input v-model="dataForm.remark" :rows="[3, 6]" type="textarea" style="width:445px" />
         </el-form-item>
       </div>

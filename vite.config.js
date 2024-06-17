@@ -25,6 +25,7 @@ export default defineConfig({
         '@vueuse/core',
         {
           '@/store/index.js': ['useMainStore'],
+          '@/utils/common.js': ['useExportData'],
           '@/utils/http.js': [['default', 'useAxios']],
         },
       ],

@@ -8,41 +8,65 @@ const tableData = reactive({
   columns: UserCol,
   total: 20,
 })
+const roles = ref([])
 const searchModel = ref({
   accountName: '',
   userName: '',
-  userRole: '',
+  userRole: [],
   phoneNumber: '',
 })
 const isShowCreateUser = ref(false)
 const propsForm = ref(null)
-function handleCommand(c, row) {
-  console.log(c, row)
+async function handleCommand(c, data) {
+  console.log(c, data)
+  let res
   switch (c) {
     case 'add':
-      useAxios.post('/api/user', row).then((res) => {
-        console.log(res, 'res')
-      })
+      if (data.id !== undefined) {
+        res = await useAxios.put('/api/user/', data)
+      }
+      else {
+        res = await useAxios.post('/api/user', data)
+      }
+      console.log(res, 'res')
       break
     case 'edit':
-      propsForm.value = row
+      propsForm.value = data
       isShowCreateUser.value = true
       break
-    case 'delete':
+    case 'toogleUserStatus':
+      res = await useAxios.put('/api/user/', data)
+      break
+    case 'del':
+      res = await useAxios.delete(`/api/user/${data.id}`)
+      break
+    case 'export':
+      await useExportData({ ...searchModel.value, userRole: searchModel.value.userRole.join(',') }, { type: 'user', fileName: '用户列表' })
       break
   }
+  if (c !== 'toogleUserStatus') {
+    getUserList()
+  }
 }
-
-onMounted(() => {
-  useAxios.get('/api/user').then((res) => {
+function getUserList() {
+  useAxios.get('/api/user', { ...searchModel.value, userRole: searchModel.value.userRole.join(',') }).then((res) => {
     tableData.data = res.data
   })
+}
+async function getRoleList() {
+  useAxios.get('/api/role').then((res) => {
+    roles.value = res.data
+  })
+}
+onMounted(() => {
+  getUserList()
+  getRoleList()
 })
 </script>
 
 <template>
   <div>
-    <TheSearch :search-model="searchModel">
+    <TheSearch :search-model="searchModel" @search="getUserList">
       <template #default>
         <el-form-item label="账号名称" prop="accountName">
           <el-input v-model="searchModel.accountName" placeholder="请输入" />
@@ -51,20 +75,22 @@ onMounted(() => {
           <el-input v-model="searchModel.userName" placeholder="请输入" />
         </el-form-item>
         <el-form-item label="角色" prop="userRole">
-          <el-input v-model="searchModel.userRole" placeholder="请输入" />
+          <el-select v-model="searchModel.userRole" multiple>
+            <el-option v-for="item in roles" :key="item.id" :value="item.id" :label="item.name" />
+          </el-select>
         </el-form-item>
         <el-form-item label="手机号" prop="phoneNumber">
           <el-input v-model="searchModel.phoneNumber" placeholder="请输入" />
         </el-form-item>
       </template>
     </TheSearch>
-    <TheTable :table-data="tableData" @handle-add="handleCommand('edit', null)">
+    <TheTable :table-data="tableData" @handle-add="handleCommand('edit', null)" @handle-export="handleCommand('export')">
       <template #userStatus>
         <el-table-column label="状态" width="200" fixed="right">
           <template #default="{ row }">
             <el-switch
-              v-model="row.userStatus" width="60" inline-prompt active-text="启用" active-value="1"
-              inactive-text="禁用" inactive-value="0"
+              v-model="row.userStatus" width="60" inline-prompt active-text="启用" active-value="1" inactive-text="禁用"
+              inactive-value="0" @change="e => handleCommand('toogleUserStatus', { userStatus: e, id: row.id })"
             />
           </template>
         </el-table-column>
@@ -79,7 +105,7 @@ onMounted(() => {
                   <i i-ms-edit-square-outline />
                 </template>编辑
               </el-button>
-              <el-button type="danger" link @click="handleDelete(row)">
+              <el-button type="danger" link @click="handleCommand('del', row)">
                 <template #icon>
                   <i i-ms-delete-outline />
                 </template>删除

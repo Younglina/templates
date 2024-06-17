@@ -302,6 +302,8 @@
     "setMapStoreSuffix": true,
     "storeToRefs": true,
     "useMainStore": true,
-    "useAxios": true
+    "useAxios": true,
+    "useCommon": true,
+    "useExportData": true
   }
 }

@@ -19,7 +19,7 @@ defineProps({
     default: false,
   },
 })
-defineEmits(['handleCurrentChange', 'handleSizeChange', 'handleAdd', 'handleDel', 'handleUpd', 'handleExp'])
+defineEmits(['handleCurrentChange', 'handleSizeChange', 'handleAdd', 'handleDel', 'handleExport'])
 </script>
 
 <template>
@@ -36,13 +36,13 @@ defineEmits(['handleCurrentChange', 'handleSizeChange', 'handleAdd', 'handleDel'
       </template>
       删除
     </el-button>
-    <el-button type="success" plain @click="$emit('handleUpd')">
+    <!-- <el-button type="success" plain @click="$emit('handleUpdate')">
       <template #icon>
         <i i-ms-edit-square-outline />
       </template>
       修改
-    </el-button>
-    <el-button type="warning" plain @click="$emit('handleExp')">
+    </el-button> -->
+    <el-button type="warning" plain @click="$emit('handleExport')">
       <template #icon>
         <i i-ms-arrow-circle-down-outline />
       </template>

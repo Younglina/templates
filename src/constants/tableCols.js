@@ -8,7 +8,7 @@ export const UserCol = [
     label: '用户名称',
   },
   {
-    prop: 'userRole',
+    prop: 'roleNames',
     label: '角色',
   },
   {

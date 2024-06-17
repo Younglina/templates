@@ -35,11 +35,11 @@ const dataForm = ref({
 const rules = reactive({
   accountName: [
     { required: true, message: '请输入账号名称', trigger: 'change' },
-    { min: 3, max: 20, message: '长度限制为3～20', trigger: 'change' },
+    { min: 1, max: 20, message: '长度限制为1～20', trigger: 'change' },
   ],
   userName: [
     { required: true, message: '请输入用户名称', trigger: 'change' },
-    { min: 1, max: 20, message: '长度限制为3～20', trigger: 'change' },
+    { min: 1, max: 20, message: '长度限制为1～20', trigger: 'change' },
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'change' },
@@ -100,12 +100,8 @@ onMounted(() => {
       </el-form-item>
       <el-form-item label="用户性别" prop="gender">
         <el-select v-model="dataForm.gender">
-          <el-option :value="1">
-            男
-          </el-option>
-          <el-option :value="0">
-            女
-          </el-option>
+          <el-option :value="1" label="男" />
+          <el-option :value="0" label="女" />
         </el-select>
       </el-form-item>
       <el-form-item label="用户状态" prop="userStatus">

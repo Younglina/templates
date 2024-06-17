@@ -18,6 +18,7 @@ export default antfu(
     unocss: true,
     rules: {
       'no-console': 'off',
+      'no-case-declarations': 'off',
     },
   },
   ...compat.config({

@@ -28,7 +28,7 @@ _axios.interceptors.request.use(
 // 后置拦截器（获取到响应时的拦截）
 _axios.interceptors.response.use(
   (response) => {
-    if (response.data.code !== 200)
+    if (response.data.code !== 200 && response.status !== 200)
       return Promise.reject(new CustomError(response.data.code))
     else return response.data
   },
@@ -38,16 +38,19 @@ _axios.interceptors.response.use(
 )
 
 export default class Http {
-  static async request(method, url, data) {
+  static async request(method, url, data, config) {
     const param = {
       url,
       method,
+      headers: config?.headers,
+      responseType: config?.responseType,
       data: method === 'GET' ? null : data,
       params: method === 'GET' ? data : null,
     }
+    console.log(param)
     try {
       const res = await _axios(param)
-      if (res.code === 200)
+      if (res.code === 200 || url.includes('export'))
         return res
       else return { code: res.code, message: res.message }
     }
@@ -57,12 +60,16 @@ export default class Http {
     }
   }
 
-  static get(url, data) {
-    return this.request('GET', url, data)
+  static get(url, data, config) {
+    return this.request('GET', url, data, config)
   }
 
-  static post(url, data) {
-    return this.request('POST', url, data)
+  static post(url, data, config) {
+    return this.request('POST', url, data, config)
+  }
+
+  static put(url, data) {
+    return this.request('PUT', url, data)
   }
 
   static delete(url, data) {

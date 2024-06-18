@@ -34,24 +34,32 @@ async function handleCommand(c, data) {
       propsForm.value = data
       isShowCreateUser.value = true
       break
-    case 'toogleUserStatus':
+    case 'toggleUserStatus':
       res = await useAxios.put('/api/user/', data)
       break
     case 'del':
-      res = await useAxios.delete(`/api/user/${data.id}`)
-      break
-    case 'export':
-      await useExportData({ ...searchModel.value, userRole: searchModel.value.userRole.join(',') }, { type: 'user', fileName: '用户列表' })
+      const ids = Array.isArray(data) ? data.map(item => item.id).join(',') : data.id
+      res = await useAxios.delete(`/api/user/${ids}`)
       break
   }
-  if (c !== 'toogleUserStatus') {
+  if (!['toggleUserStatus'].includes(c)) {
     getUserList()
   }
 }
 function getUserList() {
-  useAxios.get('/api/user', { ...searchModel.value, userRole: searchModel.value.userRole.join(',') }).then((res) => {
+  useAxios.get(`/api/user`, { ...searchModel.value, userRole: searchModel.value.userRole.join(',') }).then((res) => {
     tableData.data = res.data
   })
+}
+async function handleExport(data) {
+  let params
+  if (data) {
+    params = { ids: Array.isArray(data) ? data.map(item => item.id).join(',') : data.id }
+  }
+  else {
+    params = { ...searchModel.value, userRole: searchModel.value.userRole.join(',') }
+  }
+  await useExportData(params, { type: 'user', fileName: '用户列表' })
 }
 async function getRoleList() {
   useAxios.get('/api/role').then((res) => {
@@ -84,13 +92,17 @@ onMounted(() => {
         </el-form-item>
       </template>
     </TheSearch>
-    <TheTable :table-data="tableData" @handle-add="handleCommand('edit', null)" @handle-export="handleCommand('export')">
+    <TheTable
+      :table-data="tableData" show-selection @handle-add="handleCommand('edit', null)"
+      @handle-export="handleExport" @handle-del="e => handleCommand('del', e)"
+    >
       <template #userStatus>
         <el-table-column label="状态" width="200" fixed="right">
           <template #default="{ row }">
             <el-switch
-              v-model="row.userStatus" width="60" inline-prompt active-text="启用" active-value="1" inactive-text="禁用"
-              inactive-value="0" @change="e => handleCommand('toogleUserStatus', { userStatus: e, id: row.id })"
+              v-model="row.userStatus" width="60" inline-prompt active-text="启用" active-value="1"
+              inactive-text="禁用" inactive-value="0"
+              @change="e => handleCommand('toggleUserStatus', { userStatus: e, id: row.id })"
             />
           </template>
         </el-table-column>

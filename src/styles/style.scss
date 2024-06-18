@@ -22,10 +22,24 @@ body,
 
 #app {
   .el-form-item {
-    margin-bottom: 16px;
-    margin-right: 18px;
+    margin-bottom: 12px;
+    margin-right: 12px;
+  }
+  .el-input {
+    --el-input-width: 180px;
+  }
+
+  .el-select {
+    --el-select-width: 180px;
+  }
+  .el-button + .el-button {
+    margin-left: 8px;
+  }
+  .el-button {
+    padding: 8px 12px;
   }
   .is-link {
+    padding: 2px;
     > span {
       margin-left: 2px;
     }

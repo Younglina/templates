@@ -18,18 +18,8 @@ const searchModel = ref({
 const isShowCreateUser = ref(false)
 const propsForm = ref(null)
 async function handleCommand(c, data) {
-  console.log(c, data)
-  let res
+  let res = {}
   switch (c) {
-    case 'add':
-      if (data.id !== undefined) {
-        res = await useAxios.put('/api/user/', data)
-      }
-      else {
-        res = await useAxios.post('/api/user', data)
-      }
-      console.log(res, 'res')
-      break
     case 'edit':
       propsForm.value = data
       isShowCreateUser.value = true
@@ -42,7 +32,10 @@ async function handleCommand(c, data) {
       res = await useAxios.delete(`/api/user/${ids}`)
       break
   }
-  if (!['toggleUserStatus'].includes(c)) {
+  if (res.code === -1) {
+    return ElMessage.error(res.message)
+  }
+  if (!['toggleUserStatus', 'edit'].includes(c)) {
     getUserList()
   }
 }
@@ -97,7 +90,7 @@ onMounted(() => {
       @handle-export="handleExport" @handle-del="e => handleCommand('del', e)"
     >
       <template #userStatus>
-        <el-table-column label="状态" width="200" fixed="right">
+        <el-table-column label="状态" width="200">
           <template #default="{ row }">
             <el-switch
               v-model="row.userStatus" width="60" inline-prompt active-text="启用" active-value="1"
@@ -140,7 +133,7 @@ onMounted(() => {
         </el-table-column>
       </template>
     </TheTable>
-    <CreateUser v-model:isShow="isShowCreateUser" :props-form="propsForm" @submit="d => handleCommand('add', d)" />
+    <CreateUser v-model:isShow="isShowCreateUser" :props-form="propsForm" @submit="getUserList" />
   </div>
 </template>
 

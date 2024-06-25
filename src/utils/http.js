@@ -33,6 +33,8 @@ _axios.interceptors.response.use(
     else return response.data
   },
   (error) => {
+    if (error.response.status === 401)
+      window.location.href = '/login'
     return new CustomError(error.response.status, error.message)
   },
 )
@@ -47,7 +49,6 @@ export default class Http {
       data: method === 'GET' ? null : data,
       params: method === 'GET' ? data : null,
     }
-    console.log(param)
     try {
       const res = await _axios(param)
       if (res.code === 200 || url.includes('export'))
@@ -55,7 +56,8 @@ export default class Http {
       else return { code: res.code, message: res.message }
     }
     catch (error) {
-      console.log(error)
+      console.dir(error)
+
       return error
     }
   }

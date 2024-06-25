@@ -1,7 +1,18 @@
 <script setup>
+import CryptoJS from 'crypto-js'
+
+defineOptions({
+  name: 'Login',
+})
+const submitForm = ref({
+  accountName: '',
+  password: '',
+})
 const router = useRouter()
 function handleLogin() {
-  router.push('/')
+  submitForm.value.hashedPassword = CryptoJS.SHA256(submitForm.value.password, import.meta.env.VITE_ENCRYPT_KEY).toString()
+  useAxios.post('/api/login', { accountName: submitForm.value.accountName, hashedPassword: submitForm.value.hashedPassword })
+  // router.push('/')
 }
 </script>
 
@@ -14,11 +25,11 @@ function handleLogin() {
       <h1>欢迎回来</h1>
       <div class="login-input">
         <i class="i-ms-account-circle-outline" />
-        <input placeholder="用户名">
+        <input v-model="submitForm.accountName" placeholder="用户名">
       </div>
       <div class="login-input">
         <i class="i-ms-lock-outline" />
-        <input placeholder="密码" type="password">
+        <input v-model="submitForm.password" placeholder="密码" type="password">
       </div>
       <p class="forgot">
         忘记密码

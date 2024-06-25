@@ -304,6 +304,7 @@
     "useMainStore": true,
     "useAxios": true,
     "useCommon": true,
-    "useExportData": true
+    "useExportData": true,
+    "ElMessage": true
   }
 }

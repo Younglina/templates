@@ -1,6 +1,5 @@
 <script setup>
 import CryptoJS from 'crypto-js'
-import { computed, nextTick, onMounted } from 'vue'
 
 const props = defineProps({
   isShow: {
@@ -50,9 +49,21 @@ function handleSubmit() {
   dataFormRef.value.validate(async (valid, fields) => {
     if (valid) {
       const submitForm = JSON.parse(JSON.stringify(dataForm.value))
-      submitForm.hashedPassword = CryptoJS.SHA256(submitForm.password).toString()
+      submitForm.hashedPassword = CryptoJS.SHA256(submitForm.password, import.meta.env.VITE_ENCRYPT_KEY).toString()
       delete submitForm.password
-      emits('submit', submitForm)
+      let res
+      if (submitForm.id !== undefined) {
+        res = await useAxios.put('/api/user/', submitForm)
+      }
+      else {
+        res = await useAxios.post('/api/user', submitForm)
+      }
+
+      if (res.code === -1) {
+        return ElMessage.error(res.message)
+      }
+      ElMessage.success(res.message)
+      emits('submit')
       isShow.value = false
       dataFormRef.value.resetFields()
     }
@@ -64,7 +75,6 @@ function handleSubmit() {
 
 const dialogTitle = computed(() => props.propsForm ? '编辑用户' : '新增用户')
 watch(() => props.isShow, async (val) => {
-  console.log(val, props.propsForm, 'isSHow')
   await nextTick()
   if (val && props.propsForm) {
     dataForm.value = { ...props.propsForm, password: '******' }

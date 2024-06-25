@@ -25,6 +25,11 @@ const menus = ref([
         iconClass: 'i-ms-lan-outline',
         path: '/user1',
       },
+      {
+        label: 'test',
+        iconClass: 'i-ms-lan-outline',
+        path: '/test',
+      },
     ],
   },
 ])

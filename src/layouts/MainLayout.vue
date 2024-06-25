@@ -5,7 +5,7 @@ const toggleDark = useToggle(isDark)
 
 <template>
   <div class="common-layout">
-    <el-container>
+    <el-container v-if="$route.name !== 'Login'">
       <el-aside width="200px">
         <el-scrollbar>
           <TheMenu />
@@ -25,6 +25,7 @@ const toggleDark = useToggle(isDark)
         </el-main>
       </el-container>
     </el-container>
+    <router-view v-if="$route.name === 'Login'" />
   </div>
 </template>
 

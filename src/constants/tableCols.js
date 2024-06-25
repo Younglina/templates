@@ -12,12 +12,12 @@ export const UserCol = [
     label: '角色',
   },
   {
+    prop: 'phoneNumber',
+    label: '手机号',
+  },
+  {
     prop: 'userStatus',
     label: '状态',
     slot: true,
-  },
-  {
-    prop: 'phoneNumber',
-    label: '手机号',
   },
 ]

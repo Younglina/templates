@@ -1,14 +1,17 @@
 <script setup>
-
+const router = useRouter()
+function handleA() {
+  router.push('/test2')
+}
 </script>
 
 <template>
   <div>
     home
-    <button @click="navigateTo('/login')">
-      123
+    <button @click="$router.push('/login')">
+      login
     </button>
-    <button @click="navigateTo('/test?id=1')">
+    <button @click="handleA">
       test
     </button>
   </div>

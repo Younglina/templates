@@ -39,9 +39,10 @@ async function handleCommand(c, data) {
     getUserList()
   }
 }
-function getUserList() {
-  useAxios.get(`/api/user`, { ...searchModel.value, userRole: searchModel.value.userRole.join(',') }).then((res) => {
-    tableData.data = res.data
+function getUserList(offset = 1) {
+  useAxios.get(`/api/user`, { ...searchModel.value, userRole: searchModel.value.userRole.join(','), limit: 10, offset }).then((res) => {
+    tableData.data = res.data.list
+    tableData.total = res.data.total
   })
 }
 async function handleExport(data) {
@@ -87,7 +88,7 @@ onMounted(() => {
     </TheSearch>
     <TheTable
       :table-data="tableData" show-selection @handle-add="handleCommand('edit', null)"
-      @handle-export="handleExport" @handle-del="e => handleCommand('del', e)"
+      @handle-export="handleExport" @handle-del="e => handleCommand('del', e)" @handle-current-change="getUserList"
     >
       <template #userStatus>
         <el-table-column label="状态" width="200">

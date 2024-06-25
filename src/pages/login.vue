@@ -11,8 +11,10 @@ const submitForm = ref({
 const router = useRouter()
 function handleLogin() {
   submitForm.value.hashedPassword = CryptoJS.SHA256(submitForm.value.password, import.meta.env.VITE_ENCRYPT_KEY).toString()
-  useAxios.post('/api/login', { accountName: submitForm.value.accountName, hashedPassword: submitForm.value.hashedPassword })
-  // router.push('/')
+  useAxios.post('/api/login', { accountName: submitForm.value.accountName, hashedPassword: submitForm.value.hashedPassword }).then((res) => {
+    if (res.code === 200)
+      router.push('/')
+  })
 }
 </script>
 

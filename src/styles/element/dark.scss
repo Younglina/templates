@@ -1,0 +1,30 @@
+@forward 'element-plus/theme-chalk/src/dark/var.scss' with (
+  $colors: (
+    // 'primary': (
+    //   'base': #0409ff,
+    // ),
+  )
+);
+
+@use 'element-plus/theme-chalk/src/dark/css-vars.scss' as *;
+.dark {
+  #app {
+    --wy-bg-color: #282c34;
+    --el-menu-base-level-padding: 12px;
+
+    // menu
+    --el-menu-item-height: 36px;
+    --el-menu-sub-item-height: 36px;
+    --el-menu-active-color: var(--el-color-primary);
+    --el-menu-hover-bg-color: var(--el-color-info-light-9);
+
+    // tag
+    --wy-tag-bg-color: #18222c;
+
+    //table
+    .el-table {
+      --el-table-header-bg-color: var(--el-color-info-light-9);
+      --el-table-header-text-color: var(--el-text-color-regular);
+    }
+  }
+}

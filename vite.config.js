@@ -13,6 +13,13 @@ export default defineConfig({
       '@': '/src',
     },
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "@/styles/element/index.scss" as *;@use "@/styles/element/dark.scss" as dark;`,
+      },
+    },
+  },
   plugins: [
     vue(),
     UnoCSS({
@@ -29,7 +36,7 @@ export default defineConfig({
           '@/utils/http.js': [['default', 'useAxios']],
         },
       ],
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver({ importStyle: 'sass' })],
       eslintrc: {
         enabled: true,
         filepath: './.eslintrc-auto-import.json',
@@ -39,7 +46,7 @@ export default defineConfig({
       vueTemplate: false,
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver({ importStyle: 'sass' })],
       dts: './components.d.ts',
     }),
   ],
@@ -49,13 +56,6 @@ export default defineConfig({
       '/api': {
         target: 'http://127.0.0.1:3010',
         changeOrigin: true,
-      },
-    },
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `@use "@/styles/element.scss" as element;`,
       },
     },
   },

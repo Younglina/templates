@@ -14,6 +14,8 @@ function handleLogin() {
   useAxios.post('/api/login', { accountName: submitForm.value.accountName, hashedPassword: submitForm.value.hashedPassword }).then((res) => {
     if (res.code === 200)
       router.push('/')
+    else
+      ElMessage.error(res.message)
   })
 }
 </script>

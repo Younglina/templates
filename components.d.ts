@@ -7,6 +7,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ButtonIcon: typeof import('./src/components/ButtonIcon.vue')['default']
+    Cover: typeof import('./src/components/Cover.vue')['default']
+    CoverRow: typeof import('./src/components/CoverRow.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
@@ -34,6 +37,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     Submenu: typeof import('./src/components/submenu.vue')['default']
     TheBread: typeof import('./src/components/TheBread.vue')['default']
+    TheHeader: typeof import('./src/components/TheHeader.vue')['default']
     TheMenu: typeof import('./src/components/TheMenu.vue')['default']
     TheSearch: typeof import('./src/components/TheSearch.vue')['default']
     TheTable: typeof import('./src/components/TheTable.vue')['default']

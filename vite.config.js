@@ -1,51 +1,52 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import UnoCSS from 'unocss/vite'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
+import AutoImport from "unplugin-auto-import/vite";
+import Components from "unplugin-vue-components/vite";
+import UnoCSS from "unocss/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/',
+  base: "/",
   resolve: {
     alias: {
-      '@': '/src',
+      "@": "/src",
     },
   },
   plugins: [
     vue(),
     UnoCSS({
-      configFile: './uno.config.js',
+      configFile: "./uno.config.js",
     }),
     AutoImport({
       imports: [
-        'vue',
-        'vue-router',
-        '@vueuse/core',
+        "vue",
+        "vue-router",
+        "@vueuse/core",
         {
-          '@/store/index.js': ['useMainStore'],
-          '@/utils/http.js': [['default', 'useAxios']],
+          "@/store/index.js": ["useMainStore"],
+          // "@/utils/request.js": [["default", "useRequest"]],
         },
       ],
       eslintrc: {
         enabled: true,
-        filepath: './.eslintrc-auto-import.json',
+        filepath: "./.eslintrc-auto-import.json",
         globalsPropValue: true,
       },
-      dts: './auto-imports.d.ts',
+      dts: "./auto-imports.d.ts",
       vueTemplate: false,
     }),
     Components({
-      dts: './components.d.ts',
+      dts: "./components.d.ts",
     }),
   ],
   server: {
-    host: '0.0.0.0',
+    host: "0.0.0.0",
     proxy: {
-      '/api': {
-        target: 'http://127.0.0.1:3010',
+      "/api": {
+        target: "https://dev.usemock.com/65e8005d48882231b5644106/",
+        // target: "http://127.0.0.1:3010",
         changeOrigin: true,
       },
     },
   },
-})
+});

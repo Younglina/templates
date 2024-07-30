@@ -2,10 +2,57 @@ html {
   font-size: 14px;
 }
 
+:root {
+  --color-body-bg: #ffffff;
+  --color-text: #080808;
+  --color-primary: #2563eb;
+  --color-primary-bg: #f8fafc;
+  --color-secondary: #737373;
+  --color-secondary-bg: #f5f5f5;
+  --color-navbar-bg: rgba(255, 255, 255, 0.8);
+  --color-primary-bg-for-transparent: rgba(189, 207, 255, 0.28);
+  --color-secondary-bg-for-transparent: rgba(209, 209, 214, 0.28);
+  --page-min-width: 888px;
+}
+
 html,
 body,
 #app {
+  overflow: hidden;
+}
+
+* {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-text);
+  transition: 0.2s;
+  cursor: pointer;
+  &:active {
+    transform: scale(0.92);
+  }
+  &:hover {
+    text-decoration: underline;
+  }
+}
+a.active {
+  color: var(--color-primary) !important;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text);
+  a {
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.68;
+  }
 }

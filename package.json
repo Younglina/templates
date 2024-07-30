@@ -1,5 +1,5 @@
 {
-  "name": "vite-pro",
+  "name": "vue3-yesplay",
   "type": "module",
   "version": "0.0.0",
   "private": true,
@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "axios": "^1.7.2",
+    "js-cookie": "^3.0.5",
+    "nprogress": "^0.2.0",
     "vue": "^3.4.21",
     "vue-router": "^4.3.2"
   },

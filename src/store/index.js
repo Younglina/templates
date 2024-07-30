@@ -1,12 +1,17 @@
-import { defineStore } from 'pinia'
+import { defineStore } from "pinia";
 
-export const useMainStore = defineStore('mainStore', {
+export const useMainStore = defineStore("mainStore", {
   state: () => ({
-    tt: '',
+    tt: "",
+    player: {},
+    baseData: {
+      user: {},
+      loginMode: "",
+    },
   }),
   actions: {
     test(tt) {
-      this.tt = tt
+      this.tt = tt;
     },
   },
-})
+});

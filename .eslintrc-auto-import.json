@@ -305,6 +305,7 @@
     "useAxios": true,
     "useCommon": true,
     "useExportData": true,
-    "ElMessage": true
+    "ElMessage": true,
+    "useRequest": true
   }
 }

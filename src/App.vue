@@ -3,7 +3,11 @@
 <template>
   <TheHeader />
   <main>
-    <router-view />
+    <router-view v-slot="{ Component }">
+      <keep-alive :include="['explore']">
+        <component :is="Component" />
+      </keep-alive>
+    </router-view>
   </main>
 </template>
 

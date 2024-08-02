@@ -33,11 +33,7 @@ function play() {}
 <template>
   <div class="cover">
     <div class="shade">
-      <button
-        class="play-button"
-        :style="playButtonStyles"
-        @click.stop="play()"
-      >
+      <button class="play-button" @click.stop="play()">
         <div class="i-material-symbols-play-arrow-rounded size-32px" />
       </button>
     </div>

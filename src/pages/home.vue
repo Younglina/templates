@@ -67,6 +67,7 @@ onBeforeMount(() => {
     );
   });
 });
+const showCatOptions = ref(false);
 </script>
 
 <template>

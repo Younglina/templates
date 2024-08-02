@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ButtonIcon: typeof import('./src/components/ButtonIcon.vue')['default']
+    CatsPanel: typeof import('./src/components/CatsPanel.vue')['default']
     Cover: typeof import('./src/components/Cover.vue')['default']
     CoverRow: typeof import('./src/components/CoverRow.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']

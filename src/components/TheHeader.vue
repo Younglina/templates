@@ -71,6 +71,7 @@ import { NAVLINK } from "@/constants";
     }
     &:hover {
       background: var(--color-secondary-bg-for-transparent);
+      text-decoration: none;
     }
   }
 }

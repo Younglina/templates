@@ -5,10 +5,10 @@ import { NAVLINK } from "@/constants";
 <template>
   <nav class="header-nav bg-white">
     <div class="flex items-center">
-      <button-icon>
+      <button-icon @click="$router.go(-1)">
         <i class="i-material-symbols-chevron-left-rounded size-28px fw-600" />
       </button-icon>
-      <button-icon>
+      <button-icon @click="$router.go(1)">
         <i class="i-material-symbols-chevron-right-rounded size-28px fw-600" />
       </button-icon>
     </div>

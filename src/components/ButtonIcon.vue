@@ -1,6 +1,15 @@
-<script setup></script>
+<script setup>
+defineProps({
+  grey: {
+    type: Boolean,
+    default: false,
+  },
+});
+</script>
 <template>
-  <button class="button-icon"><slot></slot></button>
+  <button class="button-icon" :class="[grey ? 'grey' : '']">
+    <slot></slot>
+  </button>
 </template>
 <style scoped lang="scss">
 button {
@@ -28,5 +37,19 @@ button {
   &:active {
     transform: scale(0.95);
   }
+}
+.grey {
+  height: 40px;
+  min-width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 18px;
+  font-weight: 600;
+  background-color: var(--color-secondary-bg);
+  color: var(--color-text);
+  opacity: 0.78;
+  border-radius: 8px;
 }
 </style>

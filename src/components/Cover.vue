@@ -1,14 +1,28 @@
 <script setup>
 const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
   imageUrl: {
     type: String,
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
   },
   fixedSize: {
     type: Number,
     default: 0,
   },
-  type: {
-    type: String,
+  clickCoverToPlay: {
+    type: Boolean,
+    default: false,
+  },
+  alwaysShowShadow: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -26,12 +40,18 @@ const shadowStyles = computed(() => {
   let styles = {};
   styles.backgroundImage = `url(${props.imageUrl})`;
   if (props.type === "artist") styles.borderRadius = "50%";
+  if (props.alwaysShowShadow) styles.display = "block";
   return styles;
 });
 function play() {}
+
+const router = useRouter();
+function goTo() {
+  router.push(`/${props.type}/${props.id}`);
+}
 </script>
 <template>
-  <div class="cover">
+  <div class="cover" @click="clickCoverToPlay ? play() : goTo()">
     <div class="shade">
       <button class="play-button" @click.stop="play()">
         <div class="i-material-symbols-play-arrow-rounded size-32px" />

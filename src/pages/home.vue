@@ -3,7 +3,6 @@ import { getRecommendPlayList } from "@/utils/playList";
 import { toplists } from "@/api/playlist";
 import { toplistOfArtists } from "@/api/artist";
 import { newAlbums } from "@/api/album";
-import useProgress from "@/utils/useProgress";
 
 const pageLists = reactive({
   playlist: {
@@ -31,7 +30,7 @@ const pageLists = reactive({
   },
 });
 
-const { showPg, startPg, donePg } = useProgress();
+const { showPg, startPg, donePg } = useProgres();
 onBeforeMount(() => {
   startPg();
   // 获取推荐歌单

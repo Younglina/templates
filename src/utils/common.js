@@ -1,5 +1,8 @@
 import { isAccountLoggedIn } from "./auth";
 import { useMainStore } from "@/store";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+import relativeTime from "dayjs/plugin/relativeTime";
 
 export function isTrackPlayable(track) {
   let result = {
@@ -61,4 +64,27 @@ export function formatNum(num) {
     i++;
   }
   return Math.floor(num * 100) / 100 + ["", "万", "亿"][i];
+}
+
+export function formatTime(Milliseconds, format = "HH:MM:SS") {
+  if (!Milliseconds) return "";
+  dayjs.extend(duration);
+  dayjs.extend(relativeTime);
+
+  let time = dayjs.duration(Milliseconds);
+  let hours = time.hours().toString();
+  let mins = time.minutes().toString();
+  let seconds = time.seconds().toString().padStart(2, "0");
+
+  if (format === "HH:MM:SS") {
+    return hours !== "0"
+      ? `${hours}:${mins.padStart(2, "0")}:${seconds}`
+      : `${mins}:${seconds}`;
+  } else if (format === "Human") {
+    return hours !== "0" ? `${hours} '小时' ${mins} '分钟'` : `${mins} '分钟'`;
+  }
+}
+export function formatDate(timestamp) {
+  if (!timestamp) return "";
+  return dayjs(timestamp).format("YYYY年MM月DD日");
 }

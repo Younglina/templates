@@ -7,8 +7,10 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    ArtistsInLine: typeof import('./src/components/ArtistsInLine.vue')['default']
     ButtonIcon: typeof import('./src/components/ButtonIcon.vue')['default']
     CatsPanel: typeof import('./src/components/CatsPanel.vue')['default']
+    ContextMenu: typeof import('./src/components/ContextMenu.vue')['default']
     Cover: typeof import('./src/components/Cover.vue')['default']
     CoverRow: typeof import('./src/components/CoverRow.vue')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
@@ -42,6 +44,9 @@ declare module 'vue' {
     TheMenu: typeof import('./src/components/TheMenu.vue')['default']
     TheSearch: typeof import('./src/components/TheSearch.vue')['default']
     TheTable: typeof import('./src/components/TheTable.vue')['default']
+    TrackList: typeof import('./src/components/TrackList.vue')['default']
+    TrackListItem: typeof import('./src/components/TrackListItem.vue')['default']
+    TrackListMenu: typeof import('./src/components/TrackListMenu.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']

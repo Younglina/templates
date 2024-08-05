@@ -306,6 +306,7 @@
     "useCommon": true,
     "useExportData": true,
     "ElMessage": true,
-    "useRequest": true
+    "useRequest": true,
+    "useProgres": true
   }
 }

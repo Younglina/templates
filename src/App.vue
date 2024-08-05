@@ -23,4 +23,9 @@ main {
   box-sizing: border-box;
   min-width: var(--page-min-width);
 }
+@media (max-width: 1280px) {
+  main {
+    padding: 64px 5vw 96px 5vw;
+  }
+}
 </style>

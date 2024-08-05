@@ -12,13 +12,18 @@ const routes = [
   },
   {
     path: "/playlist/:id?",
-    component: () => import("../pages/explore.vue"),
+    component: () => import("../pages/playlist.vue"),
     name: "playlist",
   },
   {
     path: "/album/:id?",
     component: () => import("../pages/explore.vue"),
     name: "album",
+  },
+  {
+    path: "/artist/:id?",
+    component: () => import("../pages/artist.vue"),
+    name: "artist",
   },
 ];
 

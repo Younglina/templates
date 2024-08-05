@@ -85,7 +85,11 @@ function getTitleLink(item) {
 <template>
   <div class="grid" :style="rowStyles">
     <div v-for="item in props.items" :key="item.id">
-      <Cover :imageUrl="getImageUrl(item)" :type="props.type"></Cover>
+      <Cover
+        :imageUrl="getImageUrl(item)"
+        :id="item.id"
+        :type="props.type"
+      ></Cover>
       <div class="mt-8px">
         <div v-if="showPlayCount" class="flex justify-between">
           <div class="play-count">

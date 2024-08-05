@@ -24,6 +24,7 @@ export default defineConfig({
         "@vueuse/core",
         {
           "@/store/index.js": ["useMainStore"],
+          "@/utils/useProgres.js": ["useProgres"],
           // "@/utils/request.js": [["default", "useRequest"]],
         },
       ],

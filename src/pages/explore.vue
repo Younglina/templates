@@ -1,5 +1,4 @@
 <script setup>
-import useProgress from "@/utils/useProgress";
 import { topPlaylist, highQualityPlaylist, toplists } from "@/api/playlist";
 import { getRecommendPlayList as getRPlsit } from "@/utils/playList";
 
@@ -7,7 +6,7 @@ const store = useMainStore();
 const route = useRoute();
 const router = useRouter();
 
-const { showPg, startPg, donePg } = useProgress();
+const { showPg, startPg, donePg } = useProgres();
 const mData = reactive({
   playlist: [],
   loadingMore: true,
@@ -112,7 +111,7 @@ const subText = computed(() => {
         :class="['cats', { active: mData.showCatOptions }]"
         @click="mData.showCatOptions = !mData.showCatOptions"
       >
-        ...
+        <div class="i-material-symbols-more-horiz"></div>
       </div>
     </div>
     <div class="mt-24px">

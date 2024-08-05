@@ -3,16 +3,32 @@ import { playlistCategories } from "@/constants";
 export const useMainStore = defineStore("mainStore", {
   state: () => ({
     tt: "",
-    player: {},
+    player: {
+      currentTrack: {},
+    },
     baseData: {
       user: {},
       loginMode: "",
+    },
+    liked: {
+      songs: [],
+      songsWithDetails: [], // 只有前12首
+      playlists: [],
+      albums: [],
+      artists: [],
+      mvs: [],
+      cloudDisk: [],
+      playHistory: {
+        weekData: [],
+        allData: [],
+      },
     },
     settings: {
       enabledPlaylistCategories: playlistCategories
         .filter((item) => item.enable)
         .map((item) => item.name),
     },
+    user: {},
   }),
   actions: {
     test(tt) {

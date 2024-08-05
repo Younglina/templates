@@ -1,7 +1,7 @@
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 
-export default function useProgress() {
+export function useProgres() {
   NProgress.configure({ showSpinner: false, trickleSpeed: 100 });
   const showPg = ref(false);
   function startPg() {

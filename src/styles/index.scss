@@ -56,3 +56,12 @@ a.active {
     opacity: 0.68;
   }
 }
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}

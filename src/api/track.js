@@ -53,19 +53,20 @@ export function getTrackDetail(ids) {
       return data;
     });
   };
-  fetchLatest();
+  return fetchLatest();
+  // fetchLatest();
 
-  let idsInArray = [String(ids)];
-  if (typeof ids === "string") {
-    idsInArray = ids.split(",");
-  }
+  // let idsInArray = [String(ids)];
+  // if (typeof ids === "string") {
+  //   idsInArray = ids.split(",");
+  // }
 
-  return getTrackDetailFromCache(idsInArray).then((result) => {
-    if (result) {
-      result.songs = mapTrackPlayableStatus(result.songs, result.privileges);
-    }
-    return result ?? fetchLatest();
-  });
+  // return getTrackDetailFromCache(idsInArray).then((result) => {
+  //   if (result) {
+  //     result.songs = mapTrackPlayableStatus(result.songs, result.privileges);
+  //   }
+  //   return result ?? fetchLatest();
+  // });
 }
 
 /**

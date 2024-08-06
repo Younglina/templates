@@ -307,6 +307,7 @@
     "useExportData": true,
     "ElMessage": true,
     "useRequest": true,
-    "useProgres": true
+    "useProgres": true,
+    "MessageBox": true
   }
 }

@@ -25,6 +25,7 @@ export default defineConfig({
         {
           "@/store/index.js": ["useMainStore"],
           "@/utils/useProgres.js": ["useProgres"],
+          "@/components/MessageBox/messageBox.js": [["default", "MessageBox"]],
           // "@/utils/request.js": [["default", "useRequest"]],
         },
       ],

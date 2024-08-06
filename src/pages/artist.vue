@@ -12,13 +12,14 @@ const { showPg, startPg, donePg } = useProgres();
 const artist = ref({});
 const dSimilarArtists = ref([]);
 
-function loadData(id) {
+function loadData(id, next = undefined) {
   startPg();
   showPg.value = false;
   // this.$parent.$refs.main.scrollTo({ top: 0 });
   getArtist(id).then((data) => {
     artist.value = data.artist;
     setPopularTracks(data.hotSongs);
+    if (next !== undefined) next();
     donePg();
     showPg.value = true;
   });
@@ -54,7 +55,7 @@ const showMorePopTracks = ref(false);
 function setPopularTracks(hotSongs) {
   const trackIDs = hotSongs.map((t) => t.id);
   getTrackDetail(trackIDs.join(",")).then((data) => {
-    popularTracks.value.push(...data.songs);
+    popularTracks.value = data.songs;
   });
 }
 
@@ -73,9 +74,20 @@ function scrollTo(div, block = "center") {
     block,
   });
 }
-function toggleFullDescription() {}
+function toggleFullDescription() {
+  MessageBox({
+    title: "艺人详情",
+    message: artist.value.briefDesc,
+  });
+}
 const route = useRoute();
+onBeforeRouteUpdate((to, from, next) => {
+  artist.value.img1v1Url =
+    "https://p1.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg";
+  loadData(to.params.id, next);
+});
 onActivated(() => {
+  console.log(123);
   loadData(route.params.id);
 });
 </script>
@@ -126,7 +138,7 @@ onActivated(() => {
         :sub-text="'releaseYear'"
         :show-play-button="true"
       />
-      <div id="seeMore" class="show-more">
+      <div v-if="albums.length > 15" class="show-more">
         <button @click="showMoreAlbums = !showMoreAlbums">
           <span>{{ !showMoreAlbums ? "显示更多" : "收起" }}</span>
         </button>
@@ -151,7 +163,7 @@ onActivated(() => {
         :sub-text="'albumType+releaseYear'"
         :show-play-button="true"
       />
-      <div id="seeMore" class="show-more">
+      <div v-if="eps.length > 15" class="show-more">
         <button @click="showMoreEps = !showMoreEps">
           <span>{{ !showMoreEps ? "显示更多" : "收起" }}</span>
         </button>

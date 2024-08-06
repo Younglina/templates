@@ -5,6 +5,7 @@ import Home from "../pages/home.vue";
 const routes = [
   { path: "/", component: Home, name: "home" },
   { path: "/library", component: Home, name: "library" },
+  { path: "/test", component: () => import("../pages/test.vue"), name: "test" },
   {
     path: "/explore/:category?",
     component: () => import("../pages/explore.vue"),

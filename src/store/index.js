@@ -35,14 +35,12 @@ export const useMainStore = defineStore("mainStore", {
       this.tt = tt;
     },
     togglePlaylistCategory(name) {
-      const enabledPlaylistCategories = this.settings.enabledPlaylistCategories;
-      const index = enabledPlaylistCategories.findIndex((c) => c === name);
+      const cats = this.settings.enabledPlaylistCategories;
+      const index = cats.findIndex((c) => c === name);
       if (index !== -1) {
-        enabledPlaylistCategories = enabledPlaylistCategories.filter(
-          (c) => c !== name
-        );
+        this.enabledPlaylistCategories = cats.filter((c) => c !== name);
       } else {
-        enabledPlaylistCategories.push(name);
+        this.enabledPlaylistCategories.push(name);
       }
     },
   },

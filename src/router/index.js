@@ -26,6 +26,11 @@ const routes = [
     component: () => import("../pages/artist.vue"),
     name: "artist",
   },
+  {
+    path: "/mv/:id?",
+    component: () => import("../pages/mv.vue"),
+    name: "mv",
+  },
 ];
 
 const router = createRouter({

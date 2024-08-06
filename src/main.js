@@ -5,6 +5,7 @@ import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 import router from "./router";
 import App from "./App.vue";
 import "./styles/index.scss";
+import "./styles/plyr.scss";
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 createApp(App).use(pinia).use(router).mount("#app");

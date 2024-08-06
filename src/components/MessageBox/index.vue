@@ -1,17 +1,19 @@
 <template>
-  <div v-if="visible" class="modal-overlay">
-    <div class="modal-content">
-      <header class="modal-header">
-        <h3>{{ title }}</h3>
-        <ButtonIcon @click="doClose">
-          <div class="i-material-symbols-close-rounded font-size-20px"></div>
-        </ButtonIcon>
-      </header>
-      <main class="modal-body">
-        {{ message }}
-      </main>
+  <transition name="fade" @after-leave="$emit('vanish')">
+    <div v-show="visible" class="modal-overlay">
+      <div class="modal-content">
+        <header class="modal-header">
+          <h3>{{ title }}</h3>
+          <ButtonIcon @click="doClose">
+            <div class="i-material-symbols-close-rounded font-size-20px"></div>
+          </ButtonIcon>
+        </header>
+        <main class="modal-body">
+          {{ message }}
+        </main>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>

@@ -44,7 +44,7 @@ function goToMv() {}
         ></div>
       </div>
       <div class="info">
-        <div class="title">
+        <div class="mv-title">
           <router-link :to="'/mv/' + getID(mv)">{{
             mv.name || mv.title
           }}</router-link>
@@ -69,7 +69,7 @@ function goToMv() {}
     }
   }
 
-  .title {
+  .mv-title {
     font-size: 16px;
     font-weight: 600;
     opacity: 0.88;

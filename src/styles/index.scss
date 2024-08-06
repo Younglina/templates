@@ -1,5 +1,8 @@
 html {
   font-size: 14px;
+  overflow-y: var(--html-overflow-y);
+  min-width: 768px;
+  overscroll-behavior: none;
 }
 
 :root {
@@ -12,15 +15,11 @@ html {
   --color-navbar-bg: rgba(255, 255, 255, 0.8);
   --color-primary-bg-for-transparent: rgba(189, 207, 255, 0.28);
   --color-secondary-bg-for-transparent: rgba(209, 209, 214, 0.28);
-  --page-min-width: 888px;
+  --html-overflow-y: overlay;
 }
 
-html,
-body,
 #app {
-  overflow: hidden;
-}
-#app {
+  width: 100%;
   font-family:
     ui-sans-serif,
     system-ui,

@@ -21,7 +21,6 @@ main {
   overflow: auto;
   padding: 64px 10vw 96px 10vw;
   box-sizing: border-box;
-  min-width: var(--page-min-width);
 }
 @media (max-width: 1280px) {
   main {

@@ -37,10 +37,13 @@ export const useMainStore = defineStore("mainStore", {
     togglePlaylistCategory(name) {
       const cats = this.settings.enabledPlaylistCategories;
       const index = cats.findIndex((c) => c === name);
+      console.log(index, this.settings.enabledPlaylistCategories);
       if (index !== -1) {
-        this.enabledPlaylistCategories = cats.filter((c) => c !== name);
+        this.settings.enabledPlaylistCategories = cats.filter(
+          (c) => c !== name
+        );
       } else {
-        this.enabledPlaylistCategories.push(name);
+        this.settings.enabledPlaylistCategories.push(name);
       }
     },
   },

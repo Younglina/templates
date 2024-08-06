@@ -42,7 +42,6 @@ import { NAVLINK } from "@/constants";
   backdrop-filter: saturate(180%) blur(20px);
   background-color: var(--color-navbar-bg);
   z-index: 100;
-  min-width: var(--page-min-width);
   > div {
     flex: 1;
   }

@@ -6,7 +6,7 @@ import UnoCSS from "unocss/vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/music",
+  base: "/music/",
   resolve: {
     alias: {
       "@": "/src",
@@ -50,5 +50,18 @@ export default defineConfig({
         changeOrigin: true,
       },
     },
+  },
+  pwa: {
+    name: "Vue3-YesPlay",
+    iconPaths: {
+      favicon32: "vite.svg",
+    },
+    themeColor: "#ffffff00",
+    manifestOptions: {
+      background_color: "#335eea",
+    },
+    // workboxOptions: {
+    //   swSrc: "dev/sw.js",
+    // },
   },
 });

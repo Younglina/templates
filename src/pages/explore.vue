@@ -124,7 +124,7 @@ const subText = computed(() => {
         :image-size="mData.currentCategory !== '排行榜' ? 512 : 1024"
       />
       <div
-        v-show="!['推荐歌单', '排行榜'].includes(currentCategory)"
+        v-show="!['推荐歌单', '排行榜'].includes(mData.currentCategory)"
         class="load-more"
       >
         <ButtonIcon

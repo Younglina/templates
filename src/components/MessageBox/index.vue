@@ -1,21 +1,3 @@
-<template>
-  <transition name="fade" @after-leave="$emit('vanish')">
-    <div v-show="visible" class="modal-overlay">
-      <div class="modal-content">
-        <header class="modal-header">
-          <h3>{{ title }}</h3>
-          <ButtonIcon @click="doClose">
-            <div class="i-material-symbols-close-rounded font-size-20px"></div>
-          </ButtonIcon>
-        </header>
-        <main class="modal-body">
-          {{ message }}
-        </main>
-      </div>
-    </div>
-  </transition>
-</template>
-
 <script>
 export default defineComponent({
   props: {
@@ -26,6 +8,10 @@ export default defineComponent({
     message: {
       type: String,
       default: "",
+    },
+    showFooter: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ["vanish", "action"],
@@ -43,6 +29,27 @@ export default defineComponent({
   },
 });
 </script>
+
+<template>
+  <transition name="fade" @after-leave="$emit('vanish')">
+    <div v-show="visible" class="modal-overlay">
+      <div class="modal-content">
+        <header class="modal-header">
+          <h3>{{ title }}</h3>
+          <ButtonIcon @click="doClose">
+            <div class="i-material-symbols-close-rounded font-size-20px"></div>
+          </ButtonIcon>
+        </header>
+        <main class="modal-body">
+          {{ message }}
+        </main>
+        <footer class="modal-footer" v-if="showFooter">
+          <button @click="doClose">确定</button>
+        </footer>
+      </div>
+    </div>
+  </transition>
+</template>
 
 <style scoped>
 .modal-overlay {
@@ -78,5 +85,19 @@ export default defineComponent({
 
 .modal-body {
   font-size: 16px;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  button {
+    background-color: var(--color-primary-bg);
+    color: var(--color-primary);
+    border-radius: 8px;
+    margin-top: 24px;
+    transition: 0.2s;
+    padding: 8px;
+    min-width: 60px;
+  }
 }
 </style>

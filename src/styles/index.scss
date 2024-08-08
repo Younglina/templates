@@ -7,7 +7,7 @@ html {
 
 :root {
   --color-body-bg: #ffffff;
-  --color-text: #000;
+  --color-text: #020817;
   --color-primary: #0b49ff;
   --color-primary-bg: #eaeffd;
   --color-secondary: #737373;
@@ -77,4 +77,26 @@ button {
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
+}
+
+.loading-warp {
+  position: absolute;
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  svg {
+    width: 16px;
+    height: 16px;
+    animation: loading 2s linear infinite;
+  }
+}
+
+@keyframes loading {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

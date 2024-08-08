@@ -88,3 +88,13 @@ export function formatDate(timestamp) {
   if (!timestamp) return "";
   return dayjs(timestamp).format("YYYY年MM月DD日");
 }
+
+export function validateEmail(email, password = "") {
+  const emailReg =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if (email === "" || password === "" || !emailReg.test(email)) {
+    MessageBox({ title: "登录失败", message: "邮箱不正确", showFooter: true });
+    return false;
+  }
+  return true;
+}

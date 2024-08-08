@@ -1,4 +1,5 @@
 import axios from "axios";
+import { doLogout, getCookie } from "./auth.js";
 
 const _axios = axios.create({
   baseURL: "http://localhost:3000/",
@@ -19,6 +20,9 @@ class CustomError extends Error {
 _axios.interceptors.request.use(
   (config) => {
     if (!config.params) config.params = {};
+    if (getCookie("MUSIC_U") !== null) {
+      config.params.cookie = `MUSIC_U=${getCookie("MUSIC_U")};`;
+    }
     return config;
   },
   (error) => {

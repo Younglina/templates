@@ -45,6 +45,7 @@ declare module 'vue' {
     Submenu: typeof import('./src/components/submenu.vue')['default']
     TheBread: typeof import('./src/components/TheBread.vue')['default']
     TheHeader: typeof import('./src/components/TheHeader.vue')['default']
+    TheInput: typeof import('./src/components/TheInput.vue')['default']
     TheMenu: typeof import('./src/components/TheMenu.vue')['default']
     TheSearch: typeof import('./src/components/TheSearch.vue')['default']
     TheTable: typeof import('./src/components/TheTable.vue')['default']

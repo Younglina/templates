@@ -23,7 +23,10 @@ import { NAVLINK } from "@/constants";
       </router-link>
     </div>
     <div class="header-user">
-      <div class="i-material-symbols-account-circle-full" />
+      <div
+        class="i-material-symbols-account-circle-full"
+        @click="$router.push('/login')"
+      />
     </div>
   </nav>
 </template>

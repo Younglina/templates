@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps({
-  tracks: {
+  dataList: {
     type: Array,
     required: true,
   },
@@ -84,7 +84,7 @@ const menuActions = [
   <div>
     <div :style="listStyles">
       <TrackListItem
-        v-for="(track, index) in tracks"
+        v-for="(track, index) in dataList"
         :key="itemKey === 'id' ? track.id : `${track.id}${index}`"
         :track-prop="track"
         :track-no="index + 1"

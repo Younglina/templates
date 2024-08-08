@@ -2,7 +2,7 @@
 
 <template>
   <TheHeader />
-  <main>
+  <main class="main-wrap">
     <router-view v-slot="{ Component }">
       <keep-alive :include="['explore', 'artist']">
         <component :is="Component" />

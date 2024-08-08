@@ -30,6 +30,15 @@ export function isAccountLoggedIn() {
   );
 }
 
+export function isUsernameLoggedIn() {
+  const store = useMainStore();
+  return store.baseData.loginMode === "username";
+}
+
+export function isLooseLoggedIn() {
+  return isAccountLoggedIn() || isUsernameLoggedIn();
+}
+
 export function doLogout() {
   logout();
   removeCookie("MUSIC_U");

@@ -79,7 +79,7 @@ const showCatOptions = ref(false);
         </router-link>
       </div>
       <CoverRow
-        :items="item.items"
+        :dataList="item.items"
         :type="item.type"
         :columnNumber="item.columnNumber"
         :subText="item.subText"

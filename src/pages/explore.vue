@@ -117,7 +117,7 @@ const subText = computed(() => {
     <div class="mt-24px">
       <CoverRow
         type="playlist"
-        :items="mData.playlists"
+        :dataList="mData.playlists"
         :subText="subText"
         :show-play-button="true"
         :showPlayCount="mData.currentCategory !== '排行榜' ? true : false"

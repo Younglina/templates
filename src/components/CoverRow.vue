@@ -1,7 +1,7 @@
 <script setup>
 import { formatNum } from "@/utils/common.js";
 const props = defineProps({
-  items: {
+  dataList: {
     type: Array,
   },
   type: {
@@ -84,7 +84,7 @@ function getTitleLink(item) {
 </script>
 <template>
   <div class="grid" :style="rowStyles">
-    <div v-for="item in props.items" :key="item.id">
+    <div v-for="item in props.dataList" :key="item.id">
       <Cover
         :imageUrl="getImageUrl(item)"
         :id="item.id"
@@ -92,11 +92,11 @@ function getTitleLink(item) {
       ></Cover>
       <div class="mt-8px">
         <div v-if="showPlayCount" class="flex justify-between">
-          <div class="play-count">
+          <div v-if="item.playCount" class="play-count">
             <i class="i-material-symbols-play-arrow-rounded" />
             {{ formatNum(item.playCount) }}
           </div>
-          <div class="play-count">
+          <div v-if="item.trackCount" class="play-count">
             <i class="i-material-symbols-queue-music-rounded" />
             {{ formatNum(item.trackCount) }}
           </div>

@@ -4,7 +4,7 @@ import { NAVLINK } from "@/constants";
 
 <template>
   <nav class="header-nav bg-white">
-    <div class="flex items-center">
+    <div class="flex items-center btns">
       <button-icon @click="$router.go(-1)">
         <i class="i-material-symbols-chevron-left-rounded size-28px fw-600" />
       </button-icon>
@@ -52,6 +52,12 @@ import { NAVLINK } from "@/constants";
 @media (max-width: 1280px) {
   .header-nav {
     padding: 0 5vw;
+  }
+}
+
+@media (max-width: 970px) {
+  .header-nav .btns {
+    flex: unset;
   }
 }
 

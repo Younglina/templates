@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps({
-  mvs: Array,
+  dataList: Array,
   subtitle: {
     type: String,
     default: "artist",
@@ -26,7 +26,7 @@ function getSubtitle(mv) {
       artistName = mv.creator[0].userName;
       artistID = mv.creator[0].userId;
     }
-    return `<a href="/artist/${artistID}">${artistName}</a>`;
+    return `<a href="/music/artist/${artistID}">${artistName}</a>`;
   } else if (props.subtitle === "publishTime") {
     return mv.publishTime;
   }
@@ -35,7 +35,7 @@ function goToMv() {}
 </script>
 <template>
   <div class="mv-list" :class="{ 'without-padding': withoutPadding }">
-    <div v-for="mv in props.mvs" :key="getID(mv)" class="mv">
+    <div v-for="mv in props.dataList" :key="getID(mv)" class="mv">
       <div class="cover" @click="goToMv(getID(mv))">
         <img :src="getUrl(mv)" loading="lazy" />
         <div

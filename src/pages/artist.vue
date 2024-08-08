@@ -120,7 +120,7 @@ onActivated(() => {
     <div id="popularTracks" class="popular-tracks">
       <div class="section-title">热门歌曲</div>
       <TrackList
-        :tracks="popularTracks.slice(0, showMorePopTracks ? 24 : 12)"
+        :dataList="popularTracks.slice(0, showMorePopTracks ? 24 : 12)"
         :type="'tracklist'"
       />
 
@@ -134,7 +134,7 @@ onActivated(() => {
       <div class="section-title">专辑</div>
       <CoverRow
         :type="'album'"
-        :items="albums.slice(0, showMoreAlbums ? albums.length : 15)"
+        :dataList="albums.slice(0, showMoreAlbums ? albums.length : 15)"
         :sub-text="'releaseYear'"
         :show-play-button="true"
       />
@@ -152,14 +152,14 @@ onActivated(() => {
           >查看全部</router-link
         >
       </div>
-      <MvList :mvs="mvs" subtitle="publishTime" />
+      <MvList :dataList="mvs" subtitle="publishTime" />
     </div>
 
     <div v-if="eps.length !== 0" class="eps">
       <div class="section-title">EP 和单曲</div>
       <CoverRow
         :type="'album'"
-        :items="eps.slice(0, showMoreEps ? eps.length : 15)"
+        :dataList="eps.slice(0, showMoreEps ? eps.length : 15)"
         :sub-text="'albumType+releaseYear'"
         :show-play-button="true"
       />
@@ -175,7 +175,7 @@ onActivated(() => {
         type="artist"
         :column-number="6"
         gap="36px 28px"
-        :items="dSimilarArtists.slice(0, 12)"
+        :dataList="dSimilarArtists.slice(0, 12)"
       />
     </div>
   </div>

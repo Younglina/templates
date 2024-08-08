@@ -146,7 +146,7 @@ function likePlaylist() {}
       </div>
     </div>
 
-    <TrackList :id="playlist.id" :tracks="mData.tracks" type="playlist" />
+    <TrackList :id="playlist.id" :dataList="mData.tracks" type="playlist" />
   </div>
 </template>
 <style scoped lang="scss">

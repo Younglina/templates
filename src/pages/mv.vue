@@ -95,7 +95,7 @@ function openMenu() {}
     </div>
     <div class="more-video">
       <div class="section-title">更多视频</div>
-      <MvList :mvs="simiMvs" />
+      <MvList :dataList="simiMvs" />
     </div>
   </div>
 </template>

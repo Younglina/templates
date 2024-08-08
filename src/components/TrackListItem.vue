@@ -96,6 +96,7 @@ function likeThisSong() {}
     <div v-if="showTrackTime" class="time">
       {{ formatTime(track.dt) }}
     </div>
+    <div v-if="track.playCount" class="count">{{ track.playCount }}</div>
   </div>
 </template>
 <style scoped lang="scss">

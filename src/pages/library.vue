@@ -1,6 +1,7 @@
 <script setup>
-import { resizeImage } from "@/utils/common.js";
+import { resizeImage, randomNum } from "@/utils/common.js";
 import { isAccountLoggedIn } from "@/utils/auth";
+import { getLyric } from "@/api/track";
 import CoverRow from "@/components/CoverRow.vue";
 import TrackList from "@/components/TrackList.vue";
 import MvList from "@/components/MvList.vue";
@@ -91,6 +92,35 @@ function updateTab(key, subKey) {
   }
 }
 
+const lyrics = ref("");
+function getRandomLyric() {
+  if (liked.songs.length === 0) return;
+  getLyric(liked.songs[randomNum(0, liked.songs.length - 1)]).then((data) => {
+    if (data.lrc !== undefined) {
+      const isInstrumental = data.lrc.lyric
+        .split("\n")
+        .filter((l) => l.includes("纯音乐，请欣赏"));
+      if (isInstrumental.length === 0) {
+        lyrics.value = data.lrc.lyric;
+      }
+    }
+  });
+}
+const showLyric = computed(() => {
+  const lyric = lyrics.value;
+  if (!lyric) return [];
+
+  const lyricLine = lyric
+    .split("\n")
+    .filter((line) => !line.includes("作词") && !line.includes("作曲"));
+  const lyricsToPick = Math.min(lyricLine.length, 3);
+  const randomUpperBound = lyricLine.length - lyricsToPick;
+  const startLyricLineIndex = randomNum(0, randomUpperBound - 1);
+  return lyricLine
+    .slice(startLyricLineIndex, startLyricLineIndex + lyricsToPick)
+    .map((item) => item.split("]").pop().trim());
+});
+
 function loadData() {
   startPg();
   showPg.value = false;
@@ -116,6 +146,7 @@ onMounted(() => {
   donePg();
   currentTab.value = tabs.playlists;
   currentTab.value.data = liked.playlists.slice(1);
+  getRandomLyric();
   // loadData();
 });
 </script>
@@ -132,7 +163,16 @@ onMounted(() => {
     </h1>
     <div class="flex mt-24px">
       <div class="liked-lyr">
-        <div>歌词</div>
+        <div>
+          <p>
+            <span
+              v-for="(line, index) in showLyric"
+              v-show="line !== ''"
+              :key="`${line}${index}`"
+              >{{ line }}<br
+            /></span>
+          </p>
+        </div>
         <div class="flex items-center justify-between">
           <div>
             <p class="font-size-24px fw-700">我喜欢的音乐</p>

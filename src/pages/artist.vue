@@ -7,6 +7,7 @@ import {
   similarArtists,
 } from "@/api/artist";
 import { getTrackDetail } from "@/api/track";
+import { isAccountLoggedIn } from "@/utils/auth";
 
 const { showPg, startPg, donePg } = useProgres();
 const artist = ref({});
@@ -25,9 +26,11 @@ function loadData(id, next = undefined) {
   });
   initArtistAlbum(id);
   initMvs(id);
-  similarArtists(id).then((data) => {
-    dSimilarArtists.value = data.artists;
-  });
+  if (isAccountLoggedIn()) {
+    similarArtists(id).then((data) => {
+      dSimilarArtists.value = data.artists;
+    });
+  }
 }
 
 // 专辑相关

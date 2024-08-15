@@ -63,7 +63,7 @@ function getSubText(item) {
       return `${albumType} · ${new Date(item.publishTime).getFullYear()}`;
     })(),
   };
-  return subText[props.subText];
+  return subText[props.subText] || "";
 }
 
 function getImageUrl(item) {

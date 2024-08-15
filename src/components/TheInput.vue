@@ -31,7 +31,6 @@ const data = useVModel(props, "modelValue", emit);
   background: var(--color-secondary-bg);
   border-radius: 8px;
   width: 300px;
-  margin-bottom: 16px;
   color: var(--color-text);
   &:has(input:focus) {
     background: var(--color-primary-bg);
@@ -50,7 +49,7 @@ const data = useVModel(props, "modelValue", emit);
     margin-right: 6px;
   }
   .input {
-    font-size: 20px;
+    font-size: 16px;
     border: none;
     background: transparent;
     width: 100%;
@@ -63,5 +62,8 @@ const data = useVModel(props, "modelValue", emit);
     color: var(--color-text);
     opacity: 0.38;
   }
+}
+.input-box + .input-box{
+  margin-top: 16px;
 }
 </style>

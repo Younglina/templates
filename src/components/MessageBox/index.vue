@@ -35,7 +35,7 @@ export default defineComponent({
     <div v-show="visible" class="modal-overlay">
       <div class="modal-content">
         <header class="modal-header">
-          <h3>{{ title }}</h3>
+          <h3 v-if="title">{{ title }}</h3>
           <ButtonIcon @click="doClose">
             <div class="i-material-symbols-close-rounded font-size-20px"></div>
           </ButtonIcon>

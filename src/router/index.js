@@ -45,6 +45,11 @@ const routes = [
     component: () => import("../pages/search.vue"),
     name: "search",
   },
+  {
+    path: "/search/:keywords/:type",
+    component: () => import("../pages/searchType.vue"),
+    name: "searchType",
+  },
 ];
 
 const router = createRouter({

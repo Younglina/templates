@@ -129,7 +129,7 @@ const subText = computed(() => {
       >
         <ButtonIcon
           v-show="mData.showLoadMoreButton && mData.hasMore"
-          color="grey"
+          grey
           @click.native="getPlaylist"
         >
           加载更多

@@ -94,7 +94,7 @@ loadData();
       <div class="flex-1 mr-32">
         <div class="title">
           艺人
-          <router-link :to="`/search/${keywords}/artists`">
+          <router-link :to="`/search/${$route.params.keywords}/artists`">
             查看更多
           </router-link>
         </div>
@@ -108,7 +108,7 @@ loadData();
       <div class="flex-1">
         <div class="title">
           专辑
-          <router-link :to="`/search/${keywords}/albums`">
+          <router-link :to="`/search/${$route.params.keywords}/albums`">
             查看更多
           </router-link>
         </div>
@@ -123,19 +123,21 @@ loadData();
     </div>
     <div class="title mt-46px">
       歌曲
-      <router-link :to="`/search/${keywords}/tracks`"> 查看更多 </router-link>
+      <router-link :to="`/search/${$route.params.keywords}/tracks`">
+        查看更多
+      </router-link>
     </div>
     <TrackList :dataList="mData.tracks" type="tracklist" />
     <div class="title mt-46px">
       视频
-      <router-link :to="`/search/${keywords}/music-videos`">
+      <router-link :to="`/search/${$route.params.keywords}/musicVideos`">
         查看更多
       </router-link>
     </div>
     <MvList :dataList="mData.musicVideos.slice(0, 5)" />
     <div class="title mt-46px">
       歌单
-      <router-link :to="`/search/${keywords}/playlists`">
+      <router-link :to="`/search/${$route.params.keywords}/playlists`">
         查看更多
       </router-link>
     </div>

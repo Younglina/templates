@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 import { mapTrackPlayableStatus } from "@/utils/common";
-// import { cacheAlbum, getAlbumFromCache } from '@/utils/db';
+import { cacheAlbum, getAlbumFromCache } from "@/utils/db";
 
 /**
  * 获取专辑内容
@@ -16,7 +16,7 @@ export function getAlbum(id) {
         id,
       },
     }).then((data) => {
-      // cacheAlbum(id, data);
+      cacheAlbum(id, data);
       data.songs = mapTrackPlayableStatus(data.songs);
       return data;
     });

@@ -121,7 +121,7 @@ function likePlaylist() {}
             播放
           </ButtonIcon>
           <ButtonIcon
-            v-if="playlist.creator.userId !== store.user.userId"
+            v-if="playlist.creator.userId !== store.baseData.user.userId"
             grey
             @click.native="likePlaylist"
           >

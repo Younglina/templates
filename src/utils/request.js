@@ -2,8 +2,8 @@ import axios from "axios";
 import { doLogout, getCookie } from "./auth.js";
 
 const _axios = axios.create({
-  baseURL: "http://localhost:3000/",
-  // baseURL: "https://dev.usemock.com/65e8005d48882231b5644106/",
+  // baseURL: "http://localhost:3000/",
+  baseURL: "https://dev.usemock.com/65e8005d48882231b5644106/",
   timeout: 20000, // 请求超时 20s
   withCredentials: true,
 });
@@ -33,13 +33,33 @@ _axios.interceptors.request.use(
 // 后置拦截器（获取到响应时的拦截）
 _axios.interceptors.response.use(
   (response) => {
-    if (response.data.code !== 200 && response.status !== 200)
-      return Promise.reject(new CustomError(response.data.code));
-    else return response.data;
+    const res = response.data;
+    return res;
   },
-  (error) => {
-    if (error.response.status === 401) window.location.href = "/login";
-    return new CustomError(error.response.status, error.message);
+  async (error) => {
+    let response;
+    let data;
+    if (error === "TypeError: baseURL is undefined") {
+      response = error;
+      data = error;
+      console.error("You must set up the baseURL in the service's config");
+    } else if (error.response) {
+      response = error.response;
+      data = response.data;
+    }
+
+    if (
+      response &&
+      typeof data === "object" &&
+      data.code === 301 &&
+      data.msg === "需要登录"
+    ) {
+      console.warn("Token has expired. Logout now!");
+
+      // doLogout();
+      router.push({ name: "login" });
+    }
+    throw error;
   }
 );
 

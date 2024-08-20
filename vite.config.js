@@ -54,7 +54,7 @@ export default defineConfig({
   pwa: {
     name: "Vue3-YesPlay",
     iconPaths: {
-      favicon32: "vite.svg",
+      favicon32: "wy.svg",
     },
     themeColor: "#ffffff00",
     manifestOptions: {

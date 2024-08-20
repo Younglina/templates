@@ -1,25 +1,38 @@
+import { reactive, toRaw, watch } from 'vue'
+
+const _vue3yesplay = reactive({
+  album: new Map(),
+  lyric: new Map(),
+  trackDetail: {},
+});
+
+
 export function initDB() {
-  const vue3yesplay = window.localStorage.getItem("VUE3YESPLAY");
-  if (!vue3yesplay) {
+  // watch([()=>_vue3yesplay.album, () => _vue3yesplay.lyric, () => _vue3yesplay.trackDetail], 
+  // ([album, lyric, trackDetail])=>{
+  //   const rawVue3yesplay = toRaw(_vue3yesplay)
+  //   console.log(album, lyric, trackDetail, rawVue3yesplay)
+  // },{ deep: true })
+  const localVue3yesplay = JSON.parse(localStorage.getItem("VUE3YESPLAY"))
+  if (localVue3yesplay) {
+    _vue3yesplay.album = new Map(localVue3yesplay.album)
+    _vue3yesplay.lyric = new Map(localVue3yesplay.lyric)
+    localVue3yesplay.trackDetail.map(item=>{
+      _vue3yesplay.trackDetail[item.id] = item
+    })
+  }
+  debugger
+  watch(_vue3yesplay, 
+  (obj)=>{
+    const rawObj = toRaw(obj)
+    rawObj.album = Array.from(rawObj.album.entries())
+    rawObj.lyric = Array.from(rawObj.lyric.entries())
+    rawObj.trackDetail = Object.values(rawObj.trackDetail)
     window.localStorage.setItem(
       "VUE3YESPLAY",
-      JSON.stringify({
-        album: { type: "map", value: "[]" },
-        lyric: { type: "map", value: "[]" },
-        trackDetail: { value: "[]" },
-      })
+      JSON.stringify(rawObj)
     );
-  }
-}
-
-function getDB(key) {
-  const vue3yesplay = window.localStorage.getItem("VUE3YESPLAY") || {};
-  const db = JSON.parse(vue3yesplay)[key];
-  let value = JSON.parse(db.value);
-  if (db.type === "map") {
-    value = new Map(value);
-  }
-  return value;
+  })
 }
 
 function p(res) {
@@ -27,7 +40,7 @@ function p(res) {
 }
 
 export function cacheLyric(id, lyrics) {
-  getDB("lyric").set(id, {
+  _vue3yesplay["lyric"].set(id, {
     id,
     lyrics,
     updateTime: new Date().getTime(),
@@ -35,10 +48,10 @@ export function cacheLyric(id, lyrics) {
 }
 
 export function getLyricFromCache(id) {
-  return p(getDB("lyric").get(Number(id))?.lyrics);
+  return p(_vue3yesplay["lyric"].get(Number(id))?.lyrics);
 }
 export function cacheAlbum(id, album) {
-  getDB("album").set(Number(id), {
+  _vue3yesplay["album"].set(Number(id), {
     id: Number(id),
     album,
     updateTime: new Date().getTime(),
@@ -46,30 +59,22 @@ export function cacheAlbum(id, album) {
 }
 
 export function getAlbumFromCache(id) {
-  return p(getDB("album").get(Number(id))?.album);
+  return p(_vue3yesplay["album"].get(Number(id))?.album);
 }
 
-export function cacheTrackDetail(track, privileges) {
-  getDB("trackDetail").push({
-    id: track.id,
-    detail: track,
-    privileges: privileges,
-    updateTime: new Date().getTime(),
-  });
+export function cacheTrackDetail(track) {
+  _vue3yesplay.trackDetail = {..._vue3yesplay.trackDetail, ...track}
 }
 
 export function getTrackDetailFromCache(ids) {
-  const tracks = getDB("trackDetail").filter((track) => {
-    return ids.includes(String(track.id));
-  });
-  const result = { songs: [], privileges: [] };
+  let result = { songs: [], privileges: [] };
   ids.map((id) => {
-    const one = tracks.find((t) => String(t.id) === id);
+    const one = _vue3yesplay.trackDetail[id];
     result.songs.push(one?.detail);
     result.privileges.push(one?.privileges);
   });
   if (result.songs.includes(undefined)) {
-    return undefined;
+    result = undefined;
   }
   return p(result);
 }

@@ -45,10 +45,17 @@ export function getTrackDetail(ids) {
         ids,
       },
     }).then((data) => {
+      const track = {}
       data.songs.map((song) => {
         const privileges = data.privileges.find((t) => t.id === song.id);
-        cacheTrackDetail(song, privileges);
+        track[song.id] = {
+          id: song.id,
+          detail: song,
+          privileges: privileges,
+          updateTime: new Date().getTime(),
+        }
       });
+      cacheTrackDetail(track)
       data.songs = mapTrackPlayableStatus(data.songs, data.privileges);
       return data;
     });

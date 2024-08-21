@@ -3,32 +3,31 @@ export default defineComponent({
   props: {
     title: {
       type: String,
-      default: '',
+      default: "",
     },
     message: {
       type: String,
-      default: '',
+      default: "",
     },
     showFooter: {
       type: Boolean,
       default: false,
     },
   },
-  emits: ['vanish', 'action'],
+  emits: ["vanish", "action"],
   setup(props, { emit }) {
-    const visible = ref(false)
+    const visible = ref(false);
     function doClose() {
-      if (!visible.value)
-        return
-      visible.value = false
-      emit('action', 'close')
+      if (!visible.value) return;
+      visible.value = false;
+      emit("action", "close");
     }
     return {
       doClose,
       visible,
-    }
+    };
   },
-})
+});
 </script>
 
 <template>
@@ -44,19 +43,17 @@ export default defineComponent({
           </ButtonIcon>
         </header>
         <main class="modal-body">
-          {{ message }}
+          <p>{{ message }}</p>
         </main>
         <footer v-if="showFooter" class="modal-footer">
-          <button @click="doClose">
-            确定
-          </button>
+          <button @click="doClose">确定</button>
         </footer>
       </div>
     </div>
   </transition>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -67,15 +64,29 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border: unset;
+    width: 0;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-secondary-bg-for-transparent);
+  }
 }
 
 .modal-content {
+  display: flex;
+  flex-direction: column;
   background-color: white;
+  padding-bottom: 20px;
   border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(12px) opacity(1);
   border-radius: 12px;
-  padding: 20px;
-  max-width: 490px;
-  width: 90%;
+  width: 50vw;
   max-height: calc(100vh - 128px - 64px);
 }
 
@@ -83,13 +94,23 @@ export default defineComponent({
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 32px;
+  padding: 20px;
+  margin-bottom: 12px;
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+  }
 }
 
 .modal-body {
   font-size: 16px;
+  overflow-y: auto;
+  padding: 0 20px 20px;
+  p {
+    overflow: hidden;
+    white-space: pre-line;
+    user-select: none;
+  }
 }
 
 .modal-footer {

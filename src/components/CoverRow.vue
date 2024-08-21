@@ -1,5 +1,5 @@
 <script setup>
-import { formatNum } from '@/utils/common.js'
+import { formatNum } from "@/utils/common.js";
 
 const props = defineProps({
   dataList: {
@@ -19,82 +19,76 @@ const props = defineProps({
   },
   gap: {
     type: String,
-    default: '44px 24px',
+    default: "44px 24px",
   },
   subText: {
     type: String,
-    default: 'none',
+    default: "none",
   },
   subTextFontSize: {
     type: String,
-    default: '16px',
+    default: "16px",
   },
-})
+});
 
 const rowStyles = computed(() => {
   return {
-    'grid-template-columns': `repeat(${props.columnNumber}, 1fr)`,
-    'gap': props.gap,
-  }
-})
+    "grid-template-columns": `repeat(${props.columnNumber}, 1fr)`,
+    gap: props.gap,
+  };
+});
 
 function getSubText(item) {
   const subText = {
-    'copywriter': item.copywriter,
-    'description': item.description,
-    'updateFrequency': item.updateFrequency,
-    'creator': `by ${item.creator?.nickname}`,
-    'releaseYear': new Date(item.publishTime).getFullYear(),
-    'appleMusic': 'by Apple Music',
-    'artist': (() => {
+    copywriter: item.copywriter,
+    description: item.description,
+    updateFrequency: item.updateFrequency,
+    creator: `by ${item.creator?.nickname}`,
+    releaseYear: new Date(item.publishTime).getFullYear(),
+    appleMusic: "by Apple Music",
+    artist: (() => {
       if (item.artist !== undefined && item.artist)
-        return `<a href="/artist/${item.artist.id}">${item.artist.name}</a>`
+        return `<a href="/artist/${item.artist.id}">${item.artist.name}</a>`;
       if (item.artists !== undefined && item.artists)
-        return `<a href="/artist/${item.artists[0].id}">${item.artists[0].name}</a>`
+        return `<a href="/artist/${item.artists[0].id}">${item.artists[0].name}</a>`;
     })(),
-    'albumType+releaseYear': (() => {
-      let albumType = item.type
-      if (item.type === 'EP/Single') {
-        albumType = item.size === 1 ? 'Single' : 'EP'
+    "albumType+releaseYear": (() => {
+      let albumType = item.type;
+      if (item.type === "EP/Single") {
+        albumType = item.size === 1 ? "Single" : "EP";
+      } else if (item.type === "Single") {
+        albumType = "Single";
+      } else if (item.type === "专辑") {
+        albumType = "Album";
       }
-      else if (item.type === 'Single') {
-        albumType = 'Single'
-      }
-      else if (item.type === '专辑') {
-        albumType = 'Album'
-      }
-      return `${albumType} · ${new Date(item.publishTime).getFullYear()}`
+      return `${albumType} · ${new Date(item.publishTime).getFullYear()}`;
     })(),
-  }
-  return subText[props.subText] || ''
+  };
+  return subText[props.subText] || "";
 }
 
 function getImageUrl(item) {
   if (item.img1v1Url) {
-    let img1v1ID = item.img1v1Url.split('/')
-    img1v1ID = img1v1ID[img1v1ID.length - 1]
-    if (img1v1ID === '5639395138885805.jpg') {
-      return 'https://p2.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg?param=512y512'
+    let img1v1ID = item.img1v1Url.split("/");
+    img1v1ID = img1v1ID[img1v1ID.length - 1];
+    if (img1v1ID === "5639395138885805.jpg") {
+      return "https://p2.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg?param=512y512";
     }
   }
-  const img = item.img1v1Url || item.picUrl || item.coverImgUrl
-  return `${img?.replace('http://', 'https://')}?param=512y512`
+  const img = item.img1v1Url || item.picUrl || item.coverImgUrl;
+  return `${img?.replace("http://", "https://")}?param=512y512`;
 }
 
 function getTitleLink(item) {
-  return `/${props.type}/${item.id}`
+  return `/${props.type}/${item.id}`;
 }
 </script>
 
 <template>
   <div class="grid" :style="rowStyles">
     <div v-for="item in props.dataList" :key="item.id">
-      <Cover
-        :id="item.id"
-        :image-url="getImageUrl(item)"
-        :type="props.type"
-      />
-      <div class="mt-8px">
+      <Cover :id="item.id" :image-url="getImageUrl(item)" :type="props.type" />
+      <div class="mt-8px info">
         <div v-if="showPlayCount" class="flex justify-between">
           <div v-if="item.playCount" class="play-count">
             <i class="i-material-symbols-play-arrow-rounded" />
@@ -115,7 +109,7 @@ function getTitleLink(item) {
         </router-link>
         <div
           v-if="props.type !== 'artist' && props.subText !== 'none'"
-          class="play-count"
+          class="subtext"
         >
           <span v-html="getSubText(item)" />
         </div>
@@ -136,7 +130,12 @@ function getTitleLink(item) {
     font-weight: 400;
   }
 }
-.name {
+.subtext {
+  font-size: 12px;
+  opacity: 0.68;
+  line-height: 18px;
+}
+.info {
   font-weight: 600;
   line-height: 20px;
   display: -webkit-box;

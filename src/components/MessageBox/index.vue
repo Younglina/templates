@@ -3,31 +3,32 @@ export default defineComponent({
   props: {
     title: {
       type: String,
-      default: "",
+      default: '',
     },
     message: {
       type: String,
-      default: "",
+      default: '',
     },
     showFooter: {
       type: Boolean,
       default: false,
     },
   },
-  emits: ["vanish", "action"],
+  emits: ['vanish', 'action'],
   setup(props, { emit }) {
-    const visible = ref(false);
+    const visible = ref(false)
     function doClose() {
-      if (!visible.value) return;
-      visible.value = false;
-      emit("action", "close");
+      if (!visible.value)
+        return
+      visible.value = false
+      emit('action', 'close')
     }
     return {
       doClose,
       visible,
-    };
+    }
   },
-});
+})
 </script>
 
 <template>
@@ -35,16 +36,20 @@ export default defineComponent({
     <div v-show="visible" class="modal-overlay">
       <div class="modal-content">
         <header class="modal-header">
-          <h3 v-if="title">{{ title }}</h3>
+          <h3 v-if="title">
+            {{ title }}
+          </h3>
           <ButtonIcon @click="doClose">
-            <div class="i-material-symbols-close-rounded font-size-20px"></div>
+            <div class="i-material-symbols-close-rounded font-size-20px" />
           </ButtonIcon>
         </header>
         <main class="modal-body">
           {{ message }}
         </main>
-        <footer class="modal-footer" v-if="showFooter">
-          <button @click="doClose">确定</button>
+        <footer v-if="showFooter" class="modal-footer">
+          <button @click="doClose">
+            确定
+          </button>
         </footer>
       </div>
     </div>

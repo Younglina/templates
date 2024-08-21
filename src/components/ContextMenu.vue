@@ -1,39 +1,41 @@
 <script setup>
-const store = useMainStore();
-const showMenu = ref(false);
-const mTop = ref("0px");
-const mLeft = ref("0px");
-const menuRef = ref(null);
-
-const emits = defineEmits(["closeMenu"]);
+const emits = defineEmits(['closeMenu'])
+const store = useMainStore()
+const showMenu = ref(false)
+const mTop = ref('0px')
+const mLeft = ref('0px')
+const menuRef = ref(null)
 
 function openMenu(e) {
-  showMenu.value = true;
+  showMenu.value = true
   nextTick(() => {
-    menuRef.value.focus();
-    setMenu(e.y, e.x);
-  });
-  e.preventDefault();
+    menuRef.value.focus()
+    setMenu(e.y, e.x)
+  })
+  e.preventDefault()
 }
 
 function setMenu(top, left) {
-  let heightOffset = store.player.enabled ? 64 : 0;
-  let largestHeight =
-    window.innerHeight - menuRef.value.offsetHeight - heightOffset;
-  let largestWidth = window.innerWidth - menuRef.value.offsetWidth - 25;
-  if (top > largestHeight) top = largestHeight;
-  if (left > largestWidth) left = largestWidth;
-  mTop.value = top + "px";
-  mLeft.value = left + "px";
+  const heightOffset = store.player.enabled ? 64 : 0
+  const largestHeight
+    = window.innerHeight - menuRef.value.offsetHeight - heightOffset
+  const largestWidth = window.innerWidth - menuRef.value.offsetWidth - 25
+  if (top > largestHeight)
+    top = largestHeight
+  if (left > largestWidth)
+    left = largestWidth
+  mTop.value = `${top}px`
+  mLeft.value = `${left}px`
 }
 
 function closeMenu() {
-  showMenu.value = false;
-  emits("closeMenu");
+  showMenu.value = false
+  emits('closeMenu')
 }
 
-defineExpose({ openMenu });
+defineExpose({ openMenu })
 </script>
+
 <template>
   <div class="context-menu">
     <div
@@ -45,10 +47,11 @@ defineExpose({ openMenu });
       @blur="closeMenu"
       @click="closeMenu"
     >
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
+
 <style scoped lang="scss">
 .context-menu {
   width: 100%;

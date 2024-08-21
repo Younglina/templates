@@ -1,155 +1,161 @@
 <script setup>
-import { resizeImage, randomNum } from "@/utils/common.js";
-import { isAccountLoggedIn } from "@/utils/auth";
-import { getLyric } from "@/api/track";
-import CoverRow from "@/components/CoverRow.vue";
-import TrackList from "@/components/TrackList.vue";
-import MvList from "@/components/MvList.vue";
+import { randomNum, resizeImage } from '@/utils/common.js'
+import { isAccountLoggedIn } from '@/utils/auth'
+import { getLyric } from '@/api/track'
+import CoverRow from '@/components/CoverRow.vue'
+import TrackList from '@/components/TrackList.vue'
+import MvList from '@/components/MvList.vue'
 
-const store = useMainStore();
-const userInfo = store.baseData.user;
-const liked = store.liked;
-const { showPg, startPg, donePg } = useProgres();
+const store = useMainStore()
+const userInfo = store.baseData.user
+const liked = store.liked
+const { showPg, startPg, donePg } = useProgres()
 
 const tabs = {
   playlists: {
-    key: "playlists",
+    key: 'playlists',
     data: [],
-    type: "playlist",
-    subText: "creator",
+    type: 'playlist',
+    subText: 'creator',
     showPlayButton: true,
-    label: "全部歌单",
+    label: '全部歌单',
     component: CoverRow,
     columnNumber: 5,
   },
   albums: {
-    key: "albums",
+    key: 'albums',
     data: [],
-    type: "album",
-    subText: "artist",
+    type: 'album',
+    subText: 'artist',
     showPlayButton: true,
-    label: "专辑",
+    label: '专辑',
     component: CoverRow,
     columnNumber: 5,
   },
   artists: {
-    key: "artists",
+    key: 'artists',
     data: [],
-    type: "artist",
-    subText: "artist",
+    type: 'artist',
+    subText: 'artist',
     showPlayButton: true,
-    label: "艺人",
+    label: '艺人',
     component: CoverRow,
     columnNumber: 5,
   },
-  mvs: { key: "mvs", data: [], label: "MV", component: MvList },
+  mvs: { key: 'mvs', data: [], label: 'MV', component: MvList },
   cloudDisk: {
-    key: "cloudDisk",
+    key: 'cloudDisk',
     data: [],
     id: -8,
-    type: "cloudDisk",
-    label: "云盘",
+    type: 'cloudDisk',
+    label: '云盘',
     columnNumber: 3,
     component: TrackList,
   },
   playHistory: {
-    key: "playHistory",
+    key: 'playHistory',
     data: [],
-    type: "tracklist",
-    label: "听歌排行",
+    type: 'tracklist',
+    label: '听歌排行',
     columnNumber: 1,
     component: TrackList,
   },
-};
-const currentTab = shallowRef({});
-const playHistoryMode = ref("");
+}
+const currentTab = shallowRef({})
+const playHistoryMode = ref('')
 function updateTab(key, subKey) {
-  if (!isAccountLoggedIn() && key !== "playlists") {
+  if (!isAccountLoggedIn() && key !== 'playlists') {
     MessageBox({
-      title: "提示",
-      message: "请先登录",
+      title: '提示',
+      message: '请先登录',
       showFooter: true,
-    });
-    return;
+    })
+    return
   }
-  currentTab.value = tabs[key];
-  if (key === "playlists") {
-    currentTab.value.data = liked.playlists.slice(1);
-  } else if (key !== "playHistory") {
-    currentTab.value.data = liked[key];
-  } else {
-    playHistoryMode.value = subKey;
-    currentTab.value.data =
-      liked.playHistory[subKey === "week" ? "weekData" : "allData"];
+  currentTab.value = tabs[key]
+  if (key === 'playlists') {
+    currentTab.value.data = liked.playlists.slice(1)
+  }
+  else if (key !== 'playHistory') {
+    currentTab.value.data = liked[key]
+  }
+  else {
+    playHistoryMode.value = subKey
+    currentTab.value.data
+      = liked.playHistory[subKey === 'week' ? 'weekData' : 'allData']
   }
   if (!subKey) {
-    const targetElement = document.querySelector(".tabs");
-    const mainWrap = document.querySelector(".main-wrap");
-    const rect = targetElement.getBoundingClientRect();
+    const targetElement = document.querySelector('.tabs')
+    const mainWrap = document.querySelector('.main-wrap')
+    const rect = targetElement.getBoundingClientRect()
     if (rect.top > 100) {
-      mainWrap.scrollTo({ top: rect.top, behavior: "smooth" });
+      mainWrap.scrollTo({ top: rect.top, behavior: 'smooth' })
     }
   }
 }
 
-const lyrics = ref("");
+const lyrics = ref('')
 function getRandomLyric() {
-  if (liked.songs.length === 0) return;
+  if (liked.songs.length === 0)
+    return
   getLyric(liked.songs[randomNum(0, liked.songs.length - 1)]).then((data) => {
     if (data.lrc !== undefined) {
       const isInstrumental = data.lrc.lyric
-        .split("\n")
-        .filter((l) => l.includes("纯音乐，请欣赏"));
+        .split('\n')
+        .filter(l => l.includes('纯音乐，请欣赏'))
       if (isInstrumental.length === 0) {
-        lyrics.value = data.lrc.lyric;
+        lyrics.value = data.lrc.lyric
       }
     }
-  });
+  })
 }
 const showLyric = computed(() => {
-  const lyric = lyrics.value;
-  if (!lyric) return [];
+  const lyric = lyrics.value
+  if (!lyric)
+    return []
 
   const lyricLine = lyric
-    .split("\n")
-    .filter((line) => !line.includes("作词") && !line.includes("作曲"));
-  const lyricsToPick = Math.min(lyricLine.length, 3);
-  const randomUpperBound = lyricLine.length - lyricsToPick;
-  const startLyricLineIndex = randomNum(0, randomUpperBound - 1);
+    .split('\n')
+    .filter(line => !line.includes('作词') && !line.includes('作曲'))
+  const lyricsToPick = Math.min(lyricLine.length, 3)
+  const randomUpperBound = lyricLine.length - lyricsToPick
+  const startLyricLineIndex = randomNum(0, randomUpperBound - 1)
   return lyricLine
     .slice(startLyricLineIndex, startLyricLineIndex + lyricsToPick)
-    .map((item) => item.split("]").pop().trim());
-});
+    .map(item => item.split(']').pop().trim())
+})
 
 function loadData() {
-  startPg();
-  showPg.value = false;
+  startPg()
+  showPg.value = false
   if (liked.songsWithDetails.length > 0) {
-    donePg();
+    donePg()
     // getRandomLyric();
-  } else {
-    store.fetchLikedSongsWithDetails().then(() => {
-      donePg();
-      // getRandomLyric();
-    });
   }
-  store.fetchLikedSongs();
-  store.fetchLikedPlaylist();
-  store.fetchLikedAlbums();
-  store.fetchLikedArtists();
-  store.fetchLikedMVs();
-  store.fetchCloudDisk();
-  store.fetchPlayHistory();
+  else {
+    store.fetchLikedSongsWithDetails().then(() => {
+      donePg()
+      // getRandomLyric();
+    })
+  }
+  store.fetchLikedSongs()
+  store.fetchLikedPlaylist()
+  store.fetchLikedAlbums()
+  store.fetchLikedArtists()
+  store.fetchLikedMVs()
+  store.fetchCloudDisk()
+  store.fetchPlayHistory()
 }
 
 onMounted(() => {
-  donePg();
-  currentTab.value = tabs.playlists;
-  currentTab.value.data = liked.playlists.slice(1);
-  getRandomLyric();
+  donePg()
+  currentTab.value = tabs.playlists
+  currentTab.value.data = liked.playlists.slice(1)
+  getRandomLyric()
   // loadData();
-});
+})
 </script>
+
 <template>
   <div v-show="showPg">
     <h1>
@@ -158,10 +164,10 @@ onMounted(() => {
         :src="resizeImage(userInfo.avatarUrl)"
         loading="lazy"
         alt="avatar"
-      />
+      >
       {{ userInfo.nickname }}的音乐库
     </h1>
-    <div class="flex mt-24px">
+    <div class="mt-24px flex">
       <div class="liked-lyr">
         <div>
           <p>
@@ -169,14 +175,15 @@ onMounted(() => {
               v-for="(line, index) in showLyric"
               v-show="line !== ''"
               :key="`${line}${index}`"
-              >{{ line }}<br
-            /></span>
+            >{{ line }}<br></span>
           </p>
         </div>
         <div class="flex items-center justify-between">
           <div>
-            <p class="font-size-24px fw-700">我喜欢的音乐</p>
-            <p class="font-size-15px mt-2px">
+            <p class="font-size-24px fw-700">
+              我喜欢的音乐
+            </p>
+            <p class="mt-2px font-size-15px">
               {{ store.liked.songs.length }} 首歌
             </p>
           </div>
@@ -188,7 +195,7 @@ onMounted(() => {
       <div class="liked-songs">
         <TrackList
           :id="liked.playlists.length > 0 ? liked.playlists[0].id : 0"
-          :dataList="liked.songsWithDetails"
+          :data-list="liked.songsWithDetails"
           :column-number="3"
           type="tracklist"
           dbclick-track-func="playPlaylistByID"
@@ -228,9 +235,9 @@ onMounted(() => {
         </button>
       </div>
       <component
-        class="mt-24px"
         :is="currentTab.component"
-        :dataList="currentTab.data"
+        class="mt-24px"
+        :data-list="currentTab.data"
         :type="currentTab.type"
         :sub-text="currentTab.subText"
         :column-number="currentTab.columnNumber"
@@ -239,6 +246,7 @@ onMounted(() => {
     </div>
   </div>
 </template>
+
 <style scoped lang="scss">
 h1 {
   font-size: 42px;

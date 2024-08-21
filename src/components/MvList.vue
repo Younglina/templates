@@ -3,57 +3,63 @@ const props = defineProps({
   dataList: Array,
   subtitle: {
     type: String,
-    default: "artist",
+    default: 'artist',
   },
   withoutPadding: { type: Boolean, default: false },
-});
+})
 
 function getUrl(mv) {
-  let url = mv.imgurl16v9 ?? mv.cover ?? mv.coverUrl;
-  return url.replace(/^http:/, "https:") + "?param=464y260";
+  const url = mv.imgurl16v9 ?? mv.cover ?? mv.coverUrl
+  return `${url.replace(/^http:/, 'https:')}?param=464y260`
 }
 function getID(mv) {
-  return mv.id || mv.vid;
+  return mv.id || mv.vid
 }
 function getSubtitle(mv) {
-  if (props.subtitle === "artist") {
-    let artistName = "null";
-    let artistID = 0;
+  if (props.subtitle === 'artist') {
+    let artistName = 'null'
+    let artistID = 0
     if (mv.artistName !== undefined) {
-      artistName = mv.artistName;
-      artistID = mv.artistId;
-    } else if (mv.creator !== undefined) {
-      artistName = mv.creator[0].userName;
-      artistID = mv.creator[0].userId;
+      artistName = mv.artistName
+      artistID = mv.artistId
     }
-    return `<a href="/music/artist/${artistID}">${artistName}</a>`;
-  } else if (props.subtitle === "publishTime") {
-    return mv.publishTime;
+    else if (mv.creator !== undefined) {
+      artistName = mv.creator[0].userName
+      artistID = mv.creator[0].userId
+    }
+    return `<a href="/music/artist/${artistID}">${artistName}</a>`
+  }
+  else if (props.subtitle === 'publishTime') {
+    return mv.publishTime
   }
 }
 function goToMv() {}
 </script>
+
 <template>
   <div class="mv-list" :class="{ 'without-padding': withoutPadding }">
     <div v-for="mv in props.dataList" :key="getID(mv)" class="mv">
       <div class="cover" @click="goToMv(getID(mv))">
-        <img :src="getUrl(mv)" loading="lazy" />
+        <img :src="getUrl(mv)" loading="lazy">
         <div
           class="shadow"
-          :style="{ background: 'url(' + getUrl(mv) + ')' }"
-        ></div>
+          :style="{ background: `url(${getUrl(mv)})` }"
+        />
       </div>
       <div class="info">
         <div class="mv-title">
-          <router-link :to="'/mv/' + getID(mv)">{{
-            mv.name || mv.title
-          }}</router-link>
+          <router-link :to="`/mv/${getID(mv)}`">
+            {{
+              mv.name || mv.title
+            }}
+          </router-link>
         </div>
-        <div class="artist" v-html="getSubtitle(mv)"></div>
+        <div class="artist" v-html="getSubtitle(mv)" />
       </div>
     </div>
   </div>
 </template>
+
 <style scoped lang="scss">
 .mv-list {
   display: grid;

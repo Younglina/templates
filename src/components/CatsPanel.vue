@@ -1,16 +1,20 @@
 <script setup>
-import { playlistCategories } from "@/constants";
-const store = useMainStore();
-const allBigCats = ["语种", "风格", "场景", "情感", "主题"];
+import { playlistCategories } from '@/constants'
+
+const store = useMainStore()
+const allBigCats = ['语种', '风格', '场景', '情感', '主题']
 // defineEmits(["toggleCat"]);
 function getCatsByBigCat(name) {
-  return playlistCategories.filter((c) => c.bigCat === name);
+  return playlistCategories.filter(c => c.bigCat === name)
 }
 </script>
+
 <template>
   <div class="panel">
     <div v-for="bigCat in allBigCats" :key="bigCat" class="big-cat">
-      <div class="name">{{ bigCat }}</div>
+      <div class="name">
+        {{ bigCat }}
+      </div>
       <div class="cats">
         <div
           v-for="cat in getCatsByBigCat(bigCat)"
@@ -27,6 +31,7 @@ function getCatsByBigCat(name) {
     </div>
   </div>
 </template>
+
 <style scoped lang="scss">
 .panel {
   position: absolute;

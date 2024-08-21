@@ -1,20 +1,13 @@
 import axios from "axios";
-import { doLogout, getCookie } from "./auth.js";
+import { getCookie } from "./auth.js";
+import { useRouter } from "vue-router";
 
 const _axios = axios.create({
-  // baseURL: "http://localhost:3000/",
-  baseURL: "https://dev.usemock.com/65e8005d48882231b5644106/",
+  baseURL: "http://localhost:3000/",
+  // baseURL: "https://dev.usemock.com/65e8005d48882231b5644106/",
   timeout: 20000, // 请求超时 20s
   withCredentials: true,
 });
-class CustomError extends Error {
-  constructor(code, message) {
-    super(message);
-    this.code = code;
-    this.name = this.constructor.name;
-    Error.captureStackTrace(this, this.constructor);
-  }
-}
 
 // 前置拦截器（发起请求之前的拦截）
 _axios.interceptors.request.use(
@@ -55,7 +48,7 @@ _axios.interceptors.response.use(
       data.msg === "需要登录"
     ) {
       console.warn("Token has expired. Logout now!");
-
+      const router = useRouter();
       // doLogout();
       router.push({ name: "login" });
     }

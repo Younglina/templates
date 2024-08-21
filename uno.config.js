@@ -7,7 +7,7 @@ import {
   presetUno,
   transformerDirectives,
   transformerVariantGroup,
-} from "unocss";
+} from 'unocss'
 
 export default defineConfig({
   shortcuts: [
@@ -19,12 +19,12 @@ export default defineConfig({
     presetIcons({
       collections: {
         ms: () =>
-          import("@iconify-json/material-symbols/icons.json").then(
-            (i) => i.default
+          import('@iconify-json/material-symbols/icons.json').then(
+            i => i.default,
           ),
       },
     }),
     presetTypography(),
   ],
   transformers: [transformerDirectives(), transformerVariantGroup()],
-});
+})

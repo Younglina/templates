@@ -1,5 +1,5 @@
-import request from "@/utils/request";
-import { mapTrackPlayableStatus } from "@/utils/common";
+import request from '@/utils/request'
+import { mapTrackPlayableStatus } from '@/utils/common'
 
 /**
  * 获取歌手单曲
@@ -8,16 +8,16 @@ import { mapTrackPlayableStatus } from "@/utils/common";
  */
 export function getArtist(id) {
   return request({
-    url: "/artists",
-    method: "get",
+    url: '/artists',
+    method: 'get',
     params: {
       id,
       timestamp: new Date().getTime(),
     },
   }).then((data) => {
-    data.hotSongs = mapTrackPlayableStatus(data.hotSongs);
-    return data;
-  });
+    data.hotSongs = mapTrackPlayableStatus(data.hotSongs)
+    return data
+  })
 }
 
 /**
@@ -26,17 +26,17 @@ export function getArtist(id) {
  * - id: 歌手 id
  * - limit: 取出数量 , 默认为 50
  * - offset: 偏移数量 , 用于分页 , 如 :( 页数 -1)*50, 其中 50 为 limit 的值 , 默认为 0
- * @param {Object} params
+ * @param {object} params
  * @param {number} params.id
  * @param {number=} params.limit
  * @param {number=} params.offset
  */
 export function getArtistAlbum(params) {
   return request({
-    url: "/artist/album",
-    method: "get",
+    url: '/artist/album',
+    method: 'get',
     params,
-  });
+  })
 }
 
 /**
@@ -50,15 +50,15 @@ export function getArtistAlbum(params) {
  * @param {number=} type
  */
 export function toplistOfArtists(type = null) {
-  let params = {};
+  const params = {}
   if (type) {
-    params.type = type;
+    params.type = type
   }
   return request({
-    url: "/toplist/artist",
-    method: "get",
+    url: '/toplist/artist',
+    method: 'get',
     params,
-  });
+  })
 }
 /**
  * 获取歌手 mv
@@ -69,10 +69,10 @@ export function toplistOfArtists(type = null) {
  */
 export function artistMv(params) {
   return request({
-    url: "/artist/mv",
-    method: "get",
+    url: '/artist/mv',
+    method: 'get',
     params,
-  });
+  })
 }
 
 /**
@@ -80,16 +80,16 @@ export function artistMv(params) {
  * 说明 : 调用此接口 , 传入歌手 id, 可收藏歌手
  * - id: 歌手 id
  * - t: 操作,1 为收藏,其他为取消收藏
- * @param {Object} params
+ * @param {object} params
  * @param {number} params.id
  * @param {number} params.t
  */
 export function followAArtist(params) {
   return request({
-    url: "/artist/sub",
-    method: "post",
+    url: '/artist/sub',
+    method: 'post',
     params,
-  });
+  })
 }
 
 /**
@@ -100,8 +100,8 @@ export function followAArtist(params) {
  */
 export function similarArtists(id) {
   return request({
-    url: "/simi/artist",
-    method: "post",
+    url: '/simi/artist',
+    method: 'post',
     params: { id },
-  });
+  })
 }

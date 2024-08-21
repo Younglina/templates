@@ -6,22 +6,24 @@ const props = defineProps({
   },
   exclude: {
     type: String,
-    default: "",
+    default: '',
   },
   prefix: {
     type: String,
-    default: "",
+    default: '',
   },
-});
+})
 
 const filteredArtists = computed(() => {
-  return props.artists.filter((a) => a.name !== props.exclude);
-});
+  return props.artists.filter(a => a.name !== props.exclude)
+})
 const computedPrefix = computed(() => {
-  if (filteredArtists.length !== 0) return props.prefix;
-  else return "";
-});
+  if (filteredArtists.value.length !== 0)
+    return props.prefix
+  else return ''
+})
 </script>
+
 <template>
   <span class="artist-in-line">
     {{ computedPrefix }}
@@ -30,9 +32,7 @@ const computedPrefix = computed(() => {
         ar.name
       }}</router-link>
       <span v-else>{{ ar.name }}</span>
-      <span v-if="index !== filteredArtists.length - 1" class="separator"
-        >,</span
-      >
+      <span v-if="index !== filteredArtists.length - 1" class="separator">,</span>
     </span>
   </span>
 </template>

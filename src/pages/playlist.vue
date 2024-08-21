@@ -1,76 +1,77 @@
 <script setup>
 import {
   getPlaylistDetail,
-  subscribePlaylist,
-  deletePlaylist,
-} from "@/api/playlist";
-import { formatDate } from "@/utils/common";
-import { getTrackDetail } from "@/api/track";
-const route = useRoute();
-const { showPg, startPg, donePg } = useProgres();
-const store = useMainStore();
+} from '@/api/playlist'
+import { formatDate } from '@/utils/common'
+import { getTrackDetail } from '@/api/track'
+
+const route = useRoute()
+const { showPg, startPg, donePg } = useProgres()
+const store = useMainStore()
 
 const mData = reactive({
   show: false,
   tracks: [],
   lastLoadedTrackIndex: 0,
   hasMore: true,
-});
+})
 const playlist = ref({
   id: 0,
-  coverImgUrl: "",
+  coverImgUrl: '',
   creator: {
-    userId: "",
+    userId: '',
   },
   trackIds: [],
-});
+})
 onMounted(() => {
-  if (route.name === "likedSongs") {
-    loadData(mData.likedSongPlaylistID);
-  } else {
-    loadData(route.params.id);
+  if (route.name === 'likedSongs') {
+    loadData(mData.likedSongPlaylistID)
   }
-  startPg();
-});
+  else {
+    loadData(route.params.id)
+  }
+  startPg()
+})
 
 function loadData(id) {
-  mData.id = id;
+  mData.id = id
   getPlaylistDetail(mData.id, true)
     .then((data) => {
-      playlist.value = data.playlist;
-      mData.tracks = data.playlist.tracks;
-      donePg();
-      mData.show = true;
-      mData.lastLoadedTrackIndex = data.playlist.tracks.length - 1;
-      return data;
+      playlist.value = data.playlist
+      mData.tracks = data.playlist.tracks
+      donePg()
+      mData.show = true
+      mData.lastLoadedTrackIndex = data.playlist.tracks.length - 1
+      return data
     })
     .then(() => {
       if (playlist.value.trackCount > mData.tracks.length) {
-        mData.loadingMore = true;
-        loadMore();
+        mData.loadingMore = true
+        loadMore()
       }
-    });
+    })
 }
 function loadMore(loadNum = 100) {
   let trackIDs = playlist.value.trackIds.filter((t, index) => {
     if (
-      index > mData.lastLoadedTrackIndex &&
-      index <= mData.lastLoadedTrackIndex + loadNum
+      index > mData.lastLoadedTrackIndex
+      && index <= mData.lastLoadedTrackIndex + loadNum
     ) {
-      return t;
+      return t
     }
-  });
-  trackIDs = trackIDs.map((t) => t.id);
-  getTrackDetail(trackIDs.join(",")).then((data) => {
-    mData.tracks.push(...data.songs);
-    mData.lastLoadedTrackIndex += trackIDs.length;
-    mData.loadingMore = false;
+  })
+  trackIDs = trackIDs.map(t => t.id)
+  getTrackDetail(trackIDs.join(',')).then((data) => {
+    mData.tracks.push(...data.songs)
+    mData.lastLoadedTrackIndex += trackIDs.length
+    mData.loadingMore = false
     if (mData.lastLoadedTrackIndex + 1 === playlist.value.trackIds.length) {
-      mData.hasMore = false;
-    } else {
-      mData.hasMore = true;
+      mData.hasMore = false
     }
-  });
+    else {
+      mData.hasMore = true
+    }
+  })
 }
 function playPlaylistByID() {}
 
@@ -78,18 +79,19 @@ function openMenu() {}
 function toggleFullDescription() {}
 function likePlaylist() {}
 </script>
+
 <template>
   <div v-show="mData.show" class="mt-32px">
     <div class="list-info">
       <Cover
         :id="playlist.id"
-        :image-url="playlist.coverImgUrl + '?param=${size}y${size}'"
+        :image-url="`${playlist.coverImgUrl}?param=\${size}y\${size}`"
         :fixed-size="288"
-        clickCoverToPlay
-        alwaysShowShadow
+        click-cover-to-play
+        always-show-shadow
         type="playlist"
         @click.right.native="openMenu"
-      ></Cover>
+      />
       <div class="info">
         <div class="list-title" @click.right="openMenu">
           <div v-if="playlist.privacy === 10" class="lock-icon" />
@@ -100,7 +102,7 @@ function likePlaylist() {}
           <a
             :href="`https://music.163.com/#/user/home?id=${playlist.creator.userId}`"
             target="blank"
-            >{{ playlist.creator.nickname }}
+          >{{ playlist.creator.nickname }}
           </a>
         </div>
         <div class="date-and-count">
@@ -137,18 +139,19 @@ function likePlaylist() {}
                   ? 'var(--color-secondary-bg)'
                   : '',
               }"
-            ></div>
+            />
           </ButtonIcon>
           <ButtonIcon grey @click.native="openMenu">
-            <div class="i-material-symbols-more-horiz"></div>
+            <div class="i-material-symbols-more-horiz" />
           </ButtonIcon>
         </div>
       </div>
     </div>
 
-    <TrackList :id="playlist.id" :dataList="mData.tracks" type="playlist" />
+    <TrackList :id="playlist.id" :data-list="mData.tracks" type="playlist" />
   </div>
 </template>
+
 <style scoped lang="scss">
 .list-info {
   display: flex;

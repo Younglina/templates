@@ -40,10 +40,10 @@ onBeforeMount(() => {
   });
   // 获取推荐艺人
   toplistOfArtists().then((data) => {
-    let indexs = [];
+    const indexs = [];
     const recommendArtists = [];
     while (indexs.length < 6) {
-      let tmp = ~~(Math.random() * 100);
+      const tmp = ~~(Math.random() * 100);
       if (!indexs.includes(tmp)) {
         indexs.push(tmp);
         recommendArtists.push(data.list.artists[tmp]);
@@ -66,7 +66,6 @@ onBeforeMount(() => {
     );
   });
 });
-const showCatOptions = ref(false);
 </script>
 
 <template>
@@ -79,12 +78,12 @@ const showCatOptions = ref(false);
         </router-link>
       </div>
       <CoverRow
-        :dataList="item.items"
+        :data-list="item.items"
         :type="item.type"
-        :columnNumber="item.columnNumber"
-        :subText="item.subText"
-        :showPlayCount="item.showPlayCount"
-      ></CoverRow>
+        :column-number="item.columnNumber"
+        :sub-text="item.subText"
+        :show-play-count="item.showPlayCount"
+      />
     </div>
   </div>
 </template>

@@ -4,13 +4,15 @@ defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 </script>
+
 <template>
   <button class="button-icon" :class="[grey ? 'grey' : '']">
-    <slot></slot>
+    <slot />
   </button>
 </template>
+
 <style scoped lang="scss">
 button {
   display: inline-flex;

@@ -24,32 +24,36 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 
 const imageStyles = computed(() => {
-  let styles = {};
+  const styles = {}
   if (props.fixedSize !== 0) {
-    styles.width = props.fixedSize + "px";
-    styles.height = props.fixedSize + "px";
+    styles.width = `${props.fixedSize}px`
+    styles.height = `${props.fixedSize}px`
   }
-  if (props.type === "artist") styles.borderRadius = "50%";
-  return styles;
-});
+  if (props.type === 'artist')
+    styles.borderRadius = '50%'
+  return styles
+})
 
 const shadowStyles = computed(() => {
-  let styles = {};
-  styles.backgroundImage = `url(${props.imageUrl})`;
-  if (props.type === "artist") styles.borderRadius = "50%";
-  if (props.alwaysShowShadow) styles.display = "block";
-  return styles;
-});
+  const styles = {}
+  styles.backgroundImage = `url(${props.imageUrl})`
+  if (props.type === 'artist')
+    styles.borderRadius = '50%'
+  if (props.alwaysShowShadow)
+    styles.display = 'block'
+  return styles
+})
 function play() {}
 
-const router = useRouter();
+const router = useRouter()
 function goTo() {
-  router.push(`/${props.type}/${props.id}`);
+  router.push(`/${props.type}/${props.id}`)
 }
 </script>
+
 <template>
   <div class="cover" @click="clickCoverToPlay ? play() : goTo()">
     <div class="shade">
@@ -57,10 +61,11 @@ function goTo() {
         <div class="i-material-symbols-play-arrow-rounded size-32px" />
       </button>
     </div>
-    <img :src="props.imageUrl" :style="imageStyles" loading="lazy" />
-    <div class="shadow" :style="shadowStyles"></div>
+    <img :src="props.imageUrl" :style="imageStyles" loading="lazy">
+    <div class="shadow" :style="shadowStyles" />
   </div>
 </template>
+
 <style scoped lang="scss">
 .cover {
   position: relative;

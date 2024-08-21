@@ -1,60 +1,60 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from 'vue-router'
 
-import Home from "../pages/home.vue";
+import Home from '../pages/home.vue'
 
 const routes = [
-  { path: "/", component: Home, name: "home" },
+  { path: '/', component: Home, name: 'home' },
   {
-    path: "/login",
-    component: () => import("../pages/loginAccount.vue"),
-    name: "login",
+    path: '/login',
+    component: () => import('../pages/loginAccount.vue'),
+    name: 'login',
   },
-  { path: "/test", component: () => import("../pages/test.vue"), name: "test" },
+  { path: '/test', component: () => import('../pages/test.vue'), name: 'test' },
   {
-    path: "/library",
-    component: () => import("../pages/library.vue"),
-    name: "library",
-  },
-  {
-    path: "/explore/:category?",
-    component: () => import("../pages/explore.vue"),
-    name: "explore",
+    path: '/library',
+    component: () => import('../pages/library.vue'),
+    name: 'library',
   },
   {
-    path: "/playlist/:id?",
-    component: () => import("../pages/playlist.vue"),
-    name: "playlist",
+    path: '/explore/:category?',
+    component: () => import('../pages/explore.vue'),
+    name: 'explore',
   },
   {
-    path: "/album/:id?",
-    component: () => import("../pages/explore.vue"),
-    name: "album",
+    path: '/playlist/:id?',
+    component: () => import('../pages/playlist.vue'),
+    name: 'playlist',
   },
   {
-    path: "/artist/:id?",
-    component: () => import("../pages/artist.vue"),
-    name: "artist",
+    path: '/album/:id?',
+    component: () => import('../pages/album.vue'),
+    name: 'album',
   },
   {
-    path: "/mv/:id?",
-    component: () => import("../pages/mv.vue"),
-    name: "mv",
+    path: '/artist/:id?',
+    component: () => import('../pages/artist.vue'),
+    name: 'artist',
   },
   {
-    path: "/search/:keywords?",
-    component: () => import("../pages/search.vue"),
-    name: "search",
+    path: '/mv/:id?',
+    component: () => import('../pages/mv.vue'),
+    name: 'mv',
   },
   {
-    path: "/search/:keywords/:type",
-    component: () => import("../pages/searchType.vue"),
-    name: "searchType",
+    path: '/search/:keywords?',
+    component: () => import('../pages/search.vue'),
+    name: 'search',
   },
-];
+  {
+    path: '/search/:keywords/:type',
+    component: () => import('../pages/searchType.vue'),
+    name: 'searchType',
+  },
+]
 
 const router = createRouter({
-  history: createWebHistory("/music/"),
+  history: createWebHistory('/music/'),
   routes,
-});
+})
 
-export default router;
+export default router

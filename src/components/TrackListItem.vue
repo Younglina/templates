@@ -1,5 +1,6 @@
 <script setup>
-import { formatTime } from "@/utils/common";
+import { formatTime } from '@/utils/common'
+
 const props = defineProps({
   trackProp: Object,
   trackNo: Number,
@@ -11,66 +12,70 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
-});
-const store = useMainStore();
+})
+const store = useMainStore()
 
 const trackComputed = computed(() => {
-  return props.type === "cloudDisk"
+  return props.type === 'cloudDisk'
     ? props.trackProp.simpleSong
-    : props.trackProp;
-});
-const track = toRaw(trackComputed.value || {});
+    : props.trackProp
+})
+const track = toRaw(trackComputed.value || {})
 const playable = computed(() => {
-  return track?.privilege?.pl > 0 || track?.playable;
-});
+  return track?.privilege?.pl > 0 || track?.playable
+})
 
 const trackClass = computed(() => {
-  let trackClass = [props.type];
-  if (!playable.value) trackClass.push("disable");
+  const trackClass = [props.type]
+  if (!playable.value)
+    trackClass.push('disable')
   if (store.player.currentTrack.id === track?.id && props.highlightPlayingTrack)
-    trackClass.push("playing");
+    trackClass.push('playing')
   // if (props.focus) trackClass.push("focus");
-  return trackClass;
-});
+  return trackClass
+})
 
 const isAlbum = computed(() => {
-  return props.type === "album";
-});
+  return props.type === 'album'
+})
 const imgUrl = computed(() => {
-  let image =
-    track?.al?.picUrl ??
-    track?.album?.picUrl ??
-    "https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg";
-  return image + "?param=224y224";
-});
+  const image
+    = track?.al?.picUrl
+    ?? track?.album?.picUrl
+    ?? 'https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg'
+  return `${image}?param=224y224`
+})
 const artists = computed(() => {
-  const { ar, artists } = track;
-  if (ar != null) return ar;
-  if (artists != null) return artists;
-  return [];
-});
+  const { ar, artists } = track
+  if (ar != null)
+    return ar
+  if (artists != null)
+    return artists
+  return []
+})
 const showAlbumName = computed(() => {
-  return props.type !== "album" && props.type !== "tracklist";
-});
+  return props.type !== 'album' && props.type !== 'tracklist'
+})
 const showTrackTime = computed(() => {
-  return props.type !== "tracklist";
-});
+  return props.type !== 'tracklist'
+})
 const showLikeButton = computed(() => {
-  return props.type !== "tracklist" && props.type !== "cloudDisk";
-});
+  return props.type !== 'tracklist' && props.type !== 'cloudDisk'
+})
 const album = computed(() => {
-  return track.album || track.al || track?.simpleSong?.al;
-});
+  return track.album || track.al || track?.simpleSong?.al
+})
 const isLiked = computed(() => {
-  return store.liked.songs.includes(track?.id);
-});
+  return store.liked.songs.includes(track?.id)
+})
 
 function goToAlbum() {}
 function likeThisSong() {}
 </script>
+
 <template>
   <div class="track" :class="trackClass">
-    <img v-if="!isAlbum" :src="imgUrl" loading="lazy" @click="goToAlbum" />
+    <img v-if="!isAlbum" :src="imgUrl" loading="lazy" @click="goToAlbum">
     <div class="title-artist">
       <div class="track-title">
         {{ track.name }}
@@ -88,17 +93,20 @@ function likeThisSong() {}
       <ButtonIcon @click="likeThisSong">
         <div
           v-show="!isLiked"
-          class="i-material-symbols-favorite-outline-rounded heart-icon"
-        ></div>
-        <div v-show="isLiked" class="i-material-symbols-favorite-rounded"></div>
+          class="heart-icon i-material-symbols-favorite-outline-rounded"
+        />
+        <div v-show="isLiked" class="i-material-symbols-favorite-rounded" />
       </ButtonIcon>
     </div>
     <div v-if="showTrackTime" class="time">
       {{ formatTime(track.dt) }}
     </div>
-    <div v-if="track.playCount" class="count">{{ track.playCount }}</div>
+    <div v-if="track.playCount" class="count">
+      {{ track.playCount }}
+    </div>
   </div>
 </template>
+
 <style scoped lang="scss">
 .track {
   display: flex;

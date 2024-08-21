@@ -1,12 +1,12 @@
-import request from '@/utils/request';
-import { mapTrackPlayableStatus } from '@/utils/common';
+import request from '@/utils/request'
+import { mapTrackPlayableStatus } from '@/utils/common'
 
 /**
  * 推荐歌单
  * 说明 : 调用此接口 , 可获取推荐歌单
  * - limit: 取出数量 , 默认为 30 (不支持 offset)
  * - 调用例子 : /personalized?limit=1
- * @param {Object} params
+ * @param {object} params
  * @param {number=} params.limit
  */
 export function recommendPlaylist(params) {
@@ -14,12 +14,12 @@ export function recommendPlaylist(params) {
     url: '/personalized',
     method: 'get',
     params,
-  });
+  })
 }
 /**
  * 获取每日推荐歌单
  * 说明 : 调用此接口 , 可获得每日推荐歌单 ( 需要登录 )
- * @param {Object} params
+ * @param {object} params
  * @param {number=} params.limit
  */
 export function dailyRecommendPlaylist(params) {
@@ -30,7 +30,7 @@ export function dailyRecommendPlaylist(params) {
       params,
       timestamp: Date.now(),
     },
-  });
+  })
 }
 /**
  * 获取歌单详情
@@ -43,21 +43,22 @@ export function dailyRecommendPlaylist(params) {
  * @param {boolean=} noCache
  */
 export function getPlaylistDetail(id, noCache = false) {
-  let params = { id };
-  if (noCache) params.timestamp = new Date().getTime();
+  const params = { id }
+  if (noCache)
+    params.timestamp = new Date().getTime()
   return request({
     url: '/playlist/detail',
     method: 'get',
     params,
-  }).then(data => {
+  }).then((data) => {
     if (data.playlist) {
       data.playlist.tracks = mapTrackPlayableStatus(
         data.playlist.tracks,
-        data.privileges || []
-      );
+        data.privileges || [],
+      )
     }
-    return data;
-  });
+    return data
+  })
 }
 /**
  * 获取精品歌单
@@ -65,7 +66,7 @@ export function getPlaylistDetail(id, noCache = false) {
  * - cat: tag, 比如 " 华语 "、" 古风 " 、" 欧美 "、" 流行 ", 默认为 "全部", 可从精品歌单标签列表接口获取(/playlist/highquality/tags)
  * - limit: 取出歌单数量 , 默认为 20
  * - before: 分页参数,取上一页最后一个歌单的 updateTime 获取下一页数据
- * @param {Object} params
+ * @param {object} params
  * @param {string} params.cat
  * @param {number=} params.limit
  * @param {number} params.before
@@ -75,7 +76,7 @@ export function highQualityPlaylist(params) {
     url: '/top/playlist/highquality',
     method: 'get',
     params,
-  });
+  })
 }
 
 /**
@@ -84,7 +85,7 @@ export function highQualityPlaylist(params) {
  * - order: 可选值为 'new' 和 'hot', 分别对应最新和最热 , 默认为 'hot'
  * - cat: tag, 比如 " 华语 "、" 古风 " 、" 欧美 "、" 流行 ", 默认为 "全部",可从歌单分类接口获取(/playlist/catlist)
  * - limit: 取出歌单数量 , 默认为 50
- * @param {Object} params
+ * @param {object} params
  * @param {string} params.order
  * @param {string} params.cat
  * @param {number=} params.limit
@@ -94,7 +95,7 @@ export function topPlaylist(params) {
     url: '/top/playlist',
     method: 'get',
     params,
-  });
+  })
 }
 
 /**
@@ -105,7 +106,7 @@ export function playlistCatlist() {
   return request({
     url: '/playlist/catlist',
     method: 'get',
-  });
+  })
 }
 
 /**
@@ -116,7 +117,7 @@ export function toplists() {
   return request({
     url: '/toplist',
     method: 'get',
-  });
+  })
 }
 
 /**
@@ -124,31 +125,31 @@ export function toplists() {
  * 说明 : 调用此接口, 传入类型和歌单 id 可收藏歌单或者取消收藏歌单
  * - t : 类型,1:收藏,2:取消收藏
  * - id : 歌单 id
- * @param {Object} params
+ * @param {object} params
  * @param {number} params.t
  * @param {number} params.id
  */
 export function subscribePlaylist(params) {
-  params.timestamp = new Date().getTime();
+  params.timestamp = new Date().getTime()
   return request({
     url: '/playlist/subscribe',
     method: 'post',
     params,
-  });
+  })
 }
 
 /**
  * 删除歌单
  * 说明 : 调用此接口 , 传入歌单id可删除歌单
  * - id : 歌单id,可多个,用逗号隔开
- *  * @param {number} id
+ *  @param {number} id
  */
 export function deletePlaylist(id) {
   return request({
     url: '/playlist/delete',
     method: 'post',
     params: { id },
-  });
+  })
 }
 
 /**
@@ -157,18 +158,18 @@ export function deletePlaylist(id) {
  * - name : 歌单名
  * - privacy : 是否设置为隐私歌单，默认否，传'10'则设置成隐私歌单
  * - type : 歌单类型,默认'NORMAL',传 'VIDEO'则为视频歌单
- * @param {Object} params
+ * @param {object} params
  * @param {string} params.name
  * @param {number} params.privacy
  * @param {string} params.type
  */
 export function createPlaylist(params) {
-  params.timestamp = new Date().getTime();
+  params.timestamp = new Date().getTime()
   return request({
     url: '/playlist/create',
     method: 'post',
     params,
-  });
+  })
 }
 
 /**
@@ -176,23 +177,23 @@ export function createPlaylist(params) {
  * 说明 : 调用此接口 , 可以添加歌曲到歌单或者从歌单删除某首歌曲 ( 需要登录 )
  * - op: 从歌单增加单曲为 add, 删除为 del
  * - pid: 歌单 id tracks: 歌曲 id,可多个,用逗号隔开
- * @param {Object} params
+ * @param {object} params
  * @param {string} params.op
  * @param {string} params.pid
  */
 export function addOrRemoveTrackFromPlaylist(params) {
-  params.timestamp = new Date().getTime();
+  params.timestamp = new Date().getTime()
   return request({
     url: '/playlist/tracks',
     method: 'post',
     params,
-  });
+  })
 }
 
 /**
  * 每日推荐歌曲
  * 说明 : 调用此接口 , 可获得每日推荐歌曲 ( 需要登录 )
- * @param {Object} params
+ * @param {object} params
  * @param {string} params.op
  * @param {string} params.pid
  */
@@ -201,13 +202,13 @@ export function dailyRecommendTracks() {
     url: '/recommend/songs',
     method: 'get',
     params: { timestamp: new Date().getTime() },
-  }).then(result => {
+  }).then((result) => {
     result.data.dailySongs = mapTrackPlayableStatus(
       result.data.dailySongs,
-      result.data.privileges
-    );
-    return result;
-  });
+      result.data.privileges,
+    )
+    return result
+  })
 }
 
 /**
@@ -216,7 +217,7 @@ export function dailyRecommendTracks() {
  * - id : 歌曲 id
  * - pid : 歌单 id
  * - sid : 要开始播放的歌曲的 id (可选参数)
- * @param {Object} params
+ * @param {object} params
  * @param {number=} params.id
  * @param {number=} params.pid
  */
@@ -225,5 +226,5 @@ export function intelligencePlaylist(params) {
     url: '/playmode/intelligence/list',
     method: 'get',
     params,
-  });
+  })
 }

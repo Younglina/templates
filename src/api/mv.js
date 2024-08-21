@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request from '@/utils/request'
 
 /**
  * 获取 mv 数据
@@ -15,7 +15,7 @@ export function mvDetail(mvid) {
       mvid,
       timestamp: new Date().getTime(),
     },
-  });
+  })
 }
 
 /**
@@ -24,7 +24,7 @@ export function mvDetail(mvid) {
  * - id: mv id
  * - r: 分辨率,默认1080,可从 /mv/detail 接口获取分辨率列表
  * - 调用例子 : /mv/url?id=5436712 /mv/url?id=10896407&r=1080
- * @param {Object} params
+ * @param {object} params
  * @param {number} params.id
  * @param {number=} params.r
  */
@@ -33,7 +33,7 @@ export function mvUrl(params) {
     url: '/mv/url',
     method: 'get',
     params,
-  });
+  })
 }
 
 /**
@@ -46,7 +46,7 @@ export function simiMv(mvid) {
     url: '/simi/mv',
     method: 'get',
     params: { mvid },
-  });
+  })
 }
 
 /**
@@ -54,16 +54,16 @@ export function simiMv(mvid) {
  * 说明 : 调用此接口,可收藏/取消收藏 MV
  * - mvid: mv id
  * - t: 1 为收藏,其他为取消收藏
- * @param {Object} params
+ * @param {object} params
  * @param {number} params.mvid
  * @param {number=} params.t
  */
 
 export function likeAMV(params) {
-  params.timestamp = new Date().getTime();
+  params.timestamp = new Date().getTime()
   return request({
     url: '/mv/sub',
     method: 'post',
     params,
-  });
+  })
 }

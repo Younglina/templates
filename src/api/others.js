@@ -1,5 +1,5 @@
-import request from '@/utils/request';
-import { mapTrackPlayableStatus } from '@/utils/common';
+import request from '@/utils/request'
+import { mapTrackPlayableStatus } from '@/utils/common'
 
 /**
  * 搜索
@@ -10,7 +10,7 @@ import { mapTrackPlayableStatus } from '@/utils/common';
  * - offset : 偏移数量，用于分页 , 如 : 如 :( 页数 -1)*30, 其中 30 为 limit 的值 , 默认为 0
  * - type: 搜索类型；默认为 1 即单曲 , 取值意义 : 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频, 1018:综合
  * - 调用例子 : /search?keywords=海阔天空 /cloudsearch?keywords=海阔天空(更全)
- * @param {Object} params
+ * @param {object} params
  * @param {string} params.keywords
  * @param {number=} params.limit
  * @param {number=} params.offset
@@ -21,11 +21,11 @@ export function search(params) {
     url: '/search',
     method: 'get',
     params,
-  }).then(data => {
+  }).then((data) => {
     if (data.result?.song !== undefined)
-      data.result.song.songs = mapTrackPlayableStatus(data.result.song.songs);
-    return data;
-  });
+      data.result.song.songs = mapTrackPlayableStatus(data.result.song.songs)
+    return data
+  })
 }
 
 export function personalFM() {
@@ -35,7 +35,7 @@ export function personalFM() {
     params: {
       timestamp: new Date().getTime(),
     },
-  });
+  })
 }
 
 export function fmTrash(id) {
@@ -46,5 +46,5 @@ export function fmTrash(id) {
       timestamp: new Date().getTime(),
       id,
     },
-  });
+  })
 }

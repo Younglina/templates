@@ -1,4 +1,4 @@
-import request from '@/utils/request';
+import request from '@/utils/request'
 
 /**
  * 手机登录
@@ -6,7 +6,7 @@ import request from '@/utils/request';
  * - password: 密码
  * - countrycode: 国家码，用于国外手机号登录，例如美国传入：1
  * - md5_password: md5加密后的密码,传入后 password 将失效
- * @param {Object} params
+ * @param {object} params
  * @param {string} params.phone
  * @param {string} params.password
  * @param {string=} params.countrycode
@@ -17,7 +17,7 @@ export function loginWithPhone(params) {
     url: '/login/cellphone',
     method: 'post',
     params,
-  });
+  })
 }
 
 /**
@@ -25,7 +25,7 @@ export function loginWithPhone(params) {
  * - email: 163 网易邮箱
  * - password: 密码
  * - md5_password: md5加密后的密码,传入后 password 将失效
- * @param {Object} params
+ * @param {object} params
  * @param {string} params.email
  * @param {string} params.password
  * @param {string=} params.md5_password
@@ -35,7 +35,7 @@ export function loginWithEmail(params) {
     url: '/login',
     method: 'post',
     params,
-  });
+  })
 }
 
 /**
@@ -48,14 +48,14 @@ export function loginQrCodeKey() {
     params: {
       timestamp: new Date().getTime(),
     },
-  });
+  })
 }
 
 /**
  * 二维码生成接口
  * 说明: 调用此接口传入上一个接口生成的key可生成二维码图片的base64和二维码信息,
  * 可使用base64展示图片,或者使用二维码信息内容自行使用第三方二维码生产库渲染二维码
- * @param {Object} params
+ * @param {object} params
  * @param {string} params.key
  * @param {string=} params.qrimg 传入后会额外返回二维码图片base64编码
  */
@@ -67,7 +67,7 @@ export function loginQrCodeCreate(params) {
       ...params,
       timestamp: new Date().getTime(),
     },
-  });
+  })
 }
 
 /**
@@ -83,7 +83,7 @@ export function loginQrCodeCheck(key) {
       key,
       timestamp: new Date().getTime(),
     },
-  });
+  })
 }
 
 /**
@@ -95,7 +95,7 @@ export function refreshCookie() {
   return request({
     url: '/login/refresh',
     method: 'post',
-  });
+  })
 }
 
 /**
@@ -106,5 +106,5 @@ export function logout() {
   return request({
     url: '/logout',
     method: 'post',
-  });
+  })
 }

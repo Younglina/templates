@@ -1,28 +1,31 @@
 <script setup>
-import { useVModel } from "@vueuse/core";
+import { useVModel } from '@vueuse/core'
+
 const props = defineProps({
   type: {
     type: String,
-    default: "text",
+    default: 'text',
   },
   placeholder: {
     type: String,
-    default: "",
+    default: '',
   },
-  modelValue:{
-    required: true
-  }
-});
-const emit = defineEmits(["update:modelValue"]);
+  modelValue: {
+    required: true,
+  },
+})
+const emit = defineEmits(['update:modelValue'])
 
-const data = useVModel(props, "modelValue", emit);
+const data = useVModel(props, 'modelValue', emit)
 </script>
+
 <template>
   <div class="input-box">
-    <slot></slot>
-    <input class="input" v-model="data" :type="type" :placeholder="placeholder"></input>
+    <slot />
+    <input v-model="data" class="input" :type="type" :placeholder="placeholder"></input>
   </div>
 </template>
+
 <style scoped lang="scss">
 .input-box {
   display: flex;
@@ -34,15 +37,15 @@ const data = useVModel(props, "modelValue", emit);
   color: var(--color-text);
   &:has(input:focus) {
     background: var(--color-primary-bg);
-    :deep(>div){
+    :deep(> div) {
       color: var(--color-primary);
     }
-    .input{
+    .input {
       color: var(--color-primary);
       background: var(--color-primary-bg);
     }
   }
-  :deep(>div){
+  :deep(> div) {
     font-size: 26px;
     color: #aaaaaa;
     margin-left: 12px;
@@ -63,7 +66,7 @@ const data = useVModel(props, "modelValue", emit);
     opacity: 0.38;
   }
 }
-.input-box + .input-box{
+.input-box + .input-box {
   margin-top: 16px;
 }
 </style>

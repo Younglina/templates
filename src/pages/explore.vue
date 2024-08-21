@@ -1,106 +1,110 @@
 <script setup>
-import { topPlaylist, highQualityPlaylist, toplists } from "@/api/playlist";
-import { getRecommendPlayList as getRPlsit } from "@/utils/playList";
+import { highQualityPlaylist, topPlaylist, toplists } from '@/api/playlist'
+import { getRecommendPlayList as getRPlsit } from '@/utils/playList'
 
-const store = useMainStore();
-const route = useRoute();
-const router = useRouter();
+const store = useMainStore()
+const route = useRoute()
+const router = useRouter()
 
-const { showPg, startPg, donePg } = useProgres();
+const { showPg, startPg, donePg } = useProgres()
 const mData = reactive({
   playlist: [],
   loadingMore: true,
   showLoadMoreButton: true,
   hasMore: true,
   showCatOptions: false,
-  currentCategory: "全部",
-});
+  currentCategory: '全部',
+})
 onActivated(() => {
-  mData.currentCategory =
-    route.params.category === "" ? "全部" : route.params.category;
-  loadData();
-});
+  mData.currentCategory
+    = route.params.category === '' ? '全部' : route.params.category
+  loadData()
+})
 
 function toCategory(item) {
-  mData.currentCategory = item;
-  router.push({ path: `/explore/${item}` });
-  loadData();
+  mData.currentCategory = item
+  router.push({ path: `/explore/${item}` })
+  loadData()
 }
 function loadData() {
-  showPg.value = false;
-  startPg();
-  mData.showLoadMoreButton = false;
-  mData.hasMore = true;
-  mData.playlists = [];
-  mData.offset = 1;
-  getPlaylist();
+  showPg.value = false
+  startPg()
+  mData.showLoadMoreButton = false
+  mData.hasMore = true
+  mData.playlists = []
+  mData.offset = 1
+  getPlaylist()
 }
 function updatePlaylist(playlists) {
-  mData.playlists.push(...playlists);
-  mData.loadingMore = false;
-  mData.showLoadMoreButton = true;
-  donePg();
+  mData.playlists.push(...playlists)
+  mData.loadingMore = false
+  mData.showLoadMoreButton = true
+  donePg()
 }
 
 function getPlaylist() {
-  mData.loadingMore = true;
-  if (mData.currentCategory === "推荐歌单") {
-    return getRecommendPlayList();
+  mData.loadingMore = true
+  if (mData.currentCategory === '推荐歌单') {
+    return getRecommendPlayList()
   }
-  if (mData.currentCategory === "精品歌单") {
-    return getHighQualityPlaylist();
+  if (mData.currentCategory === '精品歌单') {
+    return getHighQualityPlaylist()
   }
-  if (mData.currentCategory === "排行榜") {
-    return getTopLists();
+  if (mData.currentCategory === '排行榜') {
+    return getTopLists()
   }
-  return getTopPlayList();
+  return getTopPlayList()
 }
 function getRecommendPlayList() {
   getRPlsit(100, true).then((list) => {
-    mData.playlists = [];
-    updatePlaylist(list);
-  });
+    mData.playlists = []
+    updatePlaylist(list)
+  })
 }
 function getHighQualityPlaylist() {
-  let playlists = mData.playlists;
-  let before =
-    playlists.length !== 0 ? playlists[playlists.length - 1].updateTime : 0;
+  const playlists = mData.playlists
+  const before
+    = playlists.length !== 0 ? playlists[playlists.length - 1].updateTime : 0
   highQualityPlaylist({ limit: 50, before }).then((data) => {
-    updatePlaylist(data.playlists);
-    mData.hasMore = data.more;
-  });
+    updatePlaylist(data.playlists)
+    mData.hasMore = data.more
+  })
 }
 function getTopLists() {
   toplists().then((data) => {
-    mData.playlists = [];
-    updatePlaylist(data.list);
-  });
+    mData.playlists = []
+    updatePlaylist(data.list)
+  })
 }
 function getTopPlayList() {
   topPlaylist({
     cat: mData.currentCategory,
     offset: mData.playlists.length,
   }).then((data) => {
-    updatePlaylist(data.playlists);
-    mData.hasMore = data.more;
-  });
+    updatePlaylist(data.playlists)
+    mData.hasMore = data.more
+  })
 }
 
 const subText = computed(() => {
-  if (mData.currentCategory === "排行榜") return "updateFrequency";
-  if (mData.currentCategory === "推荐歌单") return "copywriter";
-  return "none";
-});
+  if (mData.currentCategory === '排行榜')
+    return 'updateFrequency'
+  if (mData.currentCategory === '推荐歌单')
+    return 'copywriter'
+  return 'none'
+})
 </script>
+
 <template>
   <div class="explore">
-    <h1 class="font-size-56px fw-600">发现</h1>
-    <div class="flex flex-wrap cats-wrap z-1 pos-relative">
+    <h1 class="font-size-56px fw-600">
+      发现
+    </h1>
+    <div class="cats-wrap pos-relative z-1 flex flex-wrap">
       <div
         v-for="item in store.settings.enabledPlaylistCategories"
         :key="item"
-        :class="[
-          'cats',
+        class="cats" :class="[
           { active: mData.currentCategory === item && !mData.showCatOptions },
         ]"
         @click="toCategory(item)"
@@ -108,19 +112,19 @@ const subText = computed(() => {
         {{ item }}
       </div>
       <div
-        :class="['cats', { active: mData.showCatOptions }]"
+        class="cats" :class="[{ active: mData.showCatOptions }]"
         @click="mData.showCatOptions = !mData.showCatOptions"
       >
-        <div class="i-material-symbols-more-horiz"></div>
+        <div class="i-material-symbols-more-horiz" />
       </div>
     </div>
     <div class="mt-24px">
       <CoverRow
         type="playlist"
-        :dataList="mData.playlists"
-        :subText="subText"
+        :data-list="mData.playlists"
+        :sub-text="subText"
         :show-play-button="true"
-        :showPlayCount="mData.currentCategory !== '排行榜' ? true : false"
+        :show-play-count="mData.currentCategory !== '排行榜' ? true : false"
         :image-size="mData.currentCategory !== '排行榜' ? 512 : 1024"
       />
       <div
@@ -139,10 +143,11 @@ const subText = computed(() => {
   </div>
   <Teleport to=".cats-wrap">
     <div v-if="mData.showCatOptions" @toggleCat="onToggleCat">
-      <CatsPanel></CatsPanel>
+      <CatsPanel />
     </div>
   </Teleport>
 </template>
+
 <style scoped lang="scss">
 .cats {
   user-select: none;

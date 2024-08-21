@@ -1,20 +1,22 @@
 <script setup>
-import { NAVLINK } from "@/constants";
-const keywords = ref("");
-const router = useRouter();
-const route = useRoute();
+import { NAVLINK } from '@/constants'
+
+const keywords = ref('')
+const router = useRouter()
+const route = useRoute()
 function doSearch() {
-  if (!keywords.value) return;
-  if (route.name === "search" && route.params.keywords === keywords.value) {
-    return;
+  if (!keywords.value)
+    return
+  if (route.name === 'search' && route.params.keywords === keywords.value) {
+    return
   }
-  router.push(`/search/${keywords.value}`);
+  router.push(`/search/${keywords.value}`)
 }
 </script>
 
 <template>
   <nav class="header-nav bg-white">
-    <div class="flex items-center btns">
+    <div class="btns flex items-center">
       <button-icon @click="$router.go(-1)">
         <i class="i-material-symbols-chevron-left-rounded size-28px fw-600" />
       </button-icon>
@@ -33,10 +35,10 @@ function doSearch() {
       </router-link>
     </div>
     <div class="header-user">
-      <TheInput placeholder="搜索" v-model="keywords" @keyup.enter="doSearch">
-        <div class="i-material-symbols-search-rounded"></div>
+      <TheInput v-model="keywords" placeholder="搜索" @keyup.enter="doSearch">
+        <div class="i-material-symbols-search-rounded" />
       </TheInput>
-      <div @click="$router.push('/login')" class="account">
+      <div class="account" @click="$router.push('/login')">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="32"

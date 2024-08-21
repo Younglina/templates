@@ -4,7 +4,7 @@
   <TheHeader />
   <main class="main-wrap">
     <router-view v-slot="{ Component }">
-      <keep-alive :include="['explore', 'artist', 'search']">
+      <keep-alive :include="['explore', 'artist', 'search', 'album']">
         <component :is="Component" />
       </keep-alive>
     </router-view>

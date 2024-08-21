@@ -73,15 +73,18 @@ export function formatTime(Milliseconds, format = "HH:MM:SS") {
 
   const time = dayjs.duration(Milliseconds);
   const hours = time.hours().toString();
-  const mins = time.minutes().toString();
+  let mins = time.minutes().toString();
   const seconds = time.seconds().toString().padStart(2, "0");
+  if (seconds >= 30) {
+    mins = (1 + +mins).toString();
+  }
 
   if (format === "HH:MM:SS") {
     return hours !== "0"
       ? `${hours}:${mins.padStart(2, "0")}:${seconds}`
       : `${mins}:${seconds}`;
   } else if (format === "Human") {
-    return hours !== "0" ? `${hours} '小时' ${mins} '分钟'` : `${mins} '分钟'`;
+    return hours !== "0" ? `约 ${hours} 小时 ${mins} 分钟` : `约 ${mins} 分钟`;
   }
 }
 export function formatDate(timestamp, format = "YYYY年MM月DD日") {

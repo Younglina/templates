@@ -1,77 +1,73 @@
 <script setup>
-import {
-  getPlaylistDetail,
-} from '@/api/playlist'
-import { formatDate } from '@/utils/common'
-import { getTrackDetail } from '@/api/track'
+import { getPlaylistDetail } from "@/api/playlist";
+import { formatDate } from "@/utils/common";
+import { getTrackDetail } from "@/api/track";
 
-const route = useRoute()
-const { showPg, startPg, donePg } = useProgres()
-const store = useMainStore()
+const route = useRoute();
+const { showPg, startPg, donePg } = useProgres();
+const store = useMainStore();
 
 const mData = reactive({
   show: false,
   tracks: [],
   lastLoadedTrackIndex: 0,
   hasMore: true,
-})
+});
 const playlist = ref({
   id: 0,
-  coverImgUrl: '',
+  coverImgUrl: "",
   creator: {
-    userId: '',
+    userId: "",
   },
   trackIds: [],
-})
+});
 onMounted(() => {
-  if (route.name === 'likedSongs') {
-    loadData(mData.likedSongPlaylistID)
+  if (route.name === "likedSongs") {
+    loadData(mData.likedSongPlaylistID);
+  } else {
+    loadData(route.params.id);
   }
-  else {
-    loadData(route.params.id)
-  }
-  startPg()
-})
+  startPg();
+});
 
 function loadData(id) {
-  mData.id = id
+  mData.id = id;
   getPlaylistDetail(mData.id, true)
     .then((data) => {
-      playlist.value = data.playlist
-      mData.tracks = data.playlist.tracks
-      donePg()
-      mData.show = true
-      mData.lastLoadedTrackIndex = data.playlist.tracks.length - 1
-      return data
+      playlist.value = data.playlist;
+      mData.tracks = data.playlist.tracks;
+      donePg();
+      mData.show = true;
+      mData.lastLoadedTrackIndex = data.playlist.tracks.length - 1;
+      return data;
     })
     .then(() => {
       if (playlist.value.trackCount > mData.tracks.length) {
-        mData.loadingMore = true
-        loadMore()
+        mData.loadingMore = true;
+        loadMore();
       }
-    })
+    });
 }
 function loadMore(loadNum = 100) {
   let trackIDs = playlist.value.trackIds.filter((t, index) => {
     if (
-      index > mData.lastLoadedTrackIndex
-      && index <= mData.lastLoadedTrackIndex + loadNum
+      index > mData.lastLoadedTrackIndex &&
+      index <= mData.lastLoadedTrackIndex + loadNum
     ) {
-      return t
+      return t;
     }
-  })
-  trackIDs = trackIDs.map(t => t.id)
-  getTrackDetail(trackIDs.join(',')).then((data) => {
-    mData.tracks.push(...data.songs)
-    mData.lastLoadedTrackIndex += trackIDs.length
-    mData.loadingMore = false
+  });
+  trackIDs = trackIDs.map((t) => t.id);
+  getTrackDetail(trackIDs.join(",")).then((data) => {
+    mData.tracks.push(...data.songs);
+    mData.lastLoadedTrackIndex += trackIDs.length;
+    mData.loadingMore = false;
     if (mData.lastLoadedTrackIndex + 1 === playlist.value.trackIds.length) {
-      mData.hasMore = false
+      mData.hasMore = false;
+    } else {
+      mData.hasMore = true;
     }
-    else {
-      mData.hasMore = true
-    }
-  })
+  });
 }
 function playPlaylistByID() {}
 
@@ -102,7 +98,7 @@ function likePlaylist() {}
           <a
             :href="`https://music.163.com/#/user/home?id=${playlist.creator.userId}`"
             target="blank"
-          >{{ playlist.creator.nickname }}
+            >{{ playlist.creator.nickname }}
           </a>
         </div>
         <div class="date-and-count">
@@ -149,6 +145,11 @@ function likePlaylist() {}
     </div>
 
     <TrackList :id="playlist.id" :data-list="mData.tracks" type="playlist" />
+    <div class="flex justify-center mt-20px">
+      <ButtonIcon v-show="mData.hasMore" grey @click.native="loadMore">
+        加载更多
+      </ButtonIcon>
+    </div>
   </div>
 </template>
 

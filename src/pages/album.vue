@@ -2,7 +2,7 @@
 import { getAlbum, albumDynamicDetail, likeAAlbum } from "@/api/album";
 import { getArtistAlbum } from "@/api/artist";
 import { getTrackDetail } from "@/api/track";
-import { formatDate } from "@/utils/common";
+import { formatDate, formatTime } from "@/utils/common";
 
 const route = useRoute();
 const { showPg, startPg, donePg } = useProgres();
@@ -24,7 +24,7 @@ onMounted(() => {
 });
 
 const album = shallowRef({ artist: {} });
-const tracks = shallowRef({});
+const tracks = shallowRef([]);
 const _moreAlbums = shallowRef([]);
 function loadData(id) {
   getAlbum(id).then((data) => {
@@ -57,6 +57,11 @@ const filteredMoreAlbums = computed(() => {
   } else {
     return [...realAlbums, ...restItems].slice(0, 5);
   }
+});
+const albumTime = computed(() => {
+  let time = 0;
+  tracks.value.map((t) => (time = time + t.dt));
+  return time;
 });
 function toggleFullDescription() {
   MessageBox({
@@ -93,8 +98,8 @@ function openMenu() {}
           </a>
         </div>
         <div class="date-and-count">
-          {{ formatDate(album.publishTime, "YYYY") }} · {{ tracks.length }}
-          首歌
+          {{ formatDate(album.publishTime, "YYYY") }} ·
+          {{ tracks.length }} 首歌，{{ formatTime(albumTime, "Human") }}
         </div>
         <div class="description" @click="toggleFullDescription">
           {{ album.description }}

@@ -116,6 +116,7 @@ export default defineComponent({
 .modal-footer {
   display: flex;
   justify-content: flex-end;
+  padding: 0 20px;
   button {
     background-color: var(--color-primary-bg);
     color: var(--color-primary);

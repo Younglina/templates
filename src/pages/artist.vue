@@ -4,95 +4,91 @@ import {
   getArtist,
   getArtistAlbum,
   similarArtists,
-} from '@/api/artist'
-import { getTrackDetail } from '@/api/track'
-import { isAccountLoggedIn } from '@/utils/auth'
+} from "@/api/artist";
+import { getTrackDetail } from "@/api/track";
+import { isAccountLoggedIn } from "@/utils/auth";
 
-const { showPg, startPg, donePg } = useProgres()
-const artist = ref({})
-const dSimilarArtists = ref([])
+const { showPg, startPg, donePg } = useProgres();
+const artist = ref({});
+const dSimilarArtists = ref([]);
 
 function loadData(id, next = undefined) {
-  startPg()
-  showPg.value = false
+  startPg();
+  showPg.value = false;
   // this.$parent.$refs.main.scrollTo({ top: 0 });
   getArtist(id).then((data) => {
-    artist.value = data.artist
-    setPopularTracks(data.hotSongs)
-    if (next !== undefined)
-      next()
-    donePg()
-    showPg.value = true
-  })
-  initArtistAlbum(id)
-  initMvs(id)
+    artist.value = data.artist;
+    setPopularTracks(data.hotSongs);
+    if (next !== undefined) next();
+    donePg();
+    showPg.value = true;
+  });
+  initArtistAlbum(id);
+  initMvs(id);
   if (isAccountLoggedIn()) {
     similarArtists(id).then((data) => {
-      dSimilarArtists.value = data.artists
-    })
+      dSimilarArtists.value = data.artists;
+    });
   }
 }
 
 // 专辑相关
-const latestRelease = ref({})
-const albums = ref([])
-const showMoreAlbums = ref(false)
-const eps = ref([])
-const showMoreEps = ref(false)
+const albums = ref([]);
+const showMoreAlbums = ref(false);
+const eps = ref([]);
+const showMoreEps = ref(false);
 function initArtistAlbum(id) {
   getArtistAlbum({ id, limit: 200 }).then((data) => {
-    const albumsData = data.hotAlbums
+    const albumsData = data.hotAlbums;
     albums.value = albumsData.filter(
-      a => a.type === '专辑' || a.type === '精选集',
-    )
-    eps.value = albumsData.filter(a =>
-      ['EP/Single', 'EP', 'Single'].includes(a.type),
-    )
-    latestRelease.value = data.hotAlbums[0]
-  })
+      (a) => a.type === "专辑" || a.type === "精选集"
+    );
+    eps.value = albumsData.filter((a) =>
+      ["EP/Single", "EP", "Single"].includes(a.type)
+    );
+  });
 }
 
 // 热门歌曲
-const popularTracks = ref([])
-const showMorePopTracks = ref(false)
+const popularTracks = ref([]);
+const showMorePopTracks = ref(false);
 function setPopularTracks(hotSongs) {
-  const trackIDs = hotSongs.map(t => t.id)
-  getTrackDetail(trackIDs.join(',')).then((data) => {
-    popularTracks.value = data.songs
-  })
+  const trackIDs = hotSongs.map((t) => t.id);
+  getTrackDetail(trackIDs.join(",")).then((data) => {
+    popularTracks.value = data.songs;
+  });
 }
 
 //  mv相关
-const mvs = ref([])
-const hasMoreMV = ref(false)
+const mvs = ref([]);
+const hasMoreMV = ref(false);
 function initMvs(id) {
   artistMv({ id }).then((data) => {
-    mvs.value = data.mvs
-    hasMoreMV.value = data.hasMore
-  })
+    mvs.value = data.mvs;
+    hasMoreMV.value = data.hasMore;
+  });
 }
-function scrollTo(div, block = 'center') {
+function scrollTo(div, block = "center") {
   document.getElementById(div).scrollIntoView({
-    behavior: 'smooth',
+    behavior: "smooth",
     block,
-  })
+  });
 }
 function toggleFullDescription() {
   MessageBox({
-    title: '艺人详情',
+    title: "艺人详情",
     message: artist.value.briefDesc,
-  })
+  });
 }
-const route = useRoute()
+const route = useRoute();
 onBeforeRouteUpdate((to, from, next) => {
-  artist.value.img1v1Url
-    = 'https://p1.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg'
-  loadData(to.params.id, next)
-})
+  artist.value.img1v1Url =
+    "https://p1.music.126.net/VnZiScyynLG7atLIZ2YPkw==/18686200114669622.jpg";
+  loadData(to.params.id, next);
+});
 onActivated(() => {
-  console.log(123)
-  loadData(route.params.id)
-})
+  loadData(route.params.id);
+});
 </script>
 
 <template>
@@ -108,13 +104,13 @@ onActivated(() => {
         <div class="name">
           {{ artist.name }}
         </div>
-        <div class="artist">
-          艺人
-        </div>
+        <div class="artist">艺人</div>
         <div class="statistics">
           <a @click="scrollTo('popularTracks')">{{ artist.musicSize }} 首歌</a>
           ·
-          <a @click="scrollTo('seeMore', 'start')">{{ artist.albumSize }} 张专辑</a>
+          <a @click="scrollTo('seeMore', 'start')"
+            >{{ artist.albumSize }} 张专辑</a
+          >
           ·
           <a @click="scrollTo('mvs')">{{ artist.mvSize }} 个MV</a>
         </div>
@@ -124,9 +120,7 @@ onActivated(() => {
       </div>
     </div>
     <div id="popularTracks" class="popular-tracks">
-      <div class="section-title">
-        热门歌曲
-      </div>
+      <div class="section-title">热门歌曲</div>
       <TrackList
         :data-list="popularTracks.slice(0, showMorePopTracks ? 24 : 12)"
         type="tracklist"
@@ -139,9 +133,7 @@ onActivated(() => {
       </div>
     </div>
     <div v-if="albums.length !== 0" id="albums" class="albums">
-      <div class="section-title">
-        专辑
-      </div>
+      <div class="section-title">专辑</div>
       <CoverRow
         type="album"
         :data-list="albums.slice(0, showMoreAlbums ? albums.length : 15)"
@@ -166,9 +158,7 @@ onActivated(() => {
     </div>
 
     <div v-if="eps.length !== 0" class="eps">
-      <div class="section-title">
-        EP 和单曲
-      </div>
+      <div class="section-title">EP 和单曲</div>
       <CoverRow
         type="album"
         :data-list="eps.slice(0, showMoreEps ? eps.length : 15)"
@@ -182,9 +172,7 @@ onActivated(() => {
       </div>
     </div>
     <div v-if="dSimilarArtists.length !== 0" class="similar-artists">
-      <div class="section-title">
-        相似艺人
-      </div>
+      <div class="section-title">相似艺人</div>
       <CoverRow
         type="artist"
         :column-number="6"
@@ -216,7 +204,7 @@ onActivated(() => {
     background-repeat: no-repeat;
     position: relative;
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       top: 5%;
       left: 0%;

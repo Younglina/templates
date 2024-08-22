@@ -87,7 +87,12 @@ function getTitleLink(item) {
 <template>
   <div class="grid" :style="rowStyles">
     <div v-for="item in props.dataList" :key="item.id">
-      <Cover :id="item.id" :image-url="getImageUrl(item)" :type="props.type" />
+      <Cover
+        :id="item.id"
+        :image-url="getImageUrl(item)"
+        :type="props.type"
+        :tracks="item.tracks || []"
+      />
       <div class="mt-8px info">
         <div v-if="showPlayCount" class="flex justify-between">
           <div v-if="item.playCount" class="play-count">
@@ -143,5 +148,9 @@ function getTitleLink(item) {
   -webkit-line-clamp: 2;
   overflow: hidden;
   word-break: break-all;
+}
+.name {
+  display: inline-block;
+  width: 100%;
 }
 </style>

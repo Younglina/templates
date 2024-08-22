@@ -145,8 +145,7 @@ function loadData() {
 
 onMounted(() => {
   if (!isAccountLoggedIn()) {
-    donePg();
-    router.push("/login");
+    return router.push("/login");
   }
   currentTab.value = tabs.playlists;
   currentTab.value.data = liked.playlists.slice(1);

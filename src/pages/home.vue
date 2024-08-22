@@ -1,8 +1,10 @@
 <script setup>
 import { getRecommendPlayList } from "@/utils/playList";
+import { dailyRecommendTracks } from "@/api/playlist";
 import { toplists } from "@/api/playlist";
 import { toplistOfArtists } from "@/api/artist";
 import { newAlbums } from "@/api/album";
+import { isAccountLoggedIn } from "@/utils/auth";
 
 const pageLists = reactive({
   playlist: {
@@ -31,11 +33,25 @@ const pageLists = reactive({
 });
 
 const { showPg, startPg, donePg } = useProgres();
+const store = useMainStore();
 onBeforeMount(() => {
   startPg();
   // 获取推荐歌单
-  getRecommendPlayList(10).then((res) => {
+  getRecommendPlayList(isAccountLoggedIn() ? 9 : 10).then((res) => {
     pageLists.playlist.items = res;
+    if (isAccountLoggedIn()) {
+      dailyRecommendTracks().then((res) => {
+        store.dailySongs = res.data.dailySongs;
+        pageLists.playlist.items.unshift({
+          id: -1,
+          name: `每日推荐 | 从${res.data.dailySongs[0].al.name}开始`,
+          picUrl: res.data.dailySongs[0].al.picUrl,
+          trackCount: res.data.dailySongs.length,
+          playCount: 0,
+          tracks: res.data.dailySongs,
+        });
+      });
+    }
     donePg();
   });
   // 获取推荐艺人

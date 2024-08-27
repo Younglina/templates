@@ -1,4 +1,7 @@
-<script setup></script>
+<script setup>
+import lyric from "./pages/lyric.vue";
+const store = useMainStore();
+</script>
 
 <template>
   <TheHeader />
@@ -9,6 +12,7 @@
       </keep-alive>
     </router-view>
   </main>
+  <lyric v-show="!store.showLyrics"></lyric>
 </template>
 
 <style scoped lang="scss">

@@ -79,7 +79,11 @@ const subTitle = computed(() => {
   return tn === undefined ? track.alia[0] : tn;
 });
 
-function goToAlbum() {}
+const router = useRouter();
+function goToAlbum() {
+  if (track.al.id === -1) return;
+  router.push({ path: "/album/" + track.al.id });
+}
 function likeThisSong() {}
 </script>
 

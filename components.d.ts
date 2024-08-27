@@ -19,6 +19,7 @@ declare module 'vue' {
     RouterView: typeof import('vue-router')['RouterView']
     TheHeader: typeof import('./src/components/TheHeader.vue')['default']
     TheInput: typeof import('./src/components/TheInput.vue')['default']
+    TheSlider: typeof import('./src/components/TheSlider.vue')['default']
     TrackList: typeof import('./src/components/TrackList.vue')['default']
     TrackListItem: typeof import('./src/components/TrackListItem.vue')['default']
   }

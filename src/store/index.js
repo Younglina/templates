@@ -3,6 +3,7 @@ import { playlistCategories } from "@/constants";
 import { isAccountLoggedIn, isLooseLoggedIn } from "@/utils/auth";
 import { getPlaylistDetail } from "@/api/playlist";
 import { getTrackDetail } from "@/api/track";
+import Player from "@/utils/Player";
 import {
   cloudDisk,
   likedAlbums,
@@ -14,13 +15,13 @@ import {
   userPlaylist,
 } from "@/api/user";
 
+let player = new Player();
 export const useMainStore = defineStore("mainStore", {
   state: () => {
     return {
       tt: "",
-      player: {
-        currentTrack: {},
-      },
+      player: player,
+      showLyrics: false,
       baseData: {
         user: {},
         loginMode: "",
@@ -64,6 +65,9 @@ export const useMainStore = defineStore("mainStore", {
       } else {
         this.settings.enabledPlaylistCategories.push(name);
       }
+    },
+    toggleLyrics() {
+      this.showLyrics = !this.showLyrics;
     },
     fetchLikedPlaylist() {
       if (!isLooseLoggedIn()) return;

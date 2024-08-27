@@ -124,3 +124,10 @@ export function randomNum(minNum, maxNum) {
       return 0;
   }
 }
+
+export function formatTrackTime(value) {
+  if (!value) return "";
+  let min = ~~(value / 60);
+  let sec = (~~(value % 60)).toString().padStart(2, "0");
+  return `${min}:${sec}`;
+}

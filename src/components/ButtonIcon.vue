@@ -4,7 +4,7 @@ defineProps({
     type: Boolean,
     default: false,
   },
-})
+});
 </script>
 
 <template>
@@ -30,6 +30,7 @@ button {
   transition: 0.1s;
   background-color: transparent;
   border-radius: 25%;
+  color: inherit;
   &:first-child {
     margin-left: 0;
   }

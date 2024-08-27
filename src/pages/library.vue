@@ -79,9 +79,8 @@ function updateTab(key, subKey) {
   } else if (key !== "playHistory") {
     currentTab.value.data = liked[key];
   } else {
-    playHistoryMode.value = subKey;
-    currentTab.value.data =
-      liked.playHistory[subKey === "week" ? "weekData" : "allData"];
+    playHistoryMode.value = subKey || "weekData";
+    currentTab.value.data = liked.playHistory[subKey || "weekData"];
   }
   if (!subKey) {
     const targetElement = document.querySelector(".tabs");
@@ -217,15 +216,15 @@ onMounted(() => {
       >
         <button
           class="tab"
-          :class="{ active: playHistoryMode === 'week' }"
-          @click="updateTab('playHistory', 'week')"
+          :class="{ active: playHistoryMode === 'weekData' }"
+          @click="updateTab('playHistory', 'weekData')"
         >
           最近一周
         </button>
         <button
           class="tab"
-          :class="{ active: playHistoryMode === 'all' }"
-          @click="updateTab('playHistory', 'all')"
+          :class="{ active: playHistoryMode === 'allData' }"
+          @click="updateTab('playHistory', 'allData')"
         >
           所有时间
         </button>

@@ -3,8 +3,8 @@ import { getCookie } from "./auth.js";
 import { useRouter } from "vue-router";
 
 const _axios = axios.create({
-  // baseURL: "http://localhost:3000/",
-  baseURL: "https://dev.usemock.com/65e8005d48882231b5644106/",
+  baseURL: "http://localhost:3000/",
+  // baseURL: "https://dev.usemock.com/65e8005d48882231b5644106/",
   timeout: 20000, // 请求超时 20s
   withCredentials: true,
 });

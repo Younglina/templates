@@ -1,5 +1,5 @@
-import request from '@/utils/request'
-import { mapTrackPlayableStatus } from '@/utils/common'
+import request from "@/utils/request";
+import { mapTrackPlayableStatus } from "@/utils/common";
 
 /**
  * 推荐歌单
@@ -11,10 +11,10 @@ import { mapTrackPlayableStatus } from '@/utils/common'
  */
 export function recommendPlaylist(params) {
   return request({
-    url: '/personalized',
-    method: 'get',
+    url: "/personalized",
+    method: "get",
     params,
-  })
+  });
 }
 /**
  * 获取每日推荐歌单
@@ -24,13 +24,13 @@ export function recommendPlaylist(params) {
  */
 export function dailyRecommendPlaylist(params) {
   return request({
-    url: '/recommend/resource',
-    method: 'get',
+    url: "/recommend/resource",
+    method: "get",
     params: {
       params,
       timestamp: Date.now(),
     },
-  })
+  });
 }
 /**
  * 获取歌单详情
@@ -43,22 +43,21 @@ export function dailyRecommendPlaylist(params) {
  * @param {boolean=} noCache
  */
 export function getPlaylistDetail(id, noCache = false) {
-  const params = { id }
-  if (noCache)
-    params.timestamp = new Date().getTime()
+  const params = { id };
+  if (noCache) params.timestamp = new Date().getTime();
   return request({
-    url: '/playlist/detail',
-    method: 'get',
+    url: "/playlist/detail",
+    method: "get",
     params,
   }).then((data) => {
     if (data.playlist) {
       data.playlist.tracks = mapTrackPlayableStatus(
         data.playlist.tracks,
-        data.privileges || [],
-      )
+        data.privileges || []
+      );
     }
-    return data
-  })
+    return data;
+  });
 }
 /**
  * 获取精品歌单
@@ -73,10 +72,10 @@ export function getPlaylistDetail(id, noCache = false) {
  */
 export function highQualityPlaylist(params) {
   return request({
-    url: '/top/playlist/highquality',
-    method: 'get',
+    url: "/top/playlist/highquality",
+    method: "get",
     params,
-  })
+  });
 }
 
 /**
@@ -92,10 +91,10 @@ export function highQualityPlaylist(params) {
  */
 export function topPlaylist(params) {
   return request({
-    url: '/top/playlist',
-    method: 'get',
+    url: "/top/playlist",
+    method: "get",
     params,
-  })
+  });
 }
 
 /**
@@ -104,9 +103,9 @@ export function topPlaylist(params) {
  */
 export function playlistCatlist() {
   return request({
-    url: '/playlist/catlist',
-    method: 'get',
-  })
+    url: "/playlist/catlist",
+    method: "get",
+  });
 }
 
 /**
@@ -115,9 +114,9 @@ export function playlistCatlist() {
  */
 export function toplists() {
   return request({
-    url: '/toplist',
-    method: 'get',
-  })
+    url: "/toplist",
+    method: "get",
+  });
 }
 
 /**
@@ -130,12 +129,12 @@ export function toplists() {
  * @param {number} params.id
  */
 export function subscribePlaylist(params) {
-  params.timestamp = new Date().getTime()
+  params.timestamp = new Date().getTime();
   return request({
-    url: '/playlist/subscribe',
-    method: 'post',
+    url: "/playlist/subscribe",
+    method: "post",
     params,
-  })
+  });
 }
 
 /**
@@ -146,10 +145,10 @@ export function subscribePlaylist(params) {
  */
 export function deletePlaylist(id) {
   return request({
-    url: '/playlist/delete',
-    method: 'post',
+    url: "/playlist/delete",
+    method: "post",
     params: { id },
-  })
+  });
 }
 
 /**
@@ -164,12 +163,12 @@ export function deletePlaylist(id) {
  * @param {string} params.type
  */
 export function createPlaylist(params) {
-  params.timestamp = new Date().getTime()
+  params.timestamp = new Date().getTime();
   return request({
-    url: '/playlist/create',
-    method: 'post',
+    url: "/playlist/create",
+    method: "post",
     params,
-  })
+  });
 }
 
 /**
@@ -182,12 +181,12 @@ export function createPlaylist(params) {
  * @param {string} params.pid
  */
 export function addOrRemoveTrackFromPlaylist(params) {
-  params.timestamp = new Date().getTime()
+  params.timestamp = new Date().getTime();
   return request({
-    url: '/playlist/tracks',
-    method: 'post',
+    url: "/playlist/tracks",
+    method: "post",
     params,
-  })
+  });
 }
 
 /**
@@ -199,16 +198,16 @@ export function addOrRemoveTrackFromPlaylist(params) {
  */
 export function dailyRecommendTracks() {
   return request({
-    url: '/recommend/songs',
-    method: 'get',
+    url: "/recommend/songs",
+    method: "get",
     params: { timestamp: new Date().getTime() },
   }).then((result) => {
     result.data.dailySongs = mapTrackPlayableStatus(
       result.data.dailySongs,
-      result.data.privileges,
-    )
-    return result
-  })
+      result.data.privileges
+    );
+    return result;
+  });
 }
 
 /**
@@ -223,8 +222,8 @@ export function dailyRecommendTracks() {
  */
 export function intelligencePlaylist(params) {
   return request({
-    url: '/playmode/intelligence/list',
-    method: 'get',
+    url: "/playmode/intelligence/list",
+    method: "get",
     params,
-  })
+  });
 }

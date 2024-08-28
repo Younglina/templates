@@ -4,14 +4,10 @@ const _vue3yesplay = reactive({
   album: new Map(),
   lyric: new Map(),
   trackDetail: {},
+  trackSources: [],
 });
 
 export function initDB() {
-  // watch([()=>_vue3yesplay.album, () => _vue3yesplay.lyric, () => _vue3yesplay.trackDetail],
-  // ([album, lyric, trackDetail])=>{
-  //   const rawVue3yesplay = toRaw(_vue3yesplay)
-  //   console.log(album, lyric, trackDetail, rawVue3yesplay)
-  // },{ deep: true })
   const localVue3yesplay = JSON.parse(localStorage.getItem("VUE3YESPLAY"));
   if (localVue3yesplay) {
     _vue3yesplay.album = new Map(localVue3yesplay.album);
@@ -57,7 +53,7 @@ export function getAlbumFromCache(id) {
   return p(_vue3yesplay.album.get(Number(id))?.album);
 }
 
-export function cacheTrackDetail(track) {
+export function cacheTrackDetail(track, privileges) {
   _vue3yesplay.trackDetail = { ..._vue3yesplay.trackDetail, ...track };
 }
 
@@ -72,4 +68,13 @@ export function getTrackDetailFromCache(ids) {
     result = undefined;
   }
   return p(result);
+}
+
+export function getTrackSource(id) {
+  const track = _vue3yesplay.trackSources.find(Number(id));
+  if (!track) return p(null);
+  console.debug(
+    `[debug][db.js] get track from cache 👉 ${track.name} by ${track.artist}`
+  );
+  return p(track);
 }

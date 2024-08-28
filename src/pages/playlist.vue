@@ -69,7 +69,15 @@ function loadMore(loadNum = 100) {
     }
   });
 }
-function playPlaylistByID() {}
+function playPlaylistByID(trackID = "first") {
+  let trackIDs = playlist.value.trackIds.map((t) => t.id);
+  store.player.replacePlaylist(
+    trackIDs,
+    playlist.value.id,
+    "playlist",
+    trackID
+  );
+}
 
 function openMenu() {}
 function toggleFullDescription() {}

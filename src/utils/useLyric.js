@@ -1,18 +1,19 @@
 import { lyricParser } from "@/utils/lyrics";
 import { getLyric } from "@/api/track";
-import { computed } from "vue";
 
-export default function useLyric(currentTrack) {
+export default function useLyric() {
   // 歌词、翻译、罗马音
   let _lyric = [],
     _tlyric = [],
     _romalyric = [];
   const lyricType = ref("translation");
-  if (!currentTrack.id) return;
 
   const lyrics = ref([]);
   const noLyric = ref(true);
-  async function getLyrics() {
+  const highlightLyricIndex = ref(0);
+  const isShowLyricTypeSwitch = ref(false);
+  async function getLyrics(currentTrack = {}) {
+    if (!currentTrack.id) return;
     const data = await getLyric(currentTrack.id);
     if (!data?.lrc?.lyric) {
       _lyric = [];
@@ -20,6 +21,7 @@ export default function useLyric(currentTrack) {
       _romalyric = [];
     } else {
       let { lyric, tlyric, romalyric } = lyricParser(data);
+      console.log(lyric, tlyric, romalyric);
       lyric = lyric.filter((l) => !/^作(词|曲)\s*(:|：)\s*无$/.exec(l.content));
       let includeAM =
         lyric.length <= 10 &&
@@ -50,6 +52,7 @@ export default function useLyric(currentTrack) {
     }
     lyrics.value = lyricToShow();
     noLyric.value = !_lyric.length;
+    isShowLyricTypeSwitch.value = _romalyric.length > 0 && _tlyric.length > 0;
   }
 
   function lyricToShow() {
@@ -62,9 +65,12 @@ export default function useLyric(currentTrack) {
         const { rawTime, time, content } = l;
         const lyricItem = { time, content, contents: [content] };
         const lyrics = lyricType.value === "translation" ? _tlyric : _romalyric;
-        const sameTimeTLyric = lyrics.find(
-          ({ rawTime: tLyricRawTime }) => tLyricRawTime === rawTime
-        );
+        const sameTimeTLyric = lyrics.find(({ rawTime: tLyricRawTime }) => {
+          return (
+            tLyricRawTime === rawTime ||
+            tLyricRawTime.slice(0, -1).startsWith(rawTime.slice(0, -1))
+          );
+        });
         if (sameTimeTLyric) {
           const { content: tLyricContent } = sameTimeTLyric;
           if (content) {
@@ -86,17 +92,39 @@ export default function useLyric(currentTrack) {
   function switchLyricType() {
     lyricType.value =
       lyricType.value === "translation" ? "romaPronunciation" : "translation";
+    lyrics.value = lyricToShow();
   }
 
-  const isShowLyricTypeSwitch = computed(() => {
-    return _romalyric.length > 0 && _tlyric.length > 0;
-  });
+  let clickLineTimer = null;
+  function clickLyricLine(value, startPlay = false) {
+    let jumpFlag = false;
+    lyrics.value.filter(function (item) {
+      if (item.content == "纯音乐，请欣赏") {
+        jumpFlag = true;
+      }
+    });
+    if (!jumpFlag) {
+      clickLineTimer = setTimeout(() => {
+        // player.seek(value);
+        clearTimeout(clickLineTimer);
+        clickLineTimer = null;
+      }, 100);
+    }
+    if (startPlay === true) {
+      // player.play();
+      clearTimeout(clickLineTimer);
+      clickLineTimer = null;
+    }
+  }
+
   return {
     getLyrics,
+    switchLyricType,
+    clickLyricLine,
     lyrics,
     noLyric,
-    switchLyricType,
     lyricType,
     isShowLyricTypeSwitch,
+    highlightLyricIndex,
   };
 }

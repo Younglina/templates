@@ -49,14 +49,20 @@ async function getCoverColor() {
 }
 
 // 歌词相关
-const { getLyrics, lyrics, lyricType, isShowLyricTypeSwitch, noLyric } =
-  useLyric(currentTrack.value);
+const {
+  getLyrics,
+  lyrics,
+  lyricType,
+  isShowLyricTypeSwitch,
+  noLyric,
+  highlightLyricIndex,
+  switchLyricType,
+  clickLyricLine,
+} = useLyric();
 
 onMounted(async () => {
   getCoverColor();
-  console.log(lyrics, lyricType, isShowLyricTypeSwitch);
-  await getLyrics();
-  console.log(lyrics, lyricType, isShowLyricTypeSwitch);
+  await getLyrics(currentTrack.value);
 });
 </script>
 <template>
@@ -221,6 +227,15 @@ onMounted(async () => {
               >
                 <i class="i-material-symbols-shuffle-rounded" />
               </ButtonIcon>
+              <ButtonIcon
+                v-show="isShowLyricTypeSwitch"
+                :title="lyricType === 'translation' ? '歌词(译)' : '歌词(音)'"
+                @click.native="switchLyricType"
+              >
+                <span class="lyric-switch-icon">{{
+                  lyricType === "translation" ? "译" : "音"
+                }}</span>
+              </ButtonIcon>
             </div>
           </div>
         </div>
@@ -242,21 +257,11 @@ onMounted(async () => {
               @dblclick="clickLyricLine(line.time, true)"
             >
               <div class="content">
-                <span
-                  v-if="line.contents[0]"
-                  @click.right="openLyricMenu($event, line, 0)"
-                  >{{ line.contents[0] }}</span
-                >
+                <span v-if="line.contents[0]">{{ line.contents[0] }}</span>
                 <br />
-                <span
-                  v-if="
-                    line.contents[1] &&
-                    $store.state.settings.showLyricsTranslation
-                  "
-                  class="translation"
-                  @click.right="openLyricMenu($event, line, 1)"
-                  >{{ line.contents[1] }}</span
-                >
+                <span v-if="line.contents[1]" class="translation">{{
+                  line.contents[1]
+                }}</span>
               </div>
             </div>
           </div>
@@ -439,6 +444,12 @@ onMounted(async () => {
           opacity: 0.88;
         }
       }
+    }
+    .lyric-switch-icon {
+      color: var(--color-text);
+      font-size: 14px;
+      line-height: 14px;
+      opacity: 0.88;
     }
   }
   .right-wrap {

@@ -20,7 +20,8 @@ export const useMainStore = defineStore("mainStore", {
   state: () => {
     return {
       tt: "",
-      player: player,
+      player,
+      documentTitle: "Vue3YesPlay",
       showLyrics: false,
       baseData: {
         user: {},

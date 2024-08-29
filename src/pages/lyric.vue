@@ -21,8 +21,13 @@ function likeATrack() {}
 function addToPlaylist() {}
 function switchRepeatMode() {}
 function playPrevTrack() {}
-function playOrPause() {}
-function playNextTrack() {}
+function playNextTrack() {
+  if (player.value.isPersonalFM) {
+    player.value.playNextFMTrack();
+  } else {
+    player.value.playNextTrack();
+  }
+}
 function switchShuffle() {}
 
 // 音量
@@ -74,6 +79,11 @@ watch(
     }
   }
 );
+
+watch(currentTrack, async (val) => {
+  await getLyrics(val);
+  getCoverColor();
+});
 
 onMounted(async () => {
   getCoverColor();
@@ -180,10 +190,10 @@ onMounted(async () => {
             </div>
             <!-- 歌曲进度条 -->
             <div class="progress-bar">
-              <span>{{ formatTrackTime(player.progress) || "0:00" }}</span>
+              <span>{{ formatTrackTime(curShowProgress) || "0:00" }}</span>
               <div class="slider">
                 <vue-slider
-                  v-model="player.progress"
+                  v-model="curShowProgress"
                   :min="0"
                   :max="player.currentTrackDuration"
                   :interval="1"
@@ -194,6 +204,7 @@ onMounted(async () => {
                   :tooltip-formatter="formatTrackTime"
                   :lazy="true"
                   :silent="true"
+                  @change="store.player.seek($event)"
                 ></vue-slider>
               </div>
               <span>{{ formatTrackTime(player.currentTrackDuration) }}</span>
@@ -215,13 +226,16 @@ onMounted(async () => {
                 />
               </ButtonIcon>
               <div class="middle">
-                <ButtonIcon title="上一首" @click.native="playPrevTrack">
+                <ButtonIcon
+                  title="上一首"
+                  @click.native="player.playPrevTrack()"
+                >
                   <i class="i-material-symbols-skip-previous-rounded" />
                 </ButtonIcon>
                 <ButtonIcon
                   id="play"
                   :title="player.playing ? '暂停' : '播放'"
-                  @click.native="playOrPause"
+                  @click.native="player.playOrPause()"
                 >
                   <i
                     :class="

@@ -11,7 +11,7 @@ const routes = [
   },
   {
     path: "/test",
-    component: () => import("../pages/lyric.vue"),
+    component: () => import("../pages/test.vue"),
     name: "test",
   },
   {

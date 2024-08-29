@@ -2,11 +2,17 @@ import { Howl, Howler } from "howler";
 import { getLyric, getMP3, getTrackDetail, scrobble } from "@/api/track";
 import { isAccountLoggedIn } from "@/utils/auth";
 
+const PLAY_PAUSE_FADE_DURATION = 200;
 const INDEX_IN_PLAY_NEXT = -1;
 const UNPLAYABLE_CONDITION = {
   PLAY_NEXT_TRACK: "playNextTrack",
   PLAY_PREV_TRACK: "playPrevTrack",
 };
+const excludeSaveKeys = [
+  "_playing",
+  "_personalFMLoading",
+  "_personalFMNextLoading",
+];
 function setTitle(track) {
   const store = useMainStore();
   document.title = track
@@ -23,6 +29,7 @@ export default class {
     this._repeatMode = "off"; // off | on | one
     this._shuffle = false; // true | false
     this._reversed = false;
+    this._volume = 1;
 
     // 播放信息
     this._list = []; // 播放列表
@@ -56,15 +63,26 @@ export default class {
       this._initMediaSession();
     }
 
-    // this._setIntervals();
+    this._setIntervals();
   }
 
   _loadSelfFromLocalStorage() {
     const mainStore = JSON.parse(localStorage.getItem("mainStore"));
     if (!mainStore?.player) return;
-    for (const [key, value] of Object.entries(mainStore.player)) {
+    for (let [key, value] of Object.entries(mainStore.player)) {
       this[key] = value;
     }
+  }
+
+  _setIntervals() {
+    // 同步播放进度
+    // TODO: 如果 _progress 在别的地方被改变了，
+    // 这个定时器会覆盖之前改变的值，是bug
+    setInterval(() => {
+      if (this._howler === null) return;
+      this._progress = this._howler.seek();
+      localStorage.setItem("playerCurrentTrackTime", this._progress);
+    }, 1000);
   }
   /**
    * 替换播放列表
@@ -116,8 +134,31 @@ export default class {
     });
   }
 
+  pause() {
+    this._howler?.fade(this.volume, 0, PLAY_PAUSE_FADE_DURATION);
+    this._howler?.once("fade", () => {
+      this._howler?.pause();
+      this._playing = false;
+      setTitle(null);
+    });
+  }
+
   play() {
-    this._enabled = true;
+    console.debug(`howler play`);
+    if (this._howler?.playing()) return;
+
+    this._howler?.play();
+    this._howler?.once("play", () => {
+      this._howler?.fade(0, this.volume, PLAY_PAUSE_FADE_DURATION);
+
+      // 播放时确保开启player.
+      // 避免因"忘记设置"导致在播放时播放器不显示的Bug
+      this._enabled = true;
+      this._playing = true;
+      if (this._currentTrack.name) {
+        setTitle(this._currentTrack);
+      }
+    });
   }
 
   seek(time = null) {
@@ -125,6 +166,14 @@ export default class {
       this._howler?.seek(time);
     }
     return this._howler ? this._howler.seek() : 0;
+  }
+
+  playOrPause() {
+    if (this._howler?.playing()) {
+      this.pause();
+    } else {
+      this.play();
+    }
   }
 
   /**
@@ -177,7 +226,8 @@ export default class {
     return source;
   }
   _getAudioSourceFromNetease(track) {
-    if (isAccountLoggedIn()) {
+    const mainStore = JSON.parse(localStorage.getItem("mainStore"));
+    if (mainStore.baseData.user?.id && isAccountLoggedIn()) {
       return getMP3(track.id).then((result) => {
         if (!result.data[0]) return null;
         if (!result.data[0].url) return null;
@@ -187,14 +237,15 @@ export default class {
       });
     } else {
       return new Promise((resolve) => {
-        resolve(`https://music.163.com/song/media/outer/url?id=${track.id}`);
+        resolve(
+          `https://music.163.com/song/media/outer/url?id=${track.id}.mp3`
+        );
       });
     }
   }
   _playAudioSource(source, autoplay = true) {
     // 卸载所有当前加载的音频资源,释放内存和清理资源
     Howler.unload();
-
     // 初始化或者替换howler实例
     this._howler = new Howl({
       src: [source],
@@ -217,6 +268,7 @@ export default class {
         });
         this._playNextTrack();
       } else {
+        console.debug("loaderror");
         const t = this.progress;
         this._replaceCurrentTrackAudio(this.currentTrack, false).then(
           (replaced) => {
@@ -290,6 +342,18 @@ export default class {
 
     // 返回 [trackID, index]
     return [this.list[next], next];
+  }
+
+  playPrevTrack() {
+    const [trackID, index] = this._getPrevTrack();
+    if (trackID === undefined) return false;
+    this.current = index;
+    this._replaceCurrentTrack(
+      trackID,
+      true,
+      UNPLAYABLE_CONDITION.PLAY_PREV_TRACK
+    );
+    return true;
   }
   _getPrevTrack() {
     const next = this._reversed ? this.current + 1 : this.current - 1;
@@ -386,11 +450,28 @@ export default class {
     }
   }
 
+  saveSelfToLocalStorage() {
+    let player = {};
+    for (let [key, value] of Object.entries(this)) {
+      if (excludeSaveKeys.includes(key)) continue;
+      player[key] = value;
+    }
+
+    localStorage.setItem("player", JSON.stringify(player));
+  }
+
   get list() {
     return this._list;
   }
   set list(list) {
     this._list = list;
+  }
+  get volume() {
+    return this._volume;
+  }
+  set volume(volume) {
+    this._volume = volume;
+    this._howler?.volume(volume);
   }
   get isPersonalFM() {
     return this._isPersonalFM;
@@ -423,7 +504,6 @@ export default class {
     if (this._howler) {
       this._howler.seek(value);
     }
-    this._progress = value;
   }
   get playlistSource() {
     return this._playlistSource;

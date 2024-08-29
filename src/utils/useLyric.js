@@ -122,7 +122,7 @@ export default function useLyric() {
     const store = useMainStore();
     lyricsInterval = setInterval(() => {
       const progress = store.player.seek(null, false) ?? 0;
-      store.player.progress = progress;
+      curShowProgress.value = progress;
       let oldHighlightLyricIndex = highlightLyricIndex.value;
       highlightLyricIndex.value = lyrics.value.findIndex((l, index) => {
         const nextLyric = lyrics.value[index + 1];

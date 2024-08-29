@@ -1,6 +1,5 @@
 import { Howl, Howler } from "howler";
 import { getLyric, getMP3, getTrackDetail, scrobble } from "@/api/track";
-import { getTrackSource } from "./db.js";
 import { isAccountLoggedIn } from "@/utils/auth";
 
 const INDEX_IN_PLAY_NEXT = -1;
@@ -30,136 +29,7 @@ export default class {
     this._playNextList = []; // 当这个list不为空时，会优先播放这个list的歌
     this._playlistSource = { type: "playlist", id: -1 }; // 当前播放列表的类型和id
     this._current = 0; // 当前播放歌曲在播放列表里的index
-    this._currentTrack = {
-      name: "无名的人 (live)",
-      id: 2108827013,
-      pst: 0,
-      t: 0,
-      ar: [
-        { id: 4941, name: "孙楠", tns: [], alias: [] },
-        { id: 2124, name: "陈楚生", tns: [], alias: [] },
-      ],
-      alia: [],
-      pop: 100,
-      st: 0,
-      rt: "",
-      fee: 8,
-      v: 9,
-      crbt: null,
-      cf: "",
-      al: {
-        id: 181191266,
-        name: "声生不息·家年华 第3期",
-        picUrl:
-          "https://p1.music.126.net/uO70pUEpTU72gfagRUP5oA==/109951169560298051.jpg",
-        tns: [],
-        pic_str: "109951169560298051",
-        pic: 109951169560298050,
-      },
-      dt: 320810,
-      h: { br: 320000, fid: 0, size: 12835245, vd: -42153, sr: 48000 },
-      m: { br: 192000, fid: 0, size: 7701165, vd: -39586, sr: 48000 },
-      l: { br: 128000, fid: 0, size: 5134125, vd: -37946, sr: 48000 },
-      sq: { br: 879542, fid: 0, size: 35270822, vd: -42534, sr: 48000 },
-      hr: { br: 1648745, fid: 0, size: 66116879, vd: -42130, sr: 48000 },
-      a: null,
-      cd: "01",
-      no: 2,
-      rtUrl: null,
-      ftype: 0,
-      rtUrls: [],
-      djId: 0,
-      copyright: 1,
-      s_id: 0,
-      mark: 17716748288,
-      originCoverType: 2,
-      originSongSimpleData: null,
-      tagPicList: null,
-      resourceState: true,
-      version: 9,
-      songJumpInfo: null,
-      entertainmentTags: null,
-      awardTags: null,
-      single: 0,
-      noCopyrightRcmd: null,
-      mv: 0,
-      mst: 9,
-      cp: 7001,
-      rtype: 0,
-      rurl: null,
-      publishTime: 1702656000000,
-      privilege: {
-        id: 2108827013,
-        fee: 8,
-        payed: 0,
-        st: 0,
-        pl: 128000,
-        dl: 0,
-        sp: 7,
-        cp: 1,
-        subp: 1,
-        cs: false,
-        maxbr: 999000,
-        fl: 320000,
-        toast: false,
-        flag: 260,
-        preSell: false,
-        playMaxbr: 999000,
-        downloadMaxbr: 999000,
-        maxBrLevel: "hires",
-        playMaxBrLevel: "hires",
-        downloadMaxBrLevel: "hires",
-        plLevel: "standard",
-        dlLevel: "none",
-        flLevel: "exhigh",
-        rscl: null,
-        freeTrialPrivilege: {
-          resConsumable: false,
-          userConsumable: false,
-          listenType: null,
-          cannotListenReason: null,
-          playReason: null,
-          freeLimitTagType: null,
-        },
-        rightSource: 0,
-        chargeInfoList: [
-          {
-            rate: 128000,
-            chargeUrl: null,
-            chargeMessage: null,
-            chargeType: 0,
-          },
-          {
-            rate: 192000,
-            chargeUrl: null,
-            chargeMessage: null,
-            chargeType: 0,
-          },
-          {
-            rate: 320000,
-            chargeUrl: null,
-            chargeMessage: null,
-            chargeType: 0,
-          },
-          {
-            rate: 999000,
-            chargeUrl: null,
-            chargeMessage: null,
-            chargeType: 1,
-          },
-          {
-            rate: 1999000,
-            chargeUrl: null,
-            chargeMessage: null,
-            chargeType: 1,
-          },
-        ],
-        code: 0,
-        message: null,
-      },
-      playable: true,
-      reason: "",
-    }; // 当前播放歌曲的详细信息
+    this._currentTrack = { id: -1 }; // 当前播放歌曲的详细信息
     this.sourceBlobURL = "";
     this._isPersonalFM = false;
 
@@ -168,8 +38,34 @@ export default class {
     Object.defineProperty(this, "_howler", {
       enumerable: false,
     });
+
+    this._init();
+    window.vue3yesplay = {};
+    window.vue3yesplay.player = this;
   }
 
+  _init() {
+    this._loadSelfFromLocalStorage();
+    this._howler?.volume(this.volume);
+
+    if (this._enabled && this._currentTrack) {
+      // 恢复当前播放歌曲
+      this._replaceCurrentTrack(this.currentTrackID, false).then(() => {
+        this._howler?.seek(localStorage.getItem("playerCurrentTrackTime") ?? 0);
+      }); // update audio source and init howler
+      this._initMediaSession();
+    }
+
+    // this._setIntervals();
+  }
+
+  _loadSelfFromLocalStorage() {
+    const mainStore = JSON.parse(localStorage.getItem("mainStore"));
+    if (!mainStore?.player) return;
+    for (const [key, value] of Object.entries(mainStore.player)) {
+      this[key] = value;
+    }
+  }
   /**
    * 替换播放列表
    *
@@ -207,7 +103,7 @@ export default class {
   _replaceCurrentTrack(
     id,
     autoplay = true,
-    ifUnplayableThen = "playNextTrack"
+    ifUnplayableThen = UNPLAYABLE_CONDITION.PLAY_PREV_TRACK
   ) {
     if (autoplay && this._currentTrack.name) {
       this._scrobble(this.currentTrack, this._howler?.seek());
@@ -216,13 +112,19 @@ export default class {
       const track = data.songs[0];
       this._currentTrack = track;
       this._updateMediaSessionMetaData(track);
-      return this._replaceCurrentTrackAudio(
-        track,
-        autoplay,
-        true,
-        ifUnplayableThen
-      );
+      return this._replaceCurrentTrackAudio(track, autoplay, ifUnplayableThen);
     });
+  }
+
+  play() {
+    this._enabled = true;
+  }
+
+  seek(time = null) {
+    if (time !== null) {
+      this._howler?.seek(time);
+    }
+    return this._howler ? this._howler.seek() : 0;
   }
 
   /**
@@ -237,18 +139,14 @@ export default class {
   _replaceCurrentTrackAudio(
     track,
     autoplay,
-    isCacheNextTrack,
-    ifUnplayableThen = "playNextTrack"
+    ifUnplayableThen = UNPLAYABLE_CONDITION.PLAY_PREV_TRACK
   ) {
-    return this._getAudioSource(track).then((source) => {
+    return this._getAudioSourceFromNetease(track).then((source) => {
       if (source) {
         let replaced = false;
         if (track.id === this.currentTrackID) {
           this._playAudioSource(source, autoplay);
           replaced = true;
-        }
-        if (isCacheNextTrack) {
-          this._cacheNextTrack();
         }
         return replaced;
       } else {
@@ -270,21 +168,6 @@ export default class {
         }
         return false;
       }
-    });
-  }
-  /**
-   * 获取音频源
-   * @param {*} track
-   */
-  _getAudioSource(track) {
-    return this._getAudioSourceFromCache(String(track.id)).then((source) => {
-      return source ?? this._getAudioSourceFromNetease(track);
-    });
-  }
-  _getAudioSourceFromCache(id) {
-    return getTrackSource(id).then((t) => {
-      if (!t) return null;
-      return this._getAudioSourceBlobURL(t.source);
     });
   }
   _getAudioSourceBlobURL() {
@@ -335,7 +218,7 @@ export default class {
         this._playNextTrack();
       } else {
         const t = this.progress;
-        this._replaceCurrentTrackAudio(this.currentTrack, false, false).then(
+        this._replaceCurrentTrackAudio(this.currentTrack, false).then(
           (replaced) => {
             // 如果 replaced 为 false，代表当前的 track 已经不是这里想要替换的track
             // 此时则不修改当前的歌曲进度
@@ -353,14 +236,6 @@ export default class {
         setTitle(this._currentTrack);
       }
     }
-  }
-  _cacheNextTrack() {
-    let nextTrackID = this._getNextTrack()[0];
-    if (!nextTrackID) return;
-    getTrackDetail(nextTrackID).then((data) => {
-      let track = data.songs[0];
-      this._getAudioSource(track);
-    });
   }
   _nextTrackCallback() {
     this._scrobble(this._currentTrack, 0, true);
@@ -433,12 +308,26 @@ export default class {
     // 返回 [trackID, index]
     return [this.list[next], next];
   }
+
+  /**
+   * 听歌打卡
+   */
+  async _scrobble(track, time, completed = false) {
+    const trackDuration = ~~(track.dt / 1000);
+    time = completed ? trackDuration : ~~time;
+    scrobble({
+      id: track.id,
+      sourceid: this.playlistSource.id,
+      time,
+    });
+  }
+
   /**
    * mediaSession 是一个浏览器提供的 API，用于控制媒体元数据和媒体控件的行为。
    * 它允许开发者在网页中定义媒体元数据（如标题、艺术家、专辑封面等），并控制媒体控件的行为（如播放、暂停、跳转等）。
    */
   _updateMediaSessionMetaData(track) {
-    if ("mediaSession" in navigator === false) {
+    if ("mediaSession" in navigator === false || !track) {
       return;
     }
     let artists = track.ar.map((a) => a.name);
@@ -465,18 +354,36 @@ export default class {
 
     navigator.mediaSession.metadata = new window.MediaMetadata(metadata);
   }
-
-  /**
-   * 听歌打卡
-   */
-  async _scrobble(track, time, completed = false) {
-    const trackDuration = ~~(track.dt / 1000);
-    time = completed ? trackDuration : ~~time;
-    scrobble({
-      id: track.id,
-      sourceid: this.playlistSource.id,
-      time,
-    });
+  _initMediaSession() {
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.setActionHandler("play", () => {
+        this.play();
+      });
+      navigator.mediaSession.setActionHandler("pause", () => {
+        this.pause();
+      });
+      navigator.mediaSession.setActionHandler("previoustrack", () => {
+        this.playPrevTrack();
+      });
+      navigator.mediaSession.setActionHandler("nexttrack", () => {
+        this._playNextTrack(this.isPersonalFM);
+      });
+      navigator.mediaSession.setActionHandler("stop", () => {
+        this.pause();
+      });
+      navigator.mediaSession.setActionHandler("seekto", (event) => {
+        this.seek(event.seekTime);
+        this._updateMediaSessionPositionState();
+      });
+      navigator.mediaSession.setActionHandler("seekbackward", (event) => {
+        this.seek(this.seek() - (event.seekOffset || 10));
+        this._updateMediaSessionPositionState();
+      });
+      navigator.mediaSession.setActionHandler("seekforward", (event) => {
+        this.seek(this.seek() + (event.seekOffset || 10));
+        this._updateMediaSessionPositionState();
+      });
+    }
   }
 
   get list() {
@@ -516,6 +423,7 @@ export default class {
     if (this._howler) {
       this._howler.seek(value);
     }
+    this._progress = value;
   }
   get playlistSource() {
     return this._playlistSource;
@@ -527,14 +435,17 @@ export default class {
     this._current = current;
   }
   get currentTrack() {
-    return this._currentTrack;
+    return this._currentTrack || {};
   }
   get currentTrackID() {
     return this._currentTrack?.id ?? 0;
   }
   get currentTrackDuration() {
-    const trackDuration = this._currentTrack.dt || 1000;
+    const trackDuration = this._currentTrack?.dt || 1000;
     let duration = ~~(trackDuration / 1000);
     return duration > 1 ? duration - 1 : duration;
+  }
+  get enabled() {
+    return this._enabled;
   }
 }

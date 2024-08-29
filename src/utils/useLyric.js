@@ -1,6 +1,5 @@
 import { lyricParser } from "@/utils/lyrics";
 import { getLyric } from "@/api/track";
-
 export default function useLyric() {
   // 歌词、翻译、罗马音
   let _lyric = [],
@@ -21,7 +20,6 @@ export default function useLyric() {
       _romalyric = [];
     } else {
       let { lyric, tlyric, romalyric } = lyricParser(data);
-      console.log(lyric, tlyric, romalyric);
       lyric = lyric.filter((l) => !/^作(词|曲)\s*(:|：)\s*无$/.exec(l.content));
       let includeAM =
         lyric.length <= 10 &&
@@ -98,6 +96,7 @@ export default function useLyric() {
   let clickLineTimer = null;
   function clickLyricLine(value, startPlay = false) {
     let jumpFlag = false;
+    const store = useMainStore();
     lyrics.value.filter(function (item) {
       if (item.content == "纯音乐，请欣赏") {
         jumpFlag = true;
@@ -105,7 +104,7 @@ export default function useLyric() {
     });
     if (!jumpFlag) {
       clickLineTimer = setTimeout(() => {
-        // player.seek(value);
+        store.player.seek(value);
         clearTimeout(clickLineTimer);
         clickLineTimer = null;
       }, 100);
@@ -117,14 +116,49 @@ export default function useLyric() {
     }
   }
 
+  let lyricsInterval = null;
+  const curShowProgress = ref(0);
+  function setLyricsInterval() {
+    const store = useMainStore();
+    lyricsInterval = setInterval(() => {
+      const progress = store.player.seek(null, false) ?? 0;
+      store.player.progress = progress;
+      let oldHighlightLyricIndex = highlightLyricIndex.value;
+      highlightLyricIndex.value = lyrics.value.findIndex((l, index) => {
+        const nextLyric = lyrics.value[index + 1];
+        return (
+          progress >= l.time && (nextLyric ? progress < nextLyric.time : true)
+        );
+      });
+      if (oldHighlightLyricIndex !== highlightLyricIndex.value) {
+        const el = document.getElementById(`line${highlightLyricIndex.value}`);
+        if (el)
+          el.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+      }
+    }, 50);
+    store.enableScrolling = false;
+  }
+  function clearLyricsInterval() {
+    const store = useMainStore();
+    clearInterval(lyricsInterval);
+    lyricsInterval = null;
+    store.enableScrolling = true;
+  }
+
   return {
     getLyrics,
     switchLyricType,
     clickLyricLine,
+    setLyricsInterval,
+    clearLyricsInterval,
     lyrics,
     noLyric,
     lyricType,
     isShowLyricTypeSwitch,
     highlightLyricIndex,
+    curShowProgress,
   };
 }

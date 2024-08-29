@@ -69,12 +69,3 @@ export function getTrackDetailFromCache(ids) {
   }
   return p(result);
 }
-
-export function getTrackSource(id) {
-  const track = _vue3yesplay.trackSources.find(Number(id));
-  if (!track) return p(null);
-  console.debug(
-    `[debug][db.js] get track from cache 👉 ${track.name} by ${track.artist}`
-  );
-  return p(track);
-}

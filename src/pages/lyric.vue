@@ -6,8 +6,9 @@ import useLyric from "@/utils/useLyric";
 
 const store = useMainStore();
 const player = computed(() => store.player);
+
 // 歌曲相关
-const currentTrack = computed(() => store.player.currentTrack);
+const currentTrack = computed(() => store.player.currentTrack || {});
 const artist = computed(() => {
   return currentTrack.value?.ar
     ? currentTrack.value.ar[0]
@@ -30,7 +31,7 @@ const volume = ref(0);
 // 背景相关
 const backgroundStyle = ref("");
 const imgUrl = computed(() => {
-  return currentTrack.value.al?.picUrl + "?param=1024y1024";
+  return currentTrack?.value?.al?.picUrl + "?param=1024y1024";
 });
 async function getCoverColor() {
   const cover = document.getElementById("trackImg");
@@ -51,14 +52,28 @@ async function getCoverColor() {
 // 歌词相关
 const {
   getLyrics,
-  lyrics,
-  lyricType,
-  isShowLyricTypeSwitch,
-  noLyric,
-  highlightLyricIndex,
   switchLyricType,
   clickLyricLine,
+  setLyricsInterval,
+  clearLyricsInterval,
+  lyrics,
+  noLyric,
+  lyricType,
+  isShowLyricTypeSwitch,
+  highlightLyricIndex,
+  curShowProgress,
 } = useLyric();
+
+watch(
+  () => store.showLyrics,
+  (val) => {
+    if (val) {
+      setLyricsInterval();
+    } else {
+      clearLyricsInterval();
+    }
+  }
+);
 
 onMounted(async () => {
   getCoverColor();

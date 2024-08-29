@@ -12,10 +12,16 @@ const store = useMainStore();
       </keep-alive>
     </router-view>
   </main>
-  <lyric v-show="!store.showLyrics"></lyric>
+  <TheFooter></TheFooter>
+  <transition v-if="store.player.enabled" name="slide-up">
+    <lyric v-show="store.showLyrics"></lyric>
+  </transition>
 </template>
 
 <style scoped lang="scss">
+#app {
+  transition: all 0.4s;
+}
 main {
   position: fixed;
   top: 0;
@@ -30,5 +36,14 @@ main {
   main {
     padding: 64px 5vw 96px 5vw;
   }
+}
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: transform 0.4s;
+}
+.slide-up-enter,
+.slide-up-enter-from,
+.slide-up-leave-to {
+  transform: translateY(100%);
 }
 </style>

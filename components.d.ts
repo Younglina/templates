@@ -17,6 +17,7 @@ declare module 'vue' {
     MvList: typeof import('./src/components/MvList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TheFooter: typeof import('./src/components/TheFooter.vue')['default']
     TheHeader: typeof import('./src/components/TheHeader.vue')['default']
     TheInput: typeof import('./src/components/TheInput.vue')['default']
     TheSlider: typeof import('./src/components/TheSlider.vue')['default']

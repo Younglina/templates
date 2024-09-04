@@ -31,7 +31,14 @@ function playNextTrack() {
 function switchShuffle() {}
 
 // 音量
-const volume = ref(0);
+const volume = computed({
+  get() {
+    return store.player.volume;
+  },
+  set(value) {
+    store.player.volume = value;
+  },
+});
 
 // 背景相关
 const backgroundStyle = ref("");

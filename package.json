@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "prod": "vite -m production",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",

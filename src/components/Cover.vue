@@ -47,7 +47,17 @@ const shadowStyles = computed(() => {
   if (props.alwaysShowShadow) styles.display = "block";
   return styles;
 });
-function play() {}
+
+const store = useMainStore();
+function play() {
+  const player = store.player;
+  const playActions = {
+    album: player.playAlbumByID,
+    playlist: player.playPlaylistByID,
+    artist: player.playArtistByID,
+  };
+  playActions[props.type].bind(player)(props.id);
+}
 
 const router = useRouter();
 function goTo() {

@@ -59,6 +59,11 @@ const routes = [
     component: () => import("../pages/searchType.vue"),
     name: "searchType",
   },
+  {
+    path: "/next",
+    component: () => import("../pages/next.vue"),
+    name: "next",
+  },
 ];
 
 const router = createRouter({

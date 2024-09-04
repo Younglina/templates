@@ -1,6 +1,7 @@
 import { useMainStore } from "@/store";
 import { dailyRecommendPlaylist, recommendPlaylist } from "@/api/playlist";
 import { isAccountLoggedIn } from "@/utils/auth";
+const router = useRouter();
 
 export function hasListSource() {
   const store = useMainStore();
@@ -8,7 +9,6 @@ export function hasListSource() {
 }
 
 export function goToListSource() {
-  const router = useRouter();
   router.push({ path: getListSourcePath() });
 }
 

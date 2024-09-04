@@ -14,21 +14,23 @@ const props = defineProps({
   },
 });
 const store = useMainStore();
-
-const trackComputed = computed(() => {
+const player = computed(() => store.player);
+const track = computed(() => {
   return props.type === "cloudDisk"
     ? props.trackProp.simpleSong
     : props.trackProp;
 });
-const track = toRaw(trackComputed.value || {});
 const playable = computed(() => {
-  return track?.privilege?.pl > 0 || track?.playable;
+  return track.value?.privilege?.pl > 0 || track.value?.playable;
 });
 
 const trackClass = computed(() => {
   const trackClass = [props.type];
   if (!playable.value) trackClass.push("disable");
-  if (store.player.currentTrack.id === track?.id && props.highlightPlayingTrack)
+  if (
+    player.value.currentTrack.id === track.value?.id &&
+    props.highlightPlayingTrack
+  )
     trackClass.push("playing");
   // if (props.focus) trackClass.push("focus");
   return trackClass;
@@ -39,13 +41,13 @@ const isAlbum = computed(() => {
 });
 const imgUrl = computed(() => {
   const image =
-    track?.al?.picUrl ??
-    track?.album?.picUrl ??
+    track.value?.al?.picUrl ??
+    track.value?.album?.picUrl ??
     "https://p2.music.126.net/UeTuwE7pvjBpypWLudqukA==/3132508627578625.jpg";
   return `${image}?param=224y224`;
 });
 const artists = computed(() => {
-  const { ar, artists } = track;
+  const { ar, artists } = track.value;
   if (ar != null) return ar;
   if (artists != null) return artists;
   return [];
@@ -60,29 +62,29 @@ const showLikeButton = computed(() => {
   return props.type !== "tracklist" && props.type !== "cloudDisk";
 });
 const album = computed(() => {
-  return track.album || track.al || track?.simpleSong?.al;
+  return track.value.album || track.value.al || track.value?.simpleSong?.al;
 });
 const isLiked = computed(() => {
-  return store.liked.songs.includes(track?.id);
+  return store.liked.songs.includes(track.value?.id);
 });
 const isSubTitle = computed(() => {
   return (
-    (track?.tns?.length > 0 && track.name !== track.tns[0]) ||
-    track.alia?.length > 0
+    (track.value?.tns?.length > 0 && track.value.name !== track.value.tns[0]) ||
+    track.value.alia?.length > 0
   );
 });
 const subTitle = computed(() => {
   let tn = undefined;
-  if (track?.tns?.length > 0 && track.name !== track.tns[0]) {
-    tn = track.tns[0];
+  if (track.value?.tns?.length > 0 && track.value.name !== track.value.tns[0]) {
+    tn = track.value.tns[0];
   }
-  return tn === undefined ? track.alia[0] : tn;
+  return tn === undefined ? track.value.alia[0] : tn;
 });
 
 const router = useRouter();
 function goToAlbum() {
-  if (track.al.id === -1) return;
-  router.push({ path: "/album/" + track.al.id });
+  if (track.value.al.id === -1) return;
+  router.push({ path: "/album/" + track.value.id });
 }
 function likeThisSong() {}
 </script>
@@ -264,6 +266,27 @@ function likeThisSong() {}
   }
   &:hover {
     background: none;
+  }
+}
+.track.playing {
+  background: var(--color-primary-bg);
+  color: var(--color-primary);
+  .title,
+  .album,
+  .time,
+  .title-and-artist .sub-title {
+    color: var(--color-primary);
+  }
+  .title .featured,
+  .artist,
+  .explicit-symbol,
+  .count {
+    color: var(--color-primary);
+    opacity: 0.88;
+  }
+  .no span {
+    color: var(--color-primary);
+    opacity: 0.78;
   }
 }
 </style>

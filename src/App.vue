@@ -7,7 +7,7 @@ const store = useMainStore();
   <TheHeader />
   <main class="main-wrap">
     <router-view v-slot="{ Component }">
-      <keep-alive :include="['explore', 'artist', 'search', 'album']">
+      <keep-alive :include="['explore', 'artist', 'search', 'album', 'next']">
         <component :is="Component" />
       </keep-alive>
     </router-view>

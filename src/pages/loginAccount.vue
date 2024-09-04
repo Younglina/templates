@@ -46,7 +46,6 @@ function handleLogin() {
     .then(handleLoginResponse)
     .catch((error) => {
       logingLoading.value = false;
-      processing = false;
       MessageBox({
         title: "登录失败",
         message: `请检查你的账号密码是否正确\n${error}`,

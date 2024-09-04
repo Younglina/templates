@@ -95,10 +95,12 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  margin-bottom: 12px;
   h3 {
     font-size: 20px;
     font-weight: 600;
+  }
+  .button-icon {
+    margin-left: auto;
   }
 }
 

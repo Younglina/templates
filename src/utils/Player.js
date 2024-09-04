@@ -1,5 +1,7 @@
 import { Howl, Howler } from "howler";
+import { getPlaylistDetail, intelligencePlaylist } from "@/api/playlist";
 import { getLyric, getMP3, getTrackDetail, scrobble } from "@/api/track";
+import { getAlbum } from "@/api/album";
 import { isAccountLoggedIn } from "@/utils/auth";
 
 const PLAY_PAUSE_FADE_DURATION = 200;
@@ -30,6 +32,7 @@ export default class {
     this._shuffle = false; // true | false
     this._reversed = false;
     this._volume = 1;
+    this._volumeBeforeMuted = 1; // 用于保存静音前的音量
 
     // 播放信息
     this._list = []; // 播放列表
@@ -263,6 +266,7 @@ export default class {
         this._playNextTrack();
       } else if (errCode === 4) {
         // 发现关联的资源或媒体提供程序对象不合适
+        MessageBox.close();
         MessageBox({
           message: "无法播放: 不支持的音频格式",
         });
@@ -354,6 +358,59 @@ export default class {
       UNPLAYABLE_CONDITION.PLAY_PREV_TRACK
     );
     return true;
+  }
+  playAlbumByID(id, trackID = "first") {
+    getAlbum(id).then((data) => {
+      let trackIDs = data.songs.map((t) => t.id);
+      this.replacePlaylist(trackIDs, id, "album", trackID);
+    });
+  }
+  playPlaylistByID(id, trackID = "first", noCache = false) {
+    console.debug(
+      `[debug][Player.js] playPlaylistByID 👉 id:${id} trackID:${trackID} noCache:${noCache}`
+    );
+    getPlaylistDetail(id, noCache).then((data) => {
+      let trackIDs = data.playlist.trackIds.map((t) => t.id);
+      this.replacePlaylist(trackIDs, id, "playlist", trackID);
+    });
+  }
+  playArtistByID(id, trackID = "first") {
+    getArtist(id).then((data) => {
+      let trackIDs = data.hotSongs.map((t) => t.id);
+      this.replacePlaylist(trackIDs, id, "artist", trackID);
+    });
+  }
+  playTrackOnListByID(id, listName = "default") {
+    if (listName === "default") {
+      this._current = this._list.findIndex((t) => t === id);
+    }
+    this._replaceCurrentTrack(id);
+  }
+  addTrackToPlayNext(trackID, playNow = false) {
+    this._playNextList.push(trackID);
+    if (playNow) {
+      this.playNextTrack();
+    }
+  }
+  switchRepeatMode() {
+    if (this._repeatMode === "on") {
+      this.repeatMode = "one";
+    } else if (this._repeatMode === "one") {
+      this.repeatMode = "off";
+    } else {
+      this.repeatMode = "on";
+    }
+  }
+  switchShuffle() {
+    this.shuffle = !this.shuffle;
+  }
+  mute() {
+    if (this.volume === 0) {
+      this.volume = this._volumeBeforeMuted;
+    } else {
+      this._volumeBeforeMuted = this.volume;
+      this.volume = 0;
+    }
   }
   _getPrevTrack() {
     const next = this._reversed ? this.current + 1 : this.current - 1;
